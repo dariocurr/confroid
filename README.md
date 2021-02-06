@@ -1,7 +1,8 @@
-# confroid
+# Confroid
 ## About the project
 
 ## To submit:
+
 ### Teamwork:
 - README
 - AUTHORS
