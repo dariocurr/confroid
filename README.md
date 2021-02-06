@@ -4,8 +4,8 @@
 ## To submit:
 ### Teamwork:
 - README
-- AUTHORS
-- LICENSE
+- AUTHORS :heavy_check_mark:
+- LICENSE :heavy_check_mark:
 - A fastlane directory containing all the metadata of your application such as description, presentation screenshots (see [here](https://f-droid.org/en/docs/All_About_Descriptions_Graphics_and_Screenshots/))
 - A development report in PDF of at least 15 indicating the general architecture of the project, the organization adopted for the development (distribution of tasks), the difficulties encountered, and the solutions adopted to resolve them
 - A user guide in PDF
