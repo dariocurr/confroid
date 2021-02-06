@@ -1,5 +1,5 @@
 # Authors
-| Last name | First name | University email | Home Univesity email |
+| Last name | First name | University email | Home university email |
 |---|---|---|---|
 | Curreri | Dario | dcurreri@etud.u-pem.fr | dario.curreri@community.unipa.it |
 | Di Fina | Domenico | @etud.u-pem.fr | @community.unipa.it |
