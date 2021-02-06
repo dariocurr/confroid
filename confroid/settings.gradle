@@ -1,2 +1,3 @@
+include ':confroidUtils'
 include ':app'
-rootProject.name = "Confroid"
+rootProject.name = "confroid"
