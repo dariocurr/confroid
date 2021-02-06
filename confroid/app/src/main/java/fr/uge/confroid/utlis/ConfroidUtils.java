@@ -1,13 +1,15 @@
-package fr.uge.confroidutils;
+package fr.uge.confroid.utlis;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
-public class ConfroidUtils {
+public interface ConfroidUtils {
 
-    public Bundle toBundle(Object object) {
+    default Bundle toBundle(Object object) {
         Bundle bundle = new Bundle();
         if (object instanceof List) {
             List list = (List) object;
@@ -48,10 +50,24 @@ public class ConfroidUtils {
         return bundle;
     }
 
-    public static void main(String[] args) {
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("ciao", false);
-        System.out.println(bundle);
+    default void saveConfiguration (Context context, String name, Object value, String versionName) {
+
+    }
+
+    default <T> void loadConfiguration (Context context, String name, String version, Consumer<T> callback) {
+
+    }
+
+    default <T> void subscribeConfiguration (Context context, String name, Consumer <T> callback) {
+
+    }
+
+    default <T> void cancelConfigurationSubscription (Context context, Consumer <T> callback) {
+
+    }
+
+    default void getConfigurationVersions (Context context, String name, Consumer <List <Version>> callback) {
+        
     }
 
 }
