@@ -6,10 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.provider.BaseColumns;
+import android.util.Log;
 import fr.uge.confroid.sqlite.ConfroidContract;
 import fr.uge.confroid.sqlite.ConfroidDbHelper;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,9 +89,9 @@ public interface ConfroidUtils {
                 ConfroidContract.ConfroidEntry.COLUMN_NAME_CONTENT
         };
 
-        // Filter results WHERE "title" = 'My Title'
+        // Filter results WHERE "name" = name
         String selection = ConfroidContract.ConfroidEntry.COLUMN_NAME_NAME + " = ?";
-        String[] selectionArgs = { name +  "/" + version };
+        String[] selectionArgs = { name };
 
         // How you want the results sorted in the resulting Cursor
         String sortOrder =
@@ -104,6 +106,18 @@ public interface ConfroidUtils {
                 null,                   // don't filter by row groups
                 sortOrder               // The sort order
         );
+
+        List<String> itemContents = new ArrayList<>();
+        while(cursor.moveToNext()) {
+            String itemContent = cursor.getString(
+                    cursor.getColumnIndexOrThrow(ConfroidContract.ConfroidEntry.COLUMN_NAME_CONTENT));
+            itemContents.add(itemContent);
+        }
+        cursor.close();
+
+        for(String content : itemContents){
+            Log.i("content", content);
+        }
     }
 
     default <T> void subscribeConfiguration (Context context, String name, Consumer <T> callback) {
