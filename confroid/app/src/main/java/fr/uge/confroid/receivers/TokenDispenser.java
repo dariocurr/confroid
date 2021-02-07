@@ -28,4 +28,8 @@ public class TokenDispenser {
         return token;
     }
 
+    public static Map<String, String> getDispensedTokens() {
+        return DISPENSED_TOKENS;
+    }
+
 }
