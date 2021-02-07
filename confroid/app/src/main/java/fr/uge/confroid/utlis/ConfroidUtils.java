@@ -4,22 +4,22 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.util.Log;
+import androidx.annotation.RequiresApi;
 import fr.uge.confroid.sqlite.ConfroidContract;
 import fr.uge.confroid.sqlite.ConfroidDbHelper;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
-public interface ConfroidUtils {
+public class ConfroidUtils {
 
-    default Bundle toBundle(Object object) {
+    public static Bundle toBundle(Object object) {
         Bundle bundle = new Bundle();
         if (object instanceof List) {
             List list = (List) object;
@@ -35,7 +35,7 @@ public interface ConfroidUtils {
                 } else if (elem instanceof Boolean) {
                     bundle.putBoolean(list.indexOf(elem) + "", (boolean) elem);
                 } else if (elem instanceof List || elem instanceof Map) {
-                    bundle.putBundle(list.indexOf(elem) + "", this.toBundle(elem));
+                    bundle.putBundle(list.indexOf(elem) + "", toBundle(elem));
                 }
             }
         } else if (object instanceof Map) {
@@ -53,14 +53,15 @@ public interface ConfroidUtils {
                 } else if (value instanceof Boolean) {
                     bundle.putBoolean(key + "" + "", (boolean) value);
                 } else if (value instanceof List || value instanceof Map) {
-                    bundle.putBundle(key + "", this.toBundle(value));
+                    bundle.putBundle(key + "", toBundle(value));
                 }
             }
         }
         return bundle;
     }
 
-    default void saveConfiguration (Context context, String name, Object value, String versionName) {
+    /*
+    public static void saveConfiguration (Context context, String name, Object value, String versionName) {
         ConfroidDbHelper dbHelper = new ConfroidDbHelper(context);
 
         // Gets the data repository in write mode
@@ -77,7 +78,7 @@ public interface ConfroidUtils {
         long newRowId = db.insert(ConfroidContract.ConfroidEntry.TABLE_NAME, null, values);
     }
 
-    default <T> void loadConfiguration (Context context, String name, String version, Consumer<T> callback) {
+    public static <T> void loadConfiguration (Context context, String name, String version, Consumer<T> callback) {
         ConfroidDbHelper dbHelper = new ConfroidDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -102,8 +103,8 @@ public interface ConfroidUtils {
                 projection,             // The array of columns to return (pass null to get all)
                 selection,              // The columns for the WHERE clause
                 selectionArgs,          // The values for the WHERE clause
-                null,                   // don't group the rows
-                null,                   // don't filter by row groups
+                null,           // don't group the rows
+                null,            // don't filter by row groups
                 sortOrder               // The sort order
         );
 
@@ -120,16 +121,17 @@ public interface ConfroidUtils {
         }
     }
 
-    default <T> void subscribeConfiguration (Context context, String name, Consumer <T> callback) {
+    public static <T> void subscribeConfiguration (Context context, String name, Consumer <T> callback) {
 
     }
 
-    default <T> void cancelConfigurationSubscription (Context context, Consumer <T> callback) {
+    public static <T> void cancelConfigurationSubscription (Context context, Consumer <T> callback) {
 
     }
 
-    default void getConfigurationVersions (Context context, String name, Consumer <List <Version>> callback) {
+    public static void getConfigurationVersions (Context context, String name, Consumer <List <Version>> callback) {
         
     }
+     */
 
 }
