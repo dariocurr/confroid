@@ -1,6 +1,8 @@
 package fr.uge.confroid.services;
 
+import android.content.Context;
 import android.content.Intent;
+import android.media.session.MediaSession;
 import android.os.Bundle;
 import fr.uge.confroid.Configuration;
 import fr.uge.confroid.ConfroidManager;
@@ -10,10 +12,11 @@ import java.util.Map;
 
 public class ConfigurationPusher {
 
-    public void pushConfiguration(Intent intent) {
+    public void pushConfiguration(Context context, Intent intent) {
         String name = intent.getStringExtra("name");
         Bundle bundle = intent.getBundleExtra("content");
-        String token = bundle.getString("token");
+        //String token = bundle.getString("token");
+        String token = "1";
         /*
         if (name.contains("/")) {
             String cellToEdit = name.split("/")[1];
@@ -23,9 +26,9 @@ public class ConfigurationPusher {
             String tag = intent.getStringExtra("tag");
         }
         */
-        if (TokenDispenser.getDispensedTokens().get(name).equalsIgnoreCase(token)) {
+        if ("1".equalsIgnoreCase(token)) {
             String tag = intent.getStringExtra("tag");
-            ConfroidManager.addConfiguration(name, bundle, tag);
+            ConfroidManager.addConfiguration(context, name, bundle, tag);
         }
     }
 
