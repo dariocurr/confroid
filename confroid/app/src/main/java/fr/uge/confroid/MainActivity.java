@@ -3,8 +3,13 @@ package fr.uge.confroid;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import fr.uge.confroid.gui.ConfigurationActivity;
+import fr.uge.confroid.gui.MyRecyclerViewAdapter;
 import fr.uge.confroid.services.ConfigurationPuller;
 import fr.uge.confroid.services.ConfigurationPusher;
 import fr.uge.confroid.utlis.ConfroidUtils;
@@ -15,12 +20,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener{
+    private MyRecyclerViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        initRecyclerView();
 
         HashMap<String, List<String>> content = new HashMap<>();
         ArrayList<String> c = new ArrayList<>();
@@ -43,7 +51,12 @@ public class MainActivity extends AppCompatActivity {
         intent1.putExtra("expiration", "1");
 
         ConfigurationPuller configurationPuller = new ConfigurationPuller();
-        configurationPuller.pullConfiguration(getApplicationContext(), intent1);
+        //TODO
+        try {
+            configurationPuller.pullConfiguration(getApplicationContext(), intent1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         Intent receive = getIntent();
 
@@ -63,9 +76,32 @@ public class MainActivity extends AppCompatActivity {
         //ConfroidUtils.saveConfiguration(getApplicationContext(), "fr.uge.calculator", map, "0");
 
         //ConfroidUtils.loadConfiguration(getApplicationContext(), "fr.uge.calculator", "0", null);
-
-
-
-
     }
+
+    private void initRecyclerView() {
+        //-------------------- RECYCLER VIEW ----------------------
+        // data to populate the RecyclerView with
+        ArrayList<String> configurations = new ArrayList<>();
+        configurations.add("Item 1");
+        configurations.add("Item 2");
+
+        // set up the RecyclerView
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new MyRecyclerViewAdapter(this, configurations);
+        adapter.setClickListener(this);
+        recyclerView.setAdapter(adapter);
+    }
+
+
+    @Override
+    public void onItemClick(View view, int position) {
+        //Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getBaseContext(), ConfigurationActivity.class);
+        Bundle conf = new Bundle();
+        conf.putString("EXTRA_TEST_STRING", adapter.getItem(position));
+        intent.putExtras(conf);
+        startActivity(intent);
+    }
+
 }
