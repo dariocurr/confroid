@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements ConfroidUtils {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,9 +24,9 @@ public class MainActivity extends AppCompatActivity implements ConfroidUtils {
         HashMap<String, Object> map = new HashMap<>();
         map.put("1", content);
 
-        saveConfiguration(getApplicationContext(), "fr.uge.calculator", map, "0");
+        //ConfroidUtils.saveConfiguration(getApplicationContext(), "fr.uge.calculator", map, "0");
 
-        loadConfiguration(getApplicationContext(), "fr.uge.calculator", "0", null);
+        //ConfroidUtils.loadConfiguration(getApplicationContext(), "fr.uge.calculator", "0", null);
 
 
     }
