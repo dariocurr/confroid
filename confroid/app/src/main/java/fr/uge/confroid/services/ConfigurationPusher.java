@@ -15,8 +15,7 @@ public class ConfigurationPusher {
     public void pushConfiguration(Context context, Intent intent) {
         String name = intent.getStringExtra("name");
         Bundle bundle = intent.getBundleExtra("content");
-        //String token = bundle.getString("token");
-        String token = "1";
+        String token = bundle.getString("token");
         /*
         if (name.contains("/")) {
             String cellToEdit = name.split("/")[1];
@@ -26,7 +25,7 @@ public class ConfigurationPusher {
             String tag = intent.getStringExtra("tag");
         }
         */
-        if ("1".equalsIgnoreCase(token)) {
+        if (TokenDispenser.getDispensedTokens().get(name).equalsIgnoreCase(token)) {
             String tag = intent.getStringExtra("tag");
             ConfroidManager.addConfiguration(context, name, bundle, tag);
         }

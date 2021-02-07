@@ -6,7 +6,7 @@ public final class ConfroidContract {
 
     private ConfroidContract() {}
 
-    public static class ConfroidEntry implements BaseColumns {
+    public static class ConfigurationEntry implements BaseColumns {
 
         public static final String TABLE_NAME = "configurations";
         public static final String NAME = "name";

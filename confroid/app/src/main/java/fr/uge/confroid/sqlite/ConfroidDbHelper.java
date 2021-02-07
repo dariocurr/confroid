@@ -6,40 +6,33 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class ConfroidDbHelper extends SQLiteOpenHelper {
 
-    // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "Confroid.db";
+    public static final String DATABASE_NAME = "confroid.db";
 
-    private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + ConfroidContract.ConfroidEntry.TABLE_NAME + " (" +
-                    ConfroidContract.ConfroidEntry._ID + "INTEGER PRIMARY KEY," +
-                    ConfroidContract.ConfroidEntry.NAME + "TEXT," +
-                    ConfroidContract.ConfroidEntry.CONTENT + "TEXT," +
-                    ConfroidContract.ConfroidEntry.TAG + "TEXT," +
-                    ConfroidContract.ConfroidEntry.VERSION + "TEXT," +
-                    ConfroidContract.ConfroidEntry.DATE + "DATE)";
+    private static final String SQL_CREATE_ENTRIES = "CREATE TABLE " +
+                    ConfroidContract.ConfigurationEntry.TABLE_NAME + " (" +
+                    ConfroidContract.ConfigurationEntry._ID + "INTEGER PRIMARY KEY," +
+                    ConfroidContract.ConfigurationEntry.NAME + "TEXT," +
+                    ConfroidContract.ConfigurationEntry.CONTENT + "TEXT," +
+                    ConfroidContract.ConfigurationEntry.TAG + "TEXT," +
+                    ConfroidContract.ConfigurationEntry.VERSION + "TEXT," +
+                    ConfroidContract.ConfigurationEntry.DATE + "DATE" + ")";
 
     private static final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS " + ConfroidContract.ConfroidEntry.TABLE_NAME;
+            "DROP TABLE IF EXISTS " + ConfroidContract.ConfigurationEntry.TABLE_NAME;
 
     public ConfroidDbHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // This database is only a cache for online data, so its upgrade policy is
-        // to simply to discard the data and start over
-        db.execSQL(SQL_DELETE_ENTRIES);
-        onCreate(db);
-    }
-    @Override
-    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        onUpgrade(db, oldVersion, newVersion);
+        super(context, DATABASE_NAME, null, 0);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_ENTRIES);
     }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL(SQL_DELETE_ENTRIES);
+        onCreate(db);
+    }
+
 }

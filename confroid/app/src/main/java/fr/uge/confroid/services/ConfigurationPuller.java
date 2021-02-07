@@ -10,24 +10,13 @@ import fr.uge.confroid.receivers.TokenDispenser;
 
 public class ConfigurationPuller {
 
-    public void pullConfiguration(Context context, Intent intent) {
+    public Intent pullConfiguration(Context context, Intent intent) throws Exception {
         String name = intent.getStringExtra("name");
-        //String token = intent.getStringExtra("token");
-        String token = "1";
-        String requestID = intent.getStringExtra("requestID");
+        String token = intent.getStringExtra("token");
+        String requestId = intent.getStringExtra("requestId");
         String version = intent.getStringExtra("version");
         String receiver = intent.getStringExtra("receiver");
         String expiration = intent.getStringExtra("expiration");
-
-        /*
-        if (name.contains("/")) {
-            String cellToEdit = name.split("/")[1];
-            Configuration configuration = ConfroidManager.getLatestConfiguration(name);
-            configuration.content.put(cellToEdit, bundle.get(cellToEdit));
-        } else {
-            String tag = intent.getStringExtra("tag");
-        }
-        */
 
         Class cls = null;
         try {
@@ -36,7 +25,8 @@ public class ConfigurationPuller {
             e.printStackTrace();
         }
 
-        if ("1".equalsIgnoreCase(token)) {
+        if (TokenDispenser.getDispensedTokens().get(name).equalsIgnoreCase(token)) {
+            /*
             //Intent intentToApp = new Intent(null, cls);
             Intent intentToApp = new Intent(Intent.ACTION_SEND);
             intentToApp.setClassName(cls.getPackage().getName(),
@@ -52,7 +42,10 @@ public class ConfigurationPuller {
             intentToApp.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             context.startActivity(intentToApp);
-
+            */
+            return ConfroidManager.loadConfiguration(context, name, requestId, version);
+        } else {
+            throw new Exception("Token not valid!");
         }
     }
 }
