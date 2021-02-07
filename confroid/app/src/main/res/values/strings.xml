@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">confroid</string>
+    <string name="edit">Edit</string>
+    <string name="back">Back</string>
+    <string name="save">Save</string>
+    <string name="submission">Saving...</string>
+    <string name="done">Done</string>
+    <string name="submit_error">An error occured during saving</string>
 </resources>
