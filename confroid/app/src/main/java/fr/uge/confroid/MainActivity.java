@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         Intent intent1 = new Intent(getApplicationContext(), this.getClass());
 
         intent1.putExtra("name", "ciao");
-        intent1.putExtra("requestID", "1");
+        intent1.putExtra("requestId", "1");
         intent1.putExtra("version", "1");
         intent1.putExtra("receiver", "fr.uge.confroid.MainActivity");
         intent1.putExtra("expiration", "1");
@@ -61,7 +61,15 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
             e.printStackTrace();
         }
 
-        //Log.i("receive", receive.getStringExtra("name"));
+        Log.i("receive1", "name = " + receive.getStringExtra("name"));
+        Log.i("receive", "requestID = " + receive.getStringExtra("requestId"));
+        Log.i("receive1", "version = " + receive.getStringExtra("version"));
+
+        Bundle contentBundle = receive.getBundleExtra("content");
+        for (String key: contentBundle.keySet())
+        {
+            Log.i("receive1", key + " = \"" + contentBundle.get(key) + "\"");
+        }
 
 
         /* TEST SQLITE DB SAVE AND LOAD A CONFIGURATION */
