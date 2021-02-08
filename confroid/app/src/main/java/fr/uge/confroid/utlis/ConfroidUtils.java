@@ -36,6 +36,8 @@ public class ConfroidUtils {
                     bundle.putBoolean(list.indexOf(elem) + "", (boolean) elem);
                 } else if (elem instanceof List || elem instanceof Map) {
                     bundle.putBundle(list.indexOf(elem) + "", toBundle(elem));
+                } else if (elem instanceof Bundle) {
+                    bundle.putBundle(list.indexOf(elem)+ "", (Bundle) elem);
                 }
             }
         } else if (object instanceof Map) {
@@ -54,6 +56,8 @@ public class ConfroidUtils {
                     bundle.putBoolean(key + "" + "", (boolean) value);
                 } else if (value instanceof List || value instanceof Map) {
                     bundle.putBundle(key + "", toBundle(value));
+                } else if (value instanceof Bundle) {
+                    bundle.putBundle(key+ "", (Bundle) value);
                 }
             }
         }
