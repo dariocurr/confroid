@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
 
         HashMap<String, List<String>> content = new HashMap<>();
         ArrayList<String> c = new ArrayList<>();
-        c.add("contenuto");
+        c.add("content");
         content.put("1", c);
         Intent intent = new Intent(getApplicationContext(), ConfroidManager.class);
         intent.putExtra("name", "ciao");
