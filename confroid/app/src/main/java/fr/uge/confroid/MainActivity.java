@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /*
         initRecyclerView();
 
         HashMap<String, List<String>> content = new HashMap<>();
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
 
         ConfigurationPusher configurationPusher = new ConfigurationPusher();
         configurationPusher.pushConfiguration(getApplicationContext(), intent);
+
+        */
 
         /*HashMap<String, List<String>> content = new HashMap<>();
         ArrayList<String> c = new ArrayList<>();

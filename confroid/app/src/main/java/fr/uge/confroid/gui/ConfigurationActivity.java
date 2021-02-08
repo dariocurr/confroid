@@ -9,7 +9,6 @@ import android.view.*;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import fr.uge.confroid.Configuration;
 import fr.uge.confroid.R;
 import fr.uge.confroid.ConfroidManager;
 

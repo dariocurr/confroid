@@ -15,48 +15,29 @@ import fr.uge.confroid.sqlite.ConfroidDbHelper;
 import fr.uge.confroid.utlis.ConfroidUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ConfigurationPuller {
 
-    public Intent pullConfiguration(Context context, Intent intent) throws Exception {
+    public static void pullConfiguration(Context context, Intent intent)  {
         String name = intent.getStringExtra("name");
         String token = intent.getStringExtra("token");
-        String requestId = intent.getStringExtra("requestId");
-        String version = intent.getStringExtra("version");
-        String receiver = intent.getStringExtra("receiver");
-        String expiration = intent.getStringExtra("expiration");
 
-        Class cls = null;
-        try {
-            cls = Class.forName(receiver);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        if (TokenDispenser.getDispensedTokens().get(name).equalsIgnoreCase(token)) {
+            String requestId = intent.getStringExtra("requestId");
+            String version = intent.getStringExtra("version");
+            String receiver = intent.getStringExtra("receiver");
+            int expiration = intent.getIntExtra("expiration", 0);
+            if (expiration > 0) {
+                ConfigurationPusher.subscribe(name, new Subscription(receiver, expiration));
+            }
+            // TODO retrieve configuration
+            // TODO send configuration
+        } else {
+            // TODO raise tokenNotValidException
         }
-
-        //if (TokenDispenser.getDispensedTokens().get(name).equalsIgnoreCase(token)) {
-            /*
-            //Intent intentToApp = new Intent(null, cls);
-            Intent intentToApp = new Intent(Intent.ACTION_SEND);
-            intentToApp.setClassName(cls.getPackage().getName(),
-                    receiver);
-
-            intentToApp.putExtra("requestId", requestID);
-            intentToApp.putExtra("name", name);
-            intentToApp.putExtra("version", version);
-
-            Bundle content = ConfroidManager.loadConfiguration(context, name, requestID, version);
-
-            intentToApp.putExtra("content", content);
-            intentToApp.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-            context.startActivity(intentToApp);
-            */
-
-        //} else {
-            //throw new Exception("Token not valid!");
-        //}
-        return ConfroidManager.loadConfiguration(context, name, requestId, version);
     }
 
 }

@@ -19,6 +19,7 @@ public class ConfroidManager {
     private static ConfroidManager confroidManager;
 
     private ConfroidManager() {}
+
     public static ConfroidManager getConfroidManager(Context context) {
         if (confroidManager == null) {
             confroidManager = new ConfroidManager();

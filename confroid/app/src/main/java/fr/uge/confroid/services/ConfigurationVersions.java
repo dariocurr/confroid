@@ -3,24 +3,26 @@ package fr.uge.confroid.services;
 import android.content.Context;
 import android.content.Intent;
 import fr.uge.confroid.ConfroidManager;
+import fr.uge.confroid.receivers.TokenDispenser;
 
 public class ConfigurationVersions {
 
-    public static Intent loadVersions(Context context, Intent intent) throws Exception {
+    public static void pullAllConfigurations(Context context, Intent intent) throws Exception {
         String name = intent.getStringExtra("name");
-        //String token = intent.getStringExtra("token");
-        String requestId = intent.getStringExtra("requestId");
-        String receiver = intent.getStringExtra("receiver");
+        String token = intent.getStringExtra("token");
 
-        Class cls = null;
-        try {
-            cls = Class.forName(receiver);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        //if (TokenDispenser.getDispensedTokens().get(name).equalsIgnoreCase(token)) {
+        if (TokenDispenser.getDispensedTokens().get(name).equalsIgnoreCase(token)) {
+            String requestId = intent.getStringExtra("requestId");
+            String receiver = intent.getStringExtra("receiver");
+            // TODO retrieve allConfiguration
+            // TODO send intent to receiver
             /*
+            Class cls = null;
+            try {
+                cls = Class.forName(receiver);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
             //Intent intentToApp = new Intent(null, cls);
             Intent intentToApp = new Intent(Intent.ACTION_SEND);
             intentToApp.setClassName(cls.getPackage().getName(),
@@ -38,10 +40,9 @@ public class ConfigurationVersions {
             context.startActivity(intentToApp);
             */
 
-        //} else {
-        //throw new Exception("Token not valid!");
-        //}
-        return ConfroidManager.loadAllConfigurationVersions(context, name, requestId);
+        } else {
+            // TODO raise tokenNotValidException
+        }
     }
 
 }

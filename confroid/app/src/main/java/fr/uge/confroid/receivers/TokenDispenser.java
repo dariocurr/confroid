@@ -7,9 +7,9 @@ import java.util.Map;
 
 public class TokenDispenser {
 
-    private static final Map<String, String>  DISPENSED_TOKENS = new HashMap<>();
     private static final int TOKEN_LENGTH = 20;
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final Map<String, String>  DISPENSED_TOKENS = new HashMap<>();
 
     public static String getToken(Intent intent) {
         String receiver = intent.getStringExtra("receiver");
@@ -17,7 +17,8 @@ public class TokenDispenser {
             String token = getRandomToken(TOKEN_LENGTH);
             DISPENSED_TOKENS.put(receiver, token);
         }
-        return DISPENSED_TOKENS.get(receiver);
+        // TODO DISPENSED_TOKENS.get(receiver) send to receiver
+        return null;
     }
 
     private static String getRandomToken(int count) {
