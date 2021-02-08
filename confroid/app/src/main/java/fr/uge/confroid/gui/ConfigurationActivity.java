@@ -1,13 +1,19 @@
 package fr.uge.confroid.gui;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import fr.uge.confroid.Configuration;
 import fr.uge.confroid.R;
+import fr.uge.confroid.ConfroidManager;
+
+import java.util.ArrayList;
 
 public class ConfigurationActivity extends AppCompatActivity {
     private Spinner dropdownMenu;
@@ -15,27 +21,37 @@ public class ConfigurationActivity extends AppCompatActivity {
     /*private Button editButton;
     private Button backButton;*/
     private String oldContentText;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuration);
 
-        initVersionMenu();
+        intent = ConfroidManager.loadAllConfigurationVersions(this, getIntent().getExtras().getString("EXTRA_TEST_STRING"), "1");
+
         initContent();
+        initVersionMenu();
+
         //initButtons();
     }
 
     private void initVersionMenu() {
         dropdownMenu = findViewById(R.id.versionList);
-        String[] items = new String[]{"v1", "v2", "v3"};
+
+        Bundle bundle = intent.getBundleExtra("content");
+        ArrayList<String> items = new ArrayList<>(bundle.keySet());
+
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         dropdownMenu.setAdapter(adapter);
+
         dropdownMenu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String version = parent.getItemAtPosition(position).toString();
                 //TODO
+                contentText.setText(bundle.get(version).toString());
             }
 
             @Override
@@ -46,19 +62,21 @@ public class ConfigurationActivity extends AppCompatActivity {
     }
 
     private void initContent() {
-        String value = getIntent().getExtras().getString("EXTRA_TEST_STRING");
         contentText = findViewById(R.id.contentView);
-        contentText.setText(value);
+
+        //Bundle bundle = intent.getBundleExtra("content");
+
+        //contentText.setText(bundle.get(dropdownMenu.getSelectedItem().toString()).toString());
     }
 
-    public void setProgressDialog() {
+    /*public void setProgressDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
         builder.setView(R.layout.progress_layout);
 
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
+    }*/
 
     private void handleConfigSubmission() {
         contentText.setEnabled(false);
