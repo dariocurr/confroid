@@ -27,8 +27,6 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.getApplicationContext().deleteDatabase("confroid.db");
-
 
         initRecyclerView();
 
