@@ -1,13 +1,19 @@
 package fr.uge.confroid.services;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.session.MediaSession;
 import android.os.Bundle;
+import android.util.Log;
 import fr.uge.confroid.Configuration;
 import fr.uge.confroid.ConfroidManager;
 import fr.uge.confroid.receivers.TokenDispenser;
+import fr.uge.confroid.sqlite.ConfroidContract;
+import fr.uge.confroid.sqlite.ConfroidDbHelper;
 
+import java.util.Date;
 import java.util.Map;
 
 public class ConfigurationPusher {
@@ -31,7 +37,7 @@ public class ConfigurationPusher {
         }*/
         //String tag = intent.getStringExtra("tag");
         String tag = "1";
-        ConfroidManager.addConfiguration(context, name, bundle, tag);
+        ConfroidManager.saveConfiguration(context, name, bundle, tag);
     }
 
 }

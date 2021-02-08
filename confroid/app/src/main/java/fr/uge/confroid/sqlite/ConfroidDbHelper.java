@@ -7,22 +7,22 @@ import android.util.Log;
 
 public class ConfroidDbHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "confroid.db";
+    private static final String DATABASE_NAME = "confroid.db";
 
     private static final String SQL_CREATE_ENTRIES = "CREATE TABLE " +
                     ConfroidContract.ConfigurationEntry.TABLE_NAME + "(" +
                     ConfroidContract.ConfigurationEntry._ID + " INTEGER PRIMARY KEY," +
-                    ConfroidContract.ConfigurationEntry.NAME + " TEXT," +
-                    ConfroidContract.ConfigurationEntry.CONTENT + " TEXT," +
-                    ConfroidContract.ConfigurationEntry.TAG + " TEXT," +
-                    ConfroidContract.ConfigurationEntry.VERSION + " TEXT," +
-                    ConfroidContract.ConfigurationEntry.DATE + " DATE" + ")";
+                    ConfroidContract.ConfigurationEntry.NAME + " TEXT, " +
+                    ConfroidContract.ConfigurationEntry.CONTENT + " TEXT, " +
+                    ConfroidContract.ConfigurationEntry.TAG + " TEXT, " +
+                    ConfroidContract.ConfigurationEntry.VERSION + " TEXT, " +
+                    ConfroidContract.ConfigurationEntry.DATE + " DATE " + ")";
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + ConfroidContract.ConfigurationEntry.TABLE_NAME;
 
     public ConfroidDbHelper(Context context) {
-        super(context, DATABASE_NAME, null, 2);
+        super(context, DATABASE_NAME, null, 1);
     }
 
     @Override
@@ -36,6 +36,11 @@ public class ConfroidDbHelper extends SQLiteOpenHelper {
         Log.i("upgrade1", "upgrade");
         db.execSQL(SQL_DELETE_ENTRIES);
         onCreate(db);
+    }
+
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        onUpgrade(db, oldVersion, newVersion);
     }
 
 }

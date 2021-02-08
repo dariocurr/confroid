@@ -16,4 +16,5 @@ public final class ConfroidContract {
         public static final String DATE = "date";
 
     }
+
 }

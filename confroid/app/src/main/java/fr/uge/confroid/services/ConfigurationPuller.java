@@ -3,11 +3,19 @@ package fr.uge.confroid.services;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import fr.uge.confroid.ConfroidManager;
 import fr.uge.confroid.MainActivity;
 import fr.uge.confroid.receivers.TokenDispenser;
+import fr.uge.confroid.sqlite.ConfroidContract;
+import fr.uge.confroid.sqlite.ConfroidDbHelper;
+import fr.uge.confroid.utlis.ConfroidUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConfigurationPuller {
 
@@ -50,4 +58,5 @@ public class ConfigurationPuller {
         //}
         return ConfroidManager.loadConfiguration(context, name, requestId, version);
     }
+
 }

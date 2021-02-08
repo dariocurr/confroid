@@ -6,7 +6,7 @@ import fr.uge.confroid.ConfroidManager;
 
 public class ConfigurationVersions {
 
-    public Intent loadVersions(Context context, Intent intent) throws Exception {
+    public static Intent loadVersions(Context context, Intent intent) throws Exception {
         String name = intent.getStringExtra("name");
         //String token = intent.getStringExtra("token");
         String requestId = intent.getStringExtra("requestId");
@@ -41,6 +41,7 @@ public class ConfigurationVersions {
         //} else {
         //throw new Exception("Token not valid!");
         //}
-        return ConfroidManager.loadAllVersions(context, name, requestId);
+        return ConfroidManager.loadAllConfigurationVersions(context, name, requestId);
     }
+
 }

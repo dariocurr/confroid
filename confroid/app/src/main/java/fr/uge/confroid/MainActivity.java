@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
 
 
         Intent intent1 = new Intent(getApplicationContext(), this.getClass());
-
         intent1.putExtra("name", "ciao");
         intent1.putExtra("requestId", "1");
         intent1.putExtra("version", "1");
@@ -115,9 +114,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
     private void initRecyclerView() {
         //-------------------- RECYCLER VIEW ----------------------
         // data to populate the RecyclerView with
-        ArrayList<String> configurations = new ArrayList<>();
-        configurations.add("Item 1");
-        configurations.add("Item 2");
+        List<String> configurations = ConfroidManager.loadAllConfigurationNames(this.getApplicationContext());
 
         // set up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
