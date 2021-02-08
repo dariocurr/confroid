@@ -50,16 +50,15 @@ public class ConfroidManager {
         values.put(ConfroidContract.ConfigurationEntry.NAME, name);
         values.put(ConfroidContract.ConfigurationEntry.TAG, tag);
         values.put(ConfroidContract.ConfigurationEntry.CONTENT, bundle.toString());
-        values.put(ConfroidContract.ConfigurationEntry.VERSION, "0");
+        values.put(ConfroidContract.ConfigurationEntry.VERSION, "1");
         values.put(ConfroidContract.ConfigurationEntry.DATE, String.valueOf(new Date()));
 
         // Insert the new row, returning the primary key value of the new row
-        long newRowId = db.insert(ConfroidContract.ConfigurationEntry.TABLE_NAME, null, values);
+        long newRowId = db.insert(ConfroidContract.ConfigurationEntry.TABLE_NAME,null, values);
         Log.i("id", String.valueOf(newRowId));
     }
 
     public static Intent loadConfiguration(Context context, String name, String requestID, String version) {
-
         ConfroidDbHelper dbHelper = new ConfroidDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 

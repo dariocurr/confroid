@@ -25,10 +25,13 @@ public class ConfigurationPusher {
             String tag = intent.getStringExtra("tag");
         }
         */
-        if (TokenDispenser.getDispensedTokens().get(name).equalsIgnoreCase(token)) {
+        /*if (TokenDispenser.getDispensedTokens().get(name).equalsIgnoreCase(token)) {
             String tag = intent.getStringExtra("tag");
             ConfroidManager.addConfiguration(context, name, bundle, tag);
-        }
+        }*/
+        //String tag = intent.getStringExtra("tag");
+        String tag = "1";
+        ConfroidManager.addConfiguration(context, name, bundle, tag);
     }
 
 }

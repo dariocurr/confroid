@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import fr.uge.confroid.ConfroidManager;
 import fr.uge.confroid.MainActivity;
 import fr.uge.confroid.receivers.TokenDispenser;
@@ -25,7 +26,7 @@ public class ConfigurationPuller {
             e.printStackTrace();
         }
 
-        if (TokenDispenser.getDispensedTokens().get(name).equalsIgnoreCase(token)) {
+        //if (TokenDispenser.getDispensedTokens().get(name).equalsIgnoreCase(token)) {
             /*
             //Intent intentToApp = new Intent(null, cls);
             Intent intentToApp = new Intent(Intent.ACTION_SEND);
@@ -43,9 +44,10 @@ public class ConfigurationPuller {
 
             context.startActivity(intentToApp);
             */
-            return ConfroidManager.loadConfiguration(context, name, requestId, version);
-        } else {
-            throw new Exception("Token not valid!");
-        }
+
+        //} else {
+            //throw new Exception("Token not valid!");
+        //}
+        return ConfroidManager.loadConfiguration(context, name, requestId, version);
     }
 }

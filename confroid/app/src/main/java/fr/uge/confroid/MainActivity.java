@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.getApplicationContext().deleteDatabase("confroid.db");
+
 
         initRecyclerView();
 
@@ -51,16 +53,15 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         intent1.putExtra("expiration", "1");
 
         ConfigurationPuller configurationPuller = new ConfigurationPuller();
+        Intent receive = new Intent();
         //TODO
         try {
-            configurationPuller.pullConfiguration(getApplicationContext(), intent1);
+            receive = configurationPuller.pullConfiguration(getApplicationContext(), intent1);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        Intent receive = getIntent();
-
-        Log.i("receive", receive.getStringExtra("name"));
+        //Log.i("receive", receive.getStringExtra("name"));
 
 
         /* TEST SQLITE DB SAVE AND LOAD A CONFIGURATION */
