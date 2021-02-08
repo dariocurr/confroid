@@ -32,6 +32,21 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         initRecyclerView();
 
         HashMap<String, List<String>> content = new HashMap<>();
+
+        ArrayList<String> values = new ArrayList<>();
+        values.add("configurazione1");
+        values.add("configurazione2");
+        values.add("configurazione3");
+        content.put("confs", values);
+
+        Intent intent = new Intent(getApplicationContext(), ConfroidManager.class);
+        intent.putExtra("name", "shoppingInfos");
+        intent.putExtra("content", ConfroidUtils.toBundle(content));
+
+        ConfigurationPusher configurationPusher = new ConfigurationPusher();
+        configurationPusher.pushConfiguration(getApplicationContext(), intent);
+
+        /*HashMap<String, List<String>> content = new HashMap<>();
         ArrayList<String> c = new ArrayList<>();
         c.add("content");
         content.put("1", c);
@@ -46,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         Intent intent1 = new Intent(getApplicationContext(), this.getClass());
         intent1.putExtra("name", "ciao");
         intent1.putExtra("requestId", "1");
-        intent1.putExtra("version", "1");
+        intent1.putExtra("version", "3");
         intent1.putExtra("receiver", "fr.uge.confroid.MainActivity");
         intent1.putExtra("expiration", "1");
 
@@ -91,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         for (String key: contentBundle1.keySet())
         {
             Log.i("receive2", key + " = \"" + contentBundle1.get(key) + "\"");
-        }
+        }*/
 
 
 
@@ -115,7 +130,6 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         //-------------------- RECYCLER VIEW ----------------------
         // data to populate the RecyclerView with
         List<String> configurations = ConfroidManager.loadAllConfigurationNames(this.getApplicationContext());
-
         // set up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
