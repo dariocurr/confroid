@@ -5,5 +5,5 @@
 | Di Fina | Domenico | @etud.u-pem.fr | @community.unipa.it |
 | Domingo | Emanuele | @etud.u-pem.fr | @community.unipa.it |
 | Gristina | Salvatore A. | @etud.u-pem.fr | @community.unipa.it |
-| Vanspauwen | Arnaud | avansp@etud.u-pem.fr | | arnaud.vanspauwen@student.ucll.be |
+| Vanspauwen | Arnaud | avansp@etud.u-pem.fr | arnaud.vanspauwen@student.ucll.be |
 
