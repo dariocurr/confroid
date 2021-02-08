@@ -50,7 +50,7 @@ public class ConfroidManager {
         values.put(ConfroidContract.ConfigurationEntry.NAME, name);
         values.put(ConfroidContract.ConfigurationEntry.TAG, tag);
         values.put(ConfroidContract.ConfigurationEntry.CONTENT, bundle.toString());
-        values.put(ConfroidContract.ConfigurationEntry.VERSION, "1");
+        values.put(ConfroidContract.ConfigurationEntry.VERSION, "2");
         values.put(ConfroidContract.ConfigurationEntry.DATE, String.valueOf(new Date()));
 
         // Insert the new row, returning the primary key value of the new row
@@ -97,6 +97,50 @@ public class ConfroidManager {
         intent.putExtra("requestId", requestID);
         intent.putExtra("name", name);
         intent.putExtra("version", version);
+        intent.putExtra("content", contentBundle);
+
+        return intent;
+    }
+
+    public static Intent loadAllVersions(Context context, String name, String requestId) {
+        ConfroidDbHelper dbHelper = new ConfroidDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        // Define a projection that specifies which columns from the database
+        // you will actually use after this query.
+        String[] projection = {
+                ConfroidContract.ConfigurationEntry.NAME,
+                ConfroidContract.ConfigurationEntry.VERSION,
+                ConfroidContract.ConfigurationEntry.CONTENT
+        };
+
+        String selection = ConfroidContract.ConfigurationEntry.NAME + " = ?";
+        String[] selectionArgs = {name};
+
+        // How you want the results sorted in the resulting Cursor
+        String sortOrder = ConfroidContract.ConfigurationEntry.DATE + " DESC";
+
+        Cursor cursor = db.query(
+                ConfroidContract.ConfigurationEntry.TABLE_NAME,     // The table to query
+                projection,                                         // The array of columns to return (pass null to get all)
+                selection,                                          // The columns for the WHERE clause
+                selectionArgs,                                      // The values for the WHERE clause
+                null,                                           // don't group the rows
+                null,                                           // don't filter by row groups
+                sortOrder                                           // The sort order
+        );
+
+        List<Object> content = new ArrayList<>();
+        while(cursor.moveToNext()) {
+            content.add("Version: " + cursor.getString(cursor.getColumnIndexOrThrow(ConfroidContract.ConfigurationEntry.VERSION)) + " Content: " + cursor.getString(cursor.getColumnIndexOrThrow(ConfroidContract.ConfigurationEntry.CONTENT)));
+        }
+        cursor.close();
+
+        Bundle contentBundle = ConfroidUtils.toBundle(content);
+
+        Intent intent = new Intent();
+        intent.putExtra("requestId", requestId);
+        intent.putExtra("name", name);
         intent.putExtra("content", contentBundle);
 
         return intent;

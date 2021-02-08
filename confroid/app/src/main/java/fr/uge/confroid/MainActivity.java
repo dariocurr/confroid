@@ -12,6 +12,7 @@ import fr.uge.confroid.gui.ConfigurationActivity;
 import fr.uge.confroid.gui.MyRecyclerViewAdapter;
 import fr.uge.confroid.services.ConfigurationPuller;
 import fr.uge.confroid.services.ConfigurationPusher;
+import fr.uge.confroid.services.ConfigurationVersions;
 import fr.uge.confroid.utlis.ConfroidUtils;
 
 import java.lang.reflect.Array;
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         }
 
         Log.i("receive1", "name = " + receive.getStringExtra("name"));
-        Log.i("receive", "requestID = " + receive.getStringExtra("requestId"));
+        Log.i("receive1", "requestID = " + receive.getStringExtra("requestId"));
         Log.i("receive1", "version = " + receive.getStringExtra("version"));
 
         Bundle contentBundle = receive.getBundleExtra("content");
@@ -68,6 +69,32 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         {
             Log.i("receive1", key + " = \"" + contentBundle.get(key) + "\"");
         }
+
+
+        Intent intent2 = new Intent(getApplicationContext(), this.getClass());
+
+        intent2.putExtra("name", "ciao");
+        intent2.putExtra("requestId", "1");
+        intent2.putExtra("receiver", "fr.uge.confroid.MainActivity");
+
+        ConfigurationVersions configurationVersions = new ConfigurationVersions();
+        Intent receive1 = new Intent();
+        try {
+            receive1 = configurationVersions.loadVersions(getApplicationContext(), intent2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Log.i("receive2", "name = " + receive1.getStringExtra("name"));
+        Log.i("receive2", "requestID = " + receive1.getStringExtra("requestId"));
+
+        Bundle contentBundle1 = receive1.getBundleExtra("content");
+        for (String key: contentBundle1.keySet())
+        {
+            Log.i("receive2", key + " = \"" + contentBundle1.get(key) + "\"");
+        }
+
+
 
 
         /* TEST SQLITE DB SAVE AND LOAD A CONFIGURATION */
