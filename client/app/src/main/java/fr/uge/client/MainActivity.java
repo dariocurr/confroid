@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import fr.uge.client.services.PullService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -11,13 +12,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Log.i("classe", this.getClass().getName());
-
-        Intent intent = this.getIntent();
-        Log.i("name", intent.getStringExtra("name"));
-        Log.i("version", intent.getStringExtra("version"));
-        Log.i("content", intent.getStringExtra("content"));
+        
+        Log.i("classe", PullService.class.getCanonicalName());
     }
 
 }

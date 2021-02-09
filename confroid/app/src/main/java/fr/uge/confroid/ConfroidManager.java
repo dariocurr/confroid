@@ -1,5 +1,6 @@
 package fr.uge.confroid;
 
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -134,23 +135,23 @@ public class ConfroidManager {
         Class classReceiver = null;
 
         try {
-            classReceiver = Class.forName("fr.uge.confroid.TestActivity");
-            Log.i("classe", "classe trovata");
+            classReceiver = Class.forName("fr.uge.client.services.PullService");
+            Log.i("classe", "class found");
         } catch (ClassNotFoundException e) {
-            Log.i("classe", "classe non trovata");
+            Log.i("classe", "classe not found");
             e.printStackTrace();
         }
 
 
-        Intent intent = new Intent(context, classReceiver);
+        Intent intent = new Intent();
         intent.putExtra("requestId", requestID);
         intent.putExtra("name", name);
         intent.putExtra("version", version);
         intent.putExtra("content", contentBundle);
+        intent.setComponent(new ComponentName("fr.uge.client.services", "fr.uge.client.services.PullService"));
 
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
 
-        context.startActivity(intent);
+        context.startService(intent);
     }
 
     public static List<String> loadAllConfigurationNames(Context context) {
