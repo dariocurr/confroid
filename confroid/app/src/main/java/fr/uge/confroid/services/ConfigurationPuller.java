@@ -34,6 +34,7 @@ public class ConfigurationPuller {
                 ConfigurationPusher.subscribe(name, new Subscription(receiver, expiration));
             }
             // TODO retrieve configuration
+            ConfroidManager.loadConfiguration(context, name,requestId, version, receiver);
             // TODO send configuration
         } else {
             // TODO raise tokenNotValidException

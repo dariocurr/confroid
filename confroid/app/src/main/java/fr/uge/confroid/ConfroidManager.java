@@ -98,7 +98,7 @@ public class ConfroidManager {
 
     }
 
-    public static Intent loadConfiguration(Context context, String name, String requestID, String version) {
+    public static void loadConfiguration(Context context, String name, String requestID, String version, String receiver) {
 
         // Define a projection that specifies which columns from the database
         // you will actually use after this query.
@@ -107,8 +107,8 @@ public class ConfroidManager {
                 ConfroidContract.ConfigurationEntry.CONTENT
         };
 
-        String selection = ConfroidContract.ConfigurationEntry.NAME + " = ?";
-        String[] selectionArgs = {name};
+        String selection = ConfroidContract.ConfigurationEntry.NAME + " =? " + "AND " + ConfroidContract.ConfigurationEntry.VERSION + " = ?";
+        String[] selectionArgs = {name, version};
 
         // How you want the results sorted in the resulting Cursor
         String sortOrder = ConfroidContract.ConfigurationEntry.DATE + " DESC";
@@ -137,7 +137,7 @@ public class ConfroidManager {
         intent.putExtra("version", version);
         intent.putExtra("content", contentBundle);
 
-        return intent;
+
     }
 
     public static List<String> loadAllConfigurationNames(Context context) {
@@ -148,12 +148,14 @@ public class ConfroidManager {
         String sortOrder = ConfroidContract.ConfigurationEntry.DATE + " DESC";
 
         Cursor cursor = new ConfroidDbHelper(context).getReadableDatabase().query(
+                true,
                 ConfroidContract.ConfigurationEntry.TABLE_NAME,     // The table to query
                 projection,                                         // The array of columns to return (pass null to get all)
-                null,                                          // The columns for the WHERE clause
-                null,                                      // The values for the WHERE clause
-                null,                                           // don't group the rows
-                null,                                           // don't filter by row groups
+                null,
+                null,                                    // The columns for the WHERE clause
+                null,                                       // The values for the WHERE clause
+                null,                                        // don't group the rows
+                null,                                        // don't filter by row groups
                 sortOrder                                           // The sort order
         );
         List<String> names = new ArrayList<>();
