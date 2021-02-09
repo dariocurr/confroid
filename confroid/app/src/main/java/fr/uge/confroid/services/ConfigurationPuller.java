@@ -25,7 +25,8 @@ public class ConfigurationPuller {
         String name = intent.getStringExtra("name");
         String token = intent.getStringExtra("token");
 
-        if (TokenDispenser.getDispensedTokens().get(name).equalsIgnoreCase(token)) {
+        //TokenDispenser.getDispensedTokens().get(name)
+        if ("1".equalsIgnoreCase(token)) {
             String requestId = intent.getStringExtra("requestId");
             String version = intent.getStringExtra("version");
             String receiver = intent.getStringExtra("receiver");

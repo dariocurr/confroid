@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.util.Log;
+import fr.uge.confroid.receivers.TokenDispenser;
 import fr.uge.confroid.sqlite.ConfroidContract;
 import fr.uge.confroid.sqlite.ConfroidDbHelper;
 import fr.uge.confroid.utlis.ConfroidUtils;
@@ -90,7 +91,7 @@ public class ConfroidManager {
         values.put(ConfroidContract.ConfigurationEntry.TAG, tag);
         values.put(ConfroidContract.ConfigurationEntry.CONTENT, bundle.toString());
         values.put(ConfroidContract.ConfigurationEntry.DATE, String.valueOf(new Date()));
-        values.put(ConfroidContract.ConfigurationEntry.VERSION, "2");
+        values.put(ConfroidContract.ConfigurationEntry.VERSION, "1");
 
         // Insert the new row, returning the primary key value of the new row
         long newRowId = new ConfroidDbHelper(context).getWritableDatabase().insert(ConfroidContract.ConfigurationEntry.TABLE_NAME,null, values);
@@ -130,14 +131,26 @@ public class ConfroidManager {
         cursor.close();
 
         Bundle contentBundle = ConfroidUtils.toBundle(content);
+        Class classReceiver = null;
 
-        Intent intent = new Intent();
+        try {
+            classReceiver = Class.forName("fr.uge.confroid.TestActivity");
+            Log.i("classe", "classe trovata");
+        } catch (ClassNotFoundException e) {
+            Log.i("classe", "classe non trovata");
+            e.printStackTrace();
+        }
+
+
+        Intent intent = new Intent(context, classReceiver);
         intent.putExtra("requestId", requestID);
         intent.putExtra("name", name);
         intent.putExtra("version", version);
         intent.putExtra("content", contentBundle);
 
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
 
+        context.startActivity(intent);
     }
 
     public static List<String> loadAllConfigurationNames(Context context) {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import fr.uge.confroid.ConfroidManager;
 import fr.uge.confroid.receivers.TokenDispenser;
 import fr.uge.confroid.utlis.ConfroidUtils;
 
@@ -18,10 +19,11 @@ public class ConfigurationPusher {
 
     public static void pushConfiguration(Context context, Intent intent) {
         Bundle bundle = intent.getBundleExtra("bundle");
-        Log.e("content", "\n\n" + ConfroidUtils.fromBundleToString(intent.getBundleExtra("bundle")));
+        Log.e("content", "\n\n" + ConfroidUtils.fromBundleToString(bundle));
         String name = intent.getStringExtra(bundle.getString("name"));
         String token = intent.getStringExtra(bundle.getString("token"));
-        if (TokenDispenser.getDispensedTokens().get(name).equalsIgnoreCase(token)) {
+        //TokenDispenser.getDispensedTokens().get(name)
+        if ("1".equalsIgnoreCase(token)) {
             String tag = intent.getStringExtra("tag");
             // TODO get content
             if (name.contains("/")) {
@@ -30,6 +32,7 @@ public class ConfigurationPusher {
                 // TODO edit last configuration
             }
             // TODO save content
+            ConfroidManager.saveConfiguration(context, name, bundle, tag);
             notifyObservers(name, null);
         } else {
             // TODO raise tokenNotValidException

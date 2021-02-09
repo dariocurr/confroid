@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import fr.uge.confroid.gui.ConfigurationActivity;
 import fr.uge.confroid.gui.MyRecyclerViewAdapter;
+import fr.uge.confroid.receivers.TokenDispenser;
 import fr.uge.confroid.services.ConfigurationPuller;
 import fr.uge.confroid.services.ConfigurationPusher;
 import fr.uge.confroid.services.ConfigurationVersions;
@@ -28,6 +29,40 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        HashMap<String, List<String>> content = new HashMap<>();
+
+        ArrayList<String> values = new ArrayList<>();
+        values.add("configurazione1");
+        values.add("configurazione2");
+        values.add("configurazione3");
+        content.put("confs", values);
+
+        Intent intentPush = new Intent(getApplicationContext(), ConfroidManager.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("name", "fr.uge.calculator");
+        bundle.putString("token", "1");
+        bundle.putBundle("content", ConfroidUtils.toBundle(content));
+
+        intentPush.putExtra("bundle", bundle);
+
+        ConfigurationPusher.pushConfiguration(getApplicationContext(), intentPush);
+
+
+        Intent intent = new Intent();
+        intent.putExtra("name", "fr.uge.calculator");
+        intent.putExtra("token", "1");
+        intent.putExtra("requestId", "1");
+        intent.putExtra("version", "1");
+        intent.putExtra("receiver", "fr.uge.client.MainActivity");
+        intent.putExtra("expiration", 10);
+
+        //TODO
+        try {
+            ConfigurationPuller.pullConfiguration(getApplicationContext(), intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         /*
         initRecyclerView();
