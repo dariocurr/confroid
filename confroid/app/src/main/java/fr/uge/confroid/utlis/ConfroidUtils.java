@@ -86,6 +86,42 @@ public class ConfroidUtils {
         return content;
     }
 
+    public static JSONObject fromBundleToJson(Bundle bundle){
+        JSONObject jsonObject = new JSONObject();
+        Set<String> keys = bundle.keySet();
+        for (String key : keys) {
+            Log.i("jsonObject", key);
+            try {
+                Object value = bundle.get(key);
+                if(value instanceof Bundle)
+                    jsonObject.put(key, fromBundleToJson((Bundle) value));
+                else
+                    jsonObject.put(key, bundle.get(key));
+                //jsonObject.put(key, JSONObject.wrap(bundle.get(key)));
+            } catch(JSONException e) {
+                Log.i("jsonObject", "Ecc");
+                //Handle exception here
+            }
+        }
+
+        return jsonObject;
+    }
+
+    public static Bundle jsonToBundle(JSONObject jsonObject) throws JSONException {
+        Bundle bundle = new Bundle();
+        Iterator iter = jsonObject.keys();
+        while (iter.hasNext()) {
+            String key = (String) iter.next();
+            Object value = jsonObject.get(key);
+
+            if(value instanceof JSONObject)
+                bundle.putBundle(key, jsonToBundle((JSONObject) value));
+            else
+                bundle.putString(key, value.toString());
+        }
+        return bundle;
+    }
+
     /*
     public static void saveConfiguration (Context context, String name, Object value, String versionName) {
         ConfroidDbHelper dbHelper = new ConfroidDbHelper(context);

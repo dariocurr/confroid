@@ -2,11 +2,14 @@ package fr.uge.confroid.services;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import androidx.annotation.RequiresApi;
 import fr.uge.confroid.ConfroidManager;
 import fr.uge.confroid.receivers.TokenDispenser;
 import fr.uge.confroid.utlis.ConfroidUtils;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,11 +20,12 @@ public class ConfigurationPusher {
 
     private static final Map<String, List<Subscription>> OBSERVERS = new HashMap<>();
 
-    public static void pushConfiguration(Context context, Intent intent) {
+
+    public static void pushConfiguration(Context context, Intent intent) throws JSONException {
         Bundle bundle = intent.getBundleExtra("bundle");
         Log.e("content", "\n\n" + ConfroidUtils.fromBundleToString(bundle));
-        String name = intent.getStringExtra(bundle.getString("name"));
-        String token = intent.getStringExtra(bundle.getString("token"));
+        String name = bundle.getString("name");
+        String token = bundle.getString("token");
         //TokenDispenser.getDispensedTokens().get(name)
         if ("1".equalsIgnoreCase(token)) {
             String tag = intent.getStringExtra("tag");
@@ -32,8 +36,8 @@ public class ConfigurationPusher {
                 // TODO edit last configuration
             }
             // TODO save content
-            ConfroidManager.saveConfiguration(context, name, bundle, tag);
-            notifyObservers(name, null);
+            ConfroidManager.saveConfiguration(context, bundle);
+            //notifyObservers(name, null);
         } else {
             // TODO raise tokenNotValidException
         }

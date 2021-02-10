@@ -13,6 +13,7 @@ import fr.uge.confroid.receivers.TokenDispenser;
 import fr.uge.confroid.sqlite.ConfroidContract;
 import fr.uge.confroid.sqlite.ConfroidDbHelper;
 import fr.uge.confroid.utlis.ConfroidUtils;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +22,7 @@ import java.util.Map;
 
 public class ConfigurationPuller {
 
-    public static void pullConfiguration(Context context, Intent intent)  {
+    public static void pullConfiguration(Context context, Intent intent) throws JSONException {
         String name = intent.getStringExtra("name");
         String token = intent.getStringExtra("token");
 
