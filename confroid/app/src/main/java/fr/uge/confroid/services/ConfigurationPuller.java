@@ -1,13 +1,16 @@
 package fr.uge.confroid.services;
 
+import android.app.Notification;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.JobIntentService;
 import fr.uge.confroid.ConfroidManager;
 import fr.uge.confroid.MainActivity;
@@ -21,8 +24,12 @@ import java.util.Map;
 
 public class ConfigurationPuller extends JobIntentService {
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        startForeground(1, new Notification());
+
         String name = intent.getStringExtra("name");
         String token = intent.getStringExtra("token");
         //TokenDispenser.getDispensedTokens().get(name)
@@ -44,13 +51,14 @@ public class ConfigurationPuller extends JobIntentService {
             Log.i("receiverName", receiver);
             configuration.setClassName(receiver, receiver + ".services.PullService");
 
-            startService(configuration);
+            startForegroundService(configuration);
             // TODO sent intent to service
         } else {
             Log.e("TokenNotValidException","Token " + token + " isn't valid!");
         }
         return START_NOT_STICKY;
     }
+
 
     @Nullable
     @Override

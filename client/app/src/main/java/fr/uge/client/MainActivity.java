@@ -1,5 +1,6 @@
 package fr.uge.client;
 
+import android.app.Service;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Build;
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
             bundle.putString("name", this.getPackageName());
             bundle.putString("tag", "TAG");
             bundle.putString("token", "1");
+            bundle.putString("version", "1");
             Bundle contentBundle = new Bundle();
             contentBundle.putString("configuration", ((EditText) findViewById(R.id.configurationEditText)).getText().toString());
             bundle.putBundle("content", contentBundle);
@@ -27,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
             intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPusher");
             intent.putExtra("bundle", bundle);
 
-            startService(intent);
+            startForegroundService(intent);
         });
 
         findViewById(R.id.loadConfigurationButton).setOnClickListener(ev -> {
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("receiver", this.getPackageName());
 
             intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPuller");
-            startService(intent);
+            startForegroundService(intent);
         });
 
     }

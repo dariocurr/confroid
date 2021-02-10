@@ -1,5 +1,6 @@
 package fr.uge.confroid.services;
 
+import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ public class ConfigurationPusher extends JobIntentService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         Bundle bundle = intent.getBundleExtra("bundle");
         String name = bundle.getString("name");
         String token = bundle.getString("token");

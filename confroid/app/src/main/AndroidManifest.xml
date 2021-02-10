@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="fr.uge.confroid">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
@@ -24,6 +26,8 @@
                 <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
             </intent-filter>
         </receiver>
+
     </application>
+
 
 </manifest>
