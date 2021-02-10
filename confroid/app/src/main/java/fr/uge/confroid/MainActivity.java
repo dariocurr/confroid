@@ -15,6 +15,7 @@ import fr.uge.confroid.services.ConfigurationPuller;
 import fr.uge.confroid.services.ConfigurationPusher;
 import fr.uge.confroid.services.ConfigurationVersions;
 import fr.uge.confroid.utlis.ConfroidUtils;
+import org.json.JSONException;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -46,7 +47,34 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
 
         intentPush.putExtra("bundle", bundle);
 
-        ConfigurationPusher.pushConfiguration(getApplicationContext(), intentPush);
+        try {
+            ConfigurationPusher.pushConfiguration(getApplicationContext(), intentPush);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        HashMap<String, List<String>> content2 = new HashMap<>();
+
+        ArrayList<String> values2 = new ArrayList<>();
+        values2.add("configurazione1");
+        values2.add("configurazione2");
+        values2.add("configurazione3");
+        content2.put("confs", values2);
+
+        Intent intentPush2 = new Intent(getApplicationContext(), ConfroidManager.class);
+        Bundle bundle2 = new Bundle();
+        bundle2.putString("name", "fr.uge.ciao");
+        bundle2.putString("token", "1");
+        bundle2.putBundle("content", ConfroidUtils.toBundle(content2));
+
+        intentPush2.putExtra("bundle", bundle2);
+
+        try {
+            ConfigurationPusher.pushConfiguration(getApplicationContext(), intentPush2);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
         Intent intent = new Intent();
@@ -60,6 +88,12 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         //TODO
         try {
             ConfigurationPuller.pullConfiguration(getApplicationContext(), intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            ConfroidManager.loadAllConfigurationNames(this.getApplicationContext());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -164,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         //ConfroidUtils.loadConfiguration(getApplicationContext(), "fr.uge.calculator", "0", null);
     }
 
-    private void initRecyclerView() {
+    private void initRecyclerView() throws JSONException {
         //-------------------- RECYCLER VIEW ----------------------
         // data to populate the RecyclerView with
         List<String> configurations = ConfroidManager.loadAllConfigurationNames(this.getApplicationContext());
