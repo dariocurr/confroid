@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.JobIntentService;
 import fr.uge.confroid.ConfroidManager;
 import fr.uge.confroid.receivers.TokenDispenser;
 
@@ -14,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ConfigurationPusher extends Service {
+public class ConfigurationPusher extends JobIntentService {
 
     private static final Map<String, List<Subscription>> OBSERVERS = new HashMap<>();
 
@@ -23,7 +25,8 @@ public class ConfigurationPusher extends Service {
         Bundle bundle = intent.getBundleExtra("bundle");
         String name = bundle.getString("name");
         String token = bundle.getString("token");
-        if (TokenDispenser.getDispensedTokens().get(name).equalsIgnoreCase(token)) {
+        //TokenDispenser.getDispensedTokens().get(name)
+        if ("1".equalsIgnoreCase(token)) {
             /*
             if (name.contains("/")) {
                 String cellToEdit = name.split("/")[1];
@@ -32,7 +35,7 @@ public class ConfigurationPusher extends Service {
             }
             */
             ConfroidManager.saveConfiguration(this.getApplicationContext(), bundle);
-            this.notifyObservers(name, intent);
+            //this.notifyObservers(name, intent);
         } else {
             Log.e("TokenNotValidException","Token " + token + " isn't valid!");
         }
@@ -61,5 +64,10 @@ public class ConfigurationPusher extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         throw new UnsupportedOperationException("Not implemented (since we do not use RPC methods)");
+    }
+
+    @Override
+    protected void onHandleWork(@NonNull Intent intent) {
+
     }
 }

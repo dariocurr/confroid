@@ -17,9 +17,6 @@
             </intent-filter>
         </activity>
         <service android:name="fr.uge.client.services.PullService" android:exported="true">
-            <intent-filter>
-                <action android:name="fr.uge.client.services.PullService.PULL" />
-            </intent-filter>
         </service>
     </application>
 

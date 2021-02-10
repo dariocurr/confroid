@@ -20,10 +20,6 @@ public class PullService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         // The service is starting, due to a call to startService()
         Log.i("aaaa", intent.getStringExtra("name"));
-        if(intent.getAction().equals("fr.uge.client.services.PULL")) {
-            Log.i("aaaa", intent.getStringExtra("name"));
-            return startMode;
-        }
         return startMode;
     }
     @Override
