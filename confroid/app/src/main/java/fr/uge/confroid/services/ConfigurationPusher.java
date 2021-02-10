@@ -25,7 +25,6 @@ public class ConfigurationPusher extends JobIntentService {
 
     private static final Map<String, List<Subscription>> OBSERVERS = new HashMap<>();
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Bundle bundle = intent.getBundleExtra("bundle");
@@ -45,6 +44,7 @@ public class ConfigurationPusher extends JobIntentService {
         } else {
             Log.e("TokenNotValidException","Token " + token + " isn't valid!");
         }
+        stopService(intent);
         return START_NOT_STICKY;
     }
 
