@@ -4,8 +4,10 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
+import androidx.annotation.NonNull;
+import androidx.core.app.JobIntentService;
 
-public class PullService extends Service {
+public class PullService extends JobIntentService {
 
     int startMode;       // indicates how to behave if the service is killed
     IBinder binder;      // interface for clients that bind
@@ -40,5 +42,10 @@ public class PullService extends Service {
     @Override
     public void onDestroy() {
         // The service is no longer used and is being destroyed
+    }
+
+    @Override
+    protected void onHandleWork(@NonNull Intent intent) {
+
     }
 }
