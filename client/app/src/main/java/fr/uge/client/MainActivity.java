@@ -6,7 +6,6 @@ import android.util.Log;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import fr.uge.client.services.PullService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        findViewById(R.id.saveConfigurationButton).setOnClickListener(e -> {
+        findViewById(R.id.saveConfigurationButton).setOnClickListener(ev -> {
             Bundle bundle = new Bundle();
             bundle.putString("name", this.getPackageName());
             bundle.putString("tag", "TAG");
@@ -27,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("bundle", bundle);
             startService(intent);
         });
+
     }
 
 }

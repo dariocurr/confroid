@@ -10,8 +10,6 @@ import androidx.annotation.Nullable;
 import fr.uge.confroid.ConfroidManager;
 import fr.uge.confroid.MainActivity;
 import fr.uge.confroid.receivers.TokenDispenser;
-import fr.uge.confroid.sqlite.ConfroidContract;
-import fr.uge.confroid.sqlite.ConfroidDbHelper;
 import fr.uge.confroid.utlis.ConfroidUtils;
 
 import java.util.ArrayList;
@@ -39,12 +37,7 @@ public class ConfigurationPuller extends Service {
             intent.putExtra("name", name);
             intent.putExtra("requestId", requestId);
             intent.putExtra("version", version);
-            try {
-                Intent i = new Intent().setClass(this.getApplicationContext(), Class.forName(receiver));
-                startService(i);
-            } catch (ClassNotFoundException e) {
-                Log.e("ClassNotFoundException","Class " + receiver + " doesn't exists!");
-            }
+            // TODO sent intent to service
         } else {
             Log.e("TokenNotValidException","Token " + token + " isn't valid!");
         }

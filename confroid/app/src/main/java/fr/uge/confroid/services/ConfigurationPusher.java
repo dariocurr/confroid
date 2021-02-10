@@ -20,7 +20,6 @@ public class ConfigurationPusher extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e("QUI", intent.toString());
         Bundle bundle = intent.getBundleExtra("bundle");
         String name = bundle.getString("name");
         String token = bundle.getString("token");
@@ -46,12 +45,7 @@ public class ConfigurationPusher extends Service {
             if (subscription.isExpired(System.currentTimeMillis())) {
                 observers.remove(subscription);
             } else {
-                try {
-                    newConfiguration.setClass(this.getApplicationContext(), Class.forName(subscription.getSubscriber()));
-                    startService(newConfiguration);
-                } catch (ClassNotFoundException e) {
-                    Log.e("ClassNotFoundException","Class " + subscription.getSubscriber() + " doesn't exists!");
-                }
+                // TODO send intent to service
             }
         }
     }
