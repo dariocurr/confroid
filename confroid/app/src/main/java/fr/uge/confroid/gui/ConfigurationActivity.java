@@ -20,14 +20,15 @@ public class ConfigurationActivity extends AppCompatActivity {
     /*private Button editButton;
     private Button backButton;*/
     private String oldContentText;
-    private Intent intent;
+    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuration);
 
-        intent = ConfroidManager.loadAllConfigurationVersions(this, getIntent().getExtras().getString("EXTRA_TEST_STRING"), "1");
+        bundle = ConfroidManager.loadConfiguration(this.getApplicationContext(), getIntent().getExtras().getString("EXTRA_TEST_STRING"), "1");
+        Log.i("bundle", bundle.toString());
 
         initContent();
         initVersionMenu();
@@ -38,7 +39,6 @@ public class ConfigurationActivity extends AppCompatActivity {
     private void initVersionMenu() {
         dropdownMenu = findViewById(R.id.versionList);
 
-        Bundle bundle = intent.getBundleExtra("content");
         ArrayList<String> items = new ArrayList<>(bundle.keySet());
 
 
