@@ -3,10 +3,11 @@ package fr.uge.confroid.receivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
+import fr.uge.confroid.utlis.ConfroidUtils;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class TokenDispenser extends BroadcastReceiver {
 
@@ -22,23 +23,21 @@ public class TokenDispenser extends BroadcastReceiver {
         return token;
     }
 
-    public static Map<String, String> getDispensedTokens() {
-        return DISPENSED_TOKENS;
+    public static String getToken(String key) {
+        return DISPENSED_TOKENS.get(key);
     }
 
     @Override
-    public void onReceive(Context context, Intent intent) {
-        String receiver = intent.getStringExtra("receiver");
-        if (!DISPENSED_TOKENS.keySet().contains(receiver)) {
-            String token = getRandomToken(TOKEN_LENGTH);
-            DISPENSED_TOKENS.put(receiver, token);
+    public void onReceive(Context context, Intent incomingIntent) {
+        String receiver = incomingIntent.getStringExtra("receiver");
+        String packageName = ConfroidUtils.getPackageName(receiver);
+        if (!DISPENSED_TOKENS.keySet().contains(packageName)) {
+            DISPENSED_TOKENS.put(packageName, getRandomToken(TOKEN_LENGTH));
         }
-        try {
-            Intent i = new Intent().setClass(context, Class.forName(receiver));
-            context.startService(i);
-        } catch (ClassNotFoundException e) {
-            Log.e("ClassNotFoundException","Class " + receiver + " doesn't exists!");
-        }
+        Intent outgoingIntent = new Intent();
+        outgoingIntent.setClassName(packageName, receiver);
+        outgoingIntent.putExtra("token", DISPENSED_TOKENS.get(packageName));
+        context.startService(outgoingIntent);
     }
 
 }

@@ -14,24 +14,26 @@
             android:ems="10"
             android:id="@+id/configurationEditText"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="100dp"/>
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="40dp"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/configurationTextView"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/configurationEditText" android:layout_marginTop="116dp"/>
+            app:layout_constraintTop_toBottomOf="@+id/configurationEditText" android:layout_marginTop="56dp"
+    />
     <Button
             android:text="Save Configuration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/saveConfigurationButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/configurationTextView" android:layout_marginTop="140dp"/>
+            app:layout_constraintTop_toBottomOf="@+id/configurationTextView" android:layout_marginTop="120dp"/>
     <Button
             android:text="Load Configuration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/loadConfigurationButton"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toBottomOf="@+id/saveConfigurationButton"/>
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toBottomOf="@+id/saveConfigurationButton"
+            app:layout_constraintHorizontal_bias="0.497" app:layout_constraintVertical_bias="0.092"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

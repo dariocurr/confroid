@@ -1,27 +1,20 @@
 package fr.uge.confroid.services;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.text.TextUtils;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.core.app.JobIntentService;
-import androidx.core.app.NotificationBuilderWithBuilderAccessor;
 import fr.uge.confroid.ConfroidManager;
 import fr.uge.confroid.receivers.TokenDispenser;
+import fr.uge.confroid.utlis.ConfroidUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class ConfigurationPusher extends JobIntentService {
+public class ConfigurationPusher extends Service {
 
     private static final Map<String, List<Subscription>> OBSERVERS = new HashMap<>();
 
@@ -30,8 +23,7 @@ public class ConfigurationPusher extends JobIntentService {
         Bundle bundle = intent.getBundleExtra("bundle");
         String name = bundle.getString("name");
         String token = bundle.getString("token");
-        //TokenDispenser.getDispensedTokens().get(name)
-        if ("1".equalsIgnoreCase(token)) {
+        if (TokenDispenser.getToken(ConfroidUtils.getPackageName(name)).equalsIgnoreCase(token)) {
             /*
             if (name.contains("/")) {
                 String cellToEdit = name.split("/")[1];
@@ -40,23 +32,31 @@ public class ConfigurationPusher extends JobIntentService {
             }
             */
             ConfroidManager.saveConfiguration(this.getApplicationContext(), bundle);
-            //this.notifyObservers(name, intent);
+            this.notifyObservers(name, intent);
         } else {
             Log.e("TokenNotValidException","Token " + token + " isn't valid!");
         }
-        stopService(intent);
         return START_NOT_STICKY;
     }
 
-    public void notifyObservers(String name, Intent newConfiguration) {
+    private void notifyObservers(String name, Intent intent) {
         List<Subscription> observers = OBSERVERS.get(name);
-        for (Subscription subscription : OBSERVERS.get(name)) {
+        for (Subscription subscription : getObservers(name)) {
             if (subscription.isExpired(System.currentTimeMillis())) {
                 observers.remove(subscription);
             } else {
-                // TODO send intent to service
+                intent.setClassName(ConfroidUtils.getPackageName(subscription.getSubscriber()), subscription.getSubscriber());
+                this.startService(intent);
             }
         }
+    }
+
+    private List<Subscription> getObservers(String name) {
+        List<Subscription> observers = new ArrayList<>();
+        if (OBSERVERS.containsKey(name)) {
+            observers = OBSERVERS.get(name);
+        }
+        return observers;
     }
 
     public static void subscribe(String name, Subscription subscription) {
@@ -72,8 +72,4 @@ public class ConfigurationPusher extends JobIntentService {
         throw new UnsupportedOperationException("Not implemented (since we do not use RPC methods)");
     }
 
-    @Override
-    protected void onHandleWork(@NonNull Intent intent) {
-
-    }
 }

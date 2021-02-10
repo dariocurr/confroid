@@ -12,11 +12,11 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <service android:name="fr.uge.client.services.PullService" android:exported="true">
+        <service android:name=".services.TokenPuller" android:exported="true"/>
+        <service android:name=".services.ConfigurationPuller" android:exported="true">
         </service>
     </application>
 

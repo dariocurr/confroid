@@ -1,13 +1,11 @@
 package fr.uge.client;
 
-import android.app.Service;
-import android.content.ComponentName;
 import android.content.Intent;
-import android.os.Build;
 import android.util.Log;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import fr.uge.client.services.TokenPuller;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,44 +13,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+        TokenPuller.askToken(this.getApplicationContext());
+
         findViewById(R.id.saveConfigurationButton).setOnClickListener(ev -> {
             Bundle bundle = new Bundle();
-            String[] packageName = this.getPackageName().split("\\.");
-            String lastOne = packageName[packageName.length-1];
-            bundle.putString("name", lastOne);
-            bundle.putString("tag", "TAG");
-            bundle.putString("token", "1");
-            bundle.putString("version", "1");
+            bundle.putString("name", getPackageName());
+            bundle.putString("tag", "latest");
+            bundle.putString("token", TokenPuller.getToken(this.getApplicationContext()));
             Bundle contentBundle = new Bundle();
-            contentBundle.putString("configuration", ((EditText) findViewById(R.id.configurationEditText)).getText().toString());
+            contentBundle.putString("text", ((EditText) findViewById(R.id.configurationEditText)).getText().toString());
             bundle.putBundle("content", contentBundle);
             Intent intent = new Intent();
             intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPusher");
             intent.putExtra("bundle", bundle);
-
-            startService(intent);
+            this.startService(intent);
         });
 
         findViewById(R.id.loadConfigurationButton).setOnClickListener(ev -> {
             Intent intent = new Intent();
-
-            String[] packageName = this.getPackageName().split("\\.");
-            String lastOne = packageName[packageName.length-1];
-            intent.putExtra("name", lastOne);
-            Log.i("namesfs", lastOne);
-            intent.putExtra("tag", "TAG");
+            intent.putExtra("name", this.getPackageName());
+            intent.putExtra("token", TokenPuller.getToken(this.getApplicationContext()));
             intent.putExtra("requestId", "1");
-            intent.putExtra("version", "1");
-            intent.putExtra("token", "1");
+            intent.putExtra("version", "latest");
+            intent.putExtra("receiver", "fr.uge.client.services.ConfigurationPuller");
             intent.putExtra("expiration", 60);
-
-            Log.i("packageName", this.getPackageName());
-
-            intent.putExtra("receiver", this.getPackageName());
-
             intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPuller");
-            startService(intent);
+            this.startService(intent);
         });
 
     }

@@ -1,6 +1,7 @@
 package fr.uge.confroid.utlis;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -189,5 +190,10 @@ public class ConfroidUtils {
         
     }
      */
+
+    public static String getPackageName(String string) {
+        List<String> fullName = Arrays.asList(string.split("\\."));
+        return TextUtils.join(".", fullName.subList(0, 3));
+    }
 
 }

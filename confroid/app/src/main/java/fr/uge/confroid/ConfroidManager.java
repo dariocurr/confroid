@@ -26,30 +26,24 @@ public class ConfroidManager {
     }
 
     public static void saveConfiguration(Context context, Bundle bundle) {
-        //**** SAVE IN JSON FILE *****/
-        JSONObject jsonObject = ConfroidUtils.fromBundleToJson(bundle);
-
-        File file = new File(context.getFilesDir(),bundle.getString("name") + ".json");
-        FileWriter fileWriter = null;
+        /* SAVE TO JSON FILE */
+        File file = new File(context.getFilesDir(), bundle.getString("name").replaceAll("\\.", "_") + ".json");
         try {
-            fileWriter = new FileWriter(file, true);
+            FileWriter fileWriter = new FileWriter(file, true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            bufferedWriter.write(jsonObject.toString());
+            bufferedWriter.write(ConfroidUtils.fromBundleToJson(bundle).toString());
             bufferedWriter.newLine();
             bufferedWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            Log.e("IOException", "");
         }
     }
 
     public static Bundle loadConfiguration(Context context, String name, String version) {
-
-        /**** LOAD FROM JSON FILE *****/
-
-        File file = new File(context.getFilesDir(),name + ".json");
-        Log.i("bundle", file.getAbsolutePath());
+        /* LOAD FROM JSON FILE */
+        String fileName = name.replaceAll("\\.", "_") + ".json";
+        File file = new File(context.getFilesDir(), fileName);
         FileReader fileReader = null;
-        String response = null;
         try {
             fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -63,23 +57,15 @@ public class ConfroidManager {
 
             }
             bufferedReader.close();
-            response = stringBuilder.toString();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
+            return ConfroidUtils.fromJsonToBundle(new JSONObject(stringBuilder.toString()));
+        } catch (FileNotFoundException ex) {
+            Log.e("FileNotFoundException", "File " + fileName + " not found!");
+        } catch (JSONException ex) {
+            Log.e("JSONException", "");
+        } catch (IOException ex) {
+            Log.e("IOException", "");
         }
-
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject  = new JSONObject(response);
-            Log.i("jsonObjLoaded", jsonObject.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return ConfroidUtils.fromJsonToBundle(jsonObject);
+        return null;
     }
 
     public static List<String> loadAllConfigurationNames(Context context) throws JSONException {
