@@ -32,6 +32,12 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        try {
+            initRecyclerView();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         Bundle bundle = new Bundle();
 
         bundle.putString("name", "ciao");
