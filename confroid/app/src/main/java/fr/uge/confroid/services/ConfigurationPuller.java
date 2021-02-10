@@ -28,8 +28,6 @@ public class ConfigurationPuller extends JobIntentService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        startForeground(1, new Notification());
-
         String name = intent.getStringExtra("name");
         String token = intent.getStringExtra("token");
         //TokenDispenser.getDispensedTokens().get(name)
@@ -48,7 +46,6 @@ public class ConfigurationPuller extends JobIntentService {
             configuration.putExtra("requestId", requestId);
             configuration.putExtra("version", version);
 
-            Log.i("receiverName", receiver);
             configuration.setClassName(receiver, receiver + ".services.PullService");
 
             startForegroundService(configuration);

@@ -18,7 +18,9 @@ public class MainActivity extends AppCompatActivity {
         
         findViewById(R.id.saveConfigurationButton).setOnClickListener(ev -> {
             Bundle bundle = new Bundle();
-            bundle.putString("name", this.getPackageName());
+            String[] packageName = this.getPackageName().split("\\.");
+            String lastOne = packageName[packageName.length-1];
+            bundle.putString("name", lastOne);
             bundle.putString("tag", "TAG");
             bundle.putString("token", "1");
             bundle.putString("version", "1");
@@ -35,7 +37,10 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.loadConfigurationButton).setOnClickListener(ev -> {
             Intent intent = new Intent();
 
-            intent.putExtra("name", this.getPackageName());
+            String[] packageName = this.getPackageName().split("\\.");
+            String lastOne = packageName[packageName.length-1];
+            intent.putExtra("name", lastOne);
+            Log.i("namesfs", lastOne);
             intent.putExtra("tag", "TAG");
             intent.putExtra("requestId", "1");
             intent.putExtra("version", "1");

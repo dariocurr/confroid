@@ -1,14 +1,18 @@
 package fr.uge.confroid.services;
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.JobIntentService;
+import androidx.core.app.NotificationBuilderWithBuilderAccessor;
 import fr.uge.confroid.ConfroidManager;
 import fr.uge.confroid.receivers.TokenDispenser;
 
@@ -21,9 +25,9 @@ public class ConfigurationPusher extends JobIntentService {
 
     private static final Map<String, List<Subscription>> OBSERVERS = new HashMap<>();
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
         Bundle bundle = intent.getBundleExtra("bundle");
         String name = bundle.getString("name");
         String token = bundle.getString("token");
