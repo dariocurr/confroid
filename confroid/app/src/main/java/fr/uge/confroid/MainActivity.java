@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,6 +31,33 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Bundle bundle = new Bundle();
+
+        bundle.putString("name", "ciao");
+        bundle.putString("tag", "TAG");
+        bundle.putString("token", "1");
+        bundle.putString("version", "1");
+        Bundle contentBundle = new Bundle();
+        contentBundle.putString("configuration", "conf1");
+        bundle.putBundle("content", contentBundle);
+
+        ConfroidManager.saveConfiguration(this.getApplicationContext(), bundle);
+
+        bundle = new Bundle();
+
+        bundle.putString("name", "ciao");
+        bundle.putString("tag", "TAG");
+        bundle.putString("token", "1");
+        bundle.putString("version", "2");
+        contentBundle = new Bundle();
+        contentBundle.putString("configuration", "conf2");
+        bundle.putBundle("content", contentBundle);
+
+        ConfroidManager.saveConfiguration(this.getApplicationContext(), bundle);
+
+        Bundle resultBundle = ConfroidManager.loadConfiguration(this.getApplicationContext(), "ciao", "2");
+        Log.i("resultBundle", resultBundle.toString());
         /*
         HashMap<String, List<String>> content = new HashMap<>();
 

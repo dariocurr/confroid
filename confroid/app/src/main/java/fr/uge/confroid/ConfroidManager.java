@@ -111,14 +111,13 @@ public class ConfroidManager {
         //Bundle bundleObj = ConfroidUtils.jsonToBundle(jsonObject);
 
 
-        Log.i("dirName", String.valueOf(context.getFilesDir()));
         File file = new File(context.getFilesDir(),bundle.getString("name") + ".json");
         FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter(file, true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(jsonObject.toString());
-            Log.i("jsonObj", jsonObject.toString());
+            bufferedWriter.newLine();
             bufferedWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -138,14 +137,19 @@ public class ConfroidManager {
             StringBuilder stringBuilder = new StringBuilder();
             String line = bufferedReader.readLine();
             while (line != null){
-                stringBuilder.append(line).append("\n");
+                JSONObject jsonObject = new JSONObject(line);
+                if(jsonObject.get("version").equals(version))
+                    stringBuilder.append(line).append("\n");
                 line = bufferedReader.readLine();
+
             }
             bufferedReader.close();
             response = stringBuilder.toString();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
