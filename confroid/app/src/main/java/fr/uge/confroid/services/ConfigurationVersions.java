@@ -7,6 +7,7 @@ import fr.uge.confroid.receivers.TokenDispenser;
 
 public class ConfigurationVersions {
 
+    /*
     public static void pullAllConfigurations(Context context, Intent intent) throws Exception {
         String name = intent.getStringExtra("name");
         String token = intent.getStringExtra("token");
@@ -38,11 +39,11 @@ public class ConfigurationVersions {
             intentToApp.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             context.startActivity(intentToApp);
-            */
 
         } else {
             // TODO raise tokenNotValidException
         }
     }
+    */
 
 }

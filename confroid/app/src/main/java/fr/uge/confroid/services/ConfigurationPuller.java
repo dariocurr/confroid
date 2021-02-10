@@ -3,10 +3,9 @@ package fr.uge.confroid.services;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
+import androidx.annotation.Nullable;
 import fr.uge.confroid.ConfroidManager;
 import fr.uge.confroid.MainActivity;
 import fr.uge.confroid.receivers.TokenDispenser;
@@ -19,9 +18,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ConfigurationPuller {
+public class ConfigurationPuller extends Service {
 
-    public static void pullConfiguration(Context context, Intent intent)  {
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
         String name = intent.getStringExtra("name");
         String token = intent.getStringExtra("token");
 
@@ -35,11 +35,22 @@ public class ConfigurationPuller {
                 ConfigurationPusher.subscribe(name, new Subscription(receiver, expiration));
             }
             // TODO retrieve configuration
-            ConfroidManager.loadConfiguration(context, name,requestId, version, receiver);
-            // TODO send configuration
+            //ConfroidManager.loadConfiguration(context, name, requestId, version, receiver);
+            try {
+                Intent i = new Intent().setClass(this.getApplicationContext(), Class.forName(receiver));
+                startService(i);
+            } catch (ClassNotFoundException e) {
+                Log.e("ClassNotFoundException","Class " + receiver + " doesn't exists!");
+            }
         } else {
-            // TODO raise tokenNotValidException
+            Log.e("TokenNotValidException","Token " + token + " isn't valid!");
         }
+        return START_NOT_STICKY;
     }
 
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        throw new UnsupportedOperationException("Not implemented (since we do not use RPC methods)");
+    }
 }
