@@ -22,6 +22,7 @@ public class PullService extends JobIntentService {
     public int onStartCommand(Intent intent, int flags, int startId) {
         // The service is starting, due to a call to startService()
         Log.i("aaaa", intent.getStringExtra("name"));
+        stopService(intent);
         return startMode;
     }
     @Override

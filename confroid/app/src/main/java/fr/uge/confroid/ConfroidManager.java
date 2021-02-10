@@ -152,6 +152,7 @@ public class ConfroidManager {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject  = new JSONObject(response);
+            Log.i("jsonObjLoaded", jsonObject.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }

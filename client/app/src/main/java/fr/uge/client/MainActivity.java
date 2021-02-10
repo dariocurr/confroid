@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
             intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPusher");
             intent.putExtra("bundle", bundle);
 
-            startForegroundService(intent);
+            startService(intent);
         });
 
         findViewById(R.id.loadConfigurationButton).setOnClickListener(ev -> {
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("receiver", this.getPackageName());
 
             intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPuller");
-            startForegroundService(intent);
+            startService(intent);
         });
 
     }

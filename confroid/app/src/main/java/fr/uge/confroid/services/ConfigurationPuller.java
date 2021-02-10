@@ -24,7 +24,6 @@ import java.util.Map;
 
 public class ConfigurationPuller extends JobIntentService {
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -48,7 +47,7 @@ public class ConfigurationPuller extends JobIntentService {
 
             configuration.setClassName(receiver, receiver + ".services.PullService");
 
-            startForegroundService(configuration);
+            startService(configuration);
             // TODO sent intent to service
         } else {
             Log.e("TokenNotValidException","Token " + token + " isn't valid!");
