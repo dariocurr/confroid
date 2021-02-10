@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import androidx.annotation.Nullable;
+import fr.uge.confroid.ConfroidManager;
+import fr.uge.confroid.receivers.TokenDispenser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,22 +20,20 @@ public class ConfigurationPusher extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.e("QUI", intent.toString());
         Bundle bundle = intent.getBundleExtra("bundle");
-        //Log.e("content", "\n\n" + ConfroidUtils.fromBundleToString(bundle));
         String name = bundle.getString("name");
-        String token = bundle.getString("token");;
-        //TokenDispenser.getDispensedTokens().get(name)
-        if ("1".equalsIgnoreCase(token)) {
-            String tag = bundle.getString("tag");
-            // TODO get content
+        String token = bundle.getString("token");
+        if (TokenDispenser.getDispensedTokens().get(name).equalsIgnoreCase(token)) {
+            /*
             if (name.contains("/")) {
                 String cellToEdit = name.split("/")[1];
                 // TODO retrieve last configuration
                 // TODO edit last configuration
             }
-            // TODO save content
-            //ConfroidManager.saveConfiguration(context, name, bundle, tag);
-            notifyObservers(name, null);
+            */
+            ConfroidManager.saveConfiguration(this.getApplicationContext(), bundle);
+            this.notifyObservers(name, intent);
         } else {
             Log.e("TokenNotValidException","Token " + token + " isn't valid!");
         }

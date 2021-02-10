@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        /*
         HashMap<String, List<String>> content = new HashMap<>();
 
         ArrayList<String> values = new ArrayList<>();

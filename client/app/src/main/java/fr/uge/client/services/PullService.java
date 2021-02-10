@@ -6,6 +6,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 public class PullService extends Service {
+
     int startMode;       // indicates how to behave if the service is killed
     IBinder binder;      // interface for clients that bind
     boolean allowRebind;

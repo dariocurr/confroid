@@ -1,19 +1,9 @@
 package fr.uge.confroid;
 
-import android.content.ComponentName;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.BaseColumns;
 import android.util.Log;
-import androidx.annotation.RequiresApi;
-import fr.uge.confroid.receivers.TokenDispenser;
-import fr.uge.confroid.sqlite.ConfroidContract;
-import fr.uge.confroid.sqlite.ConfroidDbHelper;
 import fr.uge.confroid.utlis.ConfroidUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -92,7 +82,7 @@ public class ConfroidManager {
     }
      */
 
-    public static void saveConfiguration(Context context, Bundle bundle) throws JSONException {
+    public static void saveConfiguration(Context context, Bundle bundle) {
         /**** SAVE IN SQLITE DB *****/
 
         /*ContentValues values = new ContentValues();
@@ -118,11 +108,11 @@ public class ConfroidManager {
         }*/
 
         JSONObject jsonObject = ConfroidUtils.fromBundleToJson(bundle);
+        //Bundle bundleObj = ConfroidUtils.jsonToBundle(jsonObject);
 
-        Bundle bundleObj = ConfroidUtils.jsonToBundle(jsonObject);
 
         Log.i("dirName", String.valueOf(context.getFilesDir()));
-        File file = new File(context.getFilesDir(),bundleObj.getString("name") + ".json");
+        File file = new File(context.getFilesDir(),bundle.getString("name") + ".json");
         FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter(file, true);
@@ -135,53 +125,11 @@ public class ConfroidManager {
         }
     }
 
-    public static void loadConfiguration(Context context, String name, String requestID, String version, String receiver) throws JSONException {
-        /***** LOAD FROM SQLITE DB *****/
-        // Define a projection that specifies which columns from the database
-        // you will actually use after this query.
-        /*String[] projection = {
-                ConfroidContract.ConfigurationEntry.NAME,
-                ConfroidContract.ConfigurationEntry.CONTENT
-        };
-
-        String selection = ConfroidContract.ConfigurationEntry.NAME + " =? " + "AND " + ConfroidContract.ConfigurationEntry.VERSION + " = ?";
-        String[] selectionArgs = {name, version};
-
-        // How you want the results sorted in the resulting Cursor
-        String sortOrder = ConfroidContract.ConfigurationEntry.DATE + " DESC";
-
-        Cursor cursor = new ConfroidDbHelper(context).getReadableDatabase().query(
-                ConfroidContract.ConfigurationEntry.TABLE_NAME,     // The table to query
-                projection,                                         // The array of columns to return (pass null to get all)
-                selection,                                          // The columns for the WHERE clause
-                selectionArgs,                                      // The values for the WHERE clause
-                null,                                           // don't group the rows
-                null,                                           // don't filter by row groups
-                sortOrder                                           // The sort order
-        );
-
-        List<Object> content = new ArrayList<>();
-        while(cursor.moveToNext()) {
-            content.add(cursor.getString(cursor.getColumnIndexOrThrow(ConfroidContract.ConfigurationEntry.CONTENT)));
-        }
-        cursor.close();
-
-        Bundle contentBundle = ConfroidUtils.toBundle(content);
-        Class classReceiver = null;
-
-        try {
-            classReceiver = Class.forName("fr.uge.client.services.PullService");
-            Log.i("classe", "class found");
-        } catch (ClassNotFoundException e) {
-            Log.i("classe", "classe not found");
-            e.printStackTrace();
-        }*/
-
-        Log.i("loadConfig", "Ciao");
+    public static Bundle loadConfiguration(Context context, String name, String version) {
 
         /**** LOAD FROM JSON FILE *****/
 
-        File file = new File(context.getFilesDir(),"config.json");
+        File file = new File(context.getFilesDir(),name + ".json");
         FileReader fileReader = null;
         String response = null;
         try {
@@ -207,21 +155,7 @@ public class ConfroidManager {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-        Intent intent = new Intent();
-        intent.putExtra("requestId", requestID);
-        intent.putExtra("name", name);
-        intent.putExtra("version", version);
-        intent.putExtra("content", jsonObject.get("content").toString());
-        intent.setAction("fr.uge.client.services.PULL");
-
-        Log.i("loadConfig", name);
-        Log.i("loadConfig", version);
-        Log.i("loadConfig", jsonObject.get("content").toString());
-
-
-        context.startService(intent);
+        return ConfroidUtils.fromJsonToBundle(jsonObject);
     }
 
     public static List<String> loadAllConfigurationNames(Context context) throws JSONException {

@@ -16,8 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <service android:name=".services.ConfigurationPuller" />
-        <service android:name=".services.ConfigurationPusher" />
+        <service android:name=".services.ConfigurationPuller" android:exported="true"/>
+        <service android:name=".services.ConfigurationPusher" android:exported="true"/>
         <receiver android:name=".receivers.TokenDispenser"  android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>

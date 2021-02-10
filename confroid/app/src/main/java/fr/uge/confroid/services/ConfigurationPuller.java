@@ -3,6 +3,7 @@ package fr.uge.confroid.services;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import androidx.annotation.Nullable;
@@ -24,9 +25,7 @@ public class ConfigurationPuller extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         String name = intent.getStringExtra("name");
         String token = intent.getStringExtra("token");
-
-        //TokenDispenser.getDispensedTokens().get(name)
-        if ("1".equalsIgnoreCase(token)) {
+        if (TokenDispenser.getDispensedTokens().get(name).equalsIgnoreCase(token)) {
             String requestId = intent.getStringExtra("requestId");
             String version = intent.getStringExtra("version");
             String receiver = intent.getStringExtra("receiver");
@@ -34,8 +33,12 @@ public class ConfigurationPuller extends Service {
             if (expiration > 0) {
                 ConfigurationPusher.subscribe(name, new Subscription(receiver, expiration));
             }
-            // TODO retrieve configuration
-            //ConfroidManager.loadConfiguration(context, name, requestId, version, receiver);
+            Intent configuration = new Intent();
+            Bundle content = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, version);
+            intent.putExtra("content", content);
+            intent.putExtra("name", name);
+            intent.putExtra("requestId", requestId);
+            intent.putExtra("version", version);
             try {
                 Intent i = new Intent().setClass(this.getApplicationContext(), Class.forName(receiver));
                 startService(i);

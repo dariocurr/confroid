@@ -1,21 +1,11 @@
 package fr.uge.confroid.utlis;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.BaseColumns;
 import android.util.Log;
-import androidx.annotation.RequiresApi;
-import fr.uge.confroid.sqlite.ConfroidContract;
-import fr.uge.confroid.sqlite.ConfroidDbHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 public class ConfroidUtils {
 
@@ -86,7 +76,7 @@ public class ConfroidUtils {
         return content;
     }
 
-    public static JSONObject fromBundleToJson(Bundle bundle){
+    public static JSONObject fromBundleToJson(Bundle bundle) {
         JSONObject jsonObject = new JSONObject();
         Set<String> keys = bundle.keySet();
         for (String key : keys) {
@@ -107,17 +97,21 @@ public class ConfroidUtils {
         return jsonObject;
     }
 
-    public static Bundle jsonToBundle(JSONObject jsonObject) throws JSONException {
+    public static Bundle fromJsonToBundle(JSONObject jsonObject) {
         Bundle bundle = new Bundle();
         Iterator iter = jsonObject.keys();
         while (iter.hasNext()) {
             String key = (String) iter.next();
-            Object value = jsonObject.get(key);
-
-            if(value instanceof JSONObject)
-                bundle.putBundle(key, jsonToBundle((JSONObject) value));
-            else
-                bundle.putString(key, value.toString());
+            Object value = null;
+            try {
+                value = jsonObject.get(key);
+                if(value instanceof JSONObject)
+                    bundle.putBundle(key, fromJsonToBundle((JSONObject) value));
+                else
+                    bundle.putString(key, value.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
         return bundle;
     }
