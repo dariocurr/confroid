@@ -85,7 +85,7 @@ public class ConfroidManager {
 
     }
 
-    public static Bundle loadConfiguration(Context context, String name, String version) {
+    public static Bundle loadConfiguration(Context context, String name, Integer version) {
         /* LOAD FROM JSON FILE */
         String fileName = name.replaceAll("\\.", "_") + ".json";
         File file = new File(context.getFilesDir(), fileName);

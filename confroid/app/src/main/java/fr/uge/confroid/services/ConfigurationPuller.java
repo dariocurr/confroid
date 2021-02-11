@@ -25,7 +25,18 @@ public class ConfigurationPuller extends Service {
                 ConfigurationPusher.subscribe(name, new Subscription(receiver, expiration));
             }
             Intent outgoingIntent = new Intent();
-            Bundle content = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, version);
+            Bundle content;
+            try {
+                content = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, Integer.parseInt(version));
+            } catch (NumberFormatException ex) {
+                if (version.equalsIgnoreCase("latest")) {
+                    content = ConfroidManager.loadConfiguration(
+                            this.getApplicationContext(), name, ConfigurationPusher.getLatestVersionNumber(name));
+                } else {
+                    // TODO loadConfigurationByTag
+                    content = null;
+                }
+            }
             outgoingIntent.putExtra("content", content);
             outgoingIntent.putExtra("name", name);
             outgoingIntent.putExtra("requestId", requestId);
