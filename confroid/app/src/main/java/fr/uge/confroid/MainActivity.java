@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
 
         ConfroidManager.saveConfiguration(this.getApplicationContext(), bundle);
 
-        Bundle resultBundle = ConfroidManager.loadConfiguration(this.getApplicationContext(), "ciao", "2");
+        Bundle resultBundle = ConfroidManager.loadConfiguration(this.getApplicationContext(), "ciao", 2);
         Log.i("resultBundle", resultBundle.toString());
         /*
         HashMap<String, List<String>> content = new HashMap<>();

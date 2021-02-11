@@ -18,7 +18,7 @@ public class ConfigurationPuller extends Service {
         String token = incomingIntent.getStringExtra("token");
         if (TokenDispenser.getToken(ConfroidUtils.getPackageName(name)).equalsIgnoreCase(token)) {
             String requestId = incomingIntent.getStringExtra("requestId");
-            String version = incomingIntent.getStringExtra("version");
+            int version = incomingIntent.getIntExtra("version", 0);
             String receiver = incomingIntent.getStringExtra("receiver");
             int expiration = incomingIntent.getIntExtra("expiration", 0);
             if (expiration > 0) {
