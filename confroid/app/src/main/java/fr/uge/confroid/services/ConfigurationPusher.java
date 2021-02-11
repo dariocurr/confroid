@@ -40,7 +40,7 @@ public class ConfigurationPusher extends Service {
     }
 
     private void notifyObservers(String name) {
-        Bundle bundle = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, VERSION_NUMBER.get(name));
+        Bundle bundle = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, getLatestVersionNumber(name));
         Intent intent = new Intent();
         intent.putExtra("name" , name);
         intent.putExtra("version", bundle.getInt("version"));
@@ -64,13 +64,17 @@ public class ConfigurationPusher extends Service {
         return observers;
     }
 
-    private int getNextVersionNumber(String name) {
+    private static int getNextVersionNumber(String name) {
         if (!VERSION_NUMBER.containsKey(name)) {
             VERSION_NUMBER.put(name, -1);
         }
-        Integer version = VERSION_NUMBER.get(name) + 1;
+        int version = VERSION_NUMBER.get(name) + 1;
         VERSION_NUMBER.put(name, version);
         return version;
+    }
+
+    public static int getLatestVersionNumber(String name) {
+        return VERSION_NUMBER.get(name);
     }
 
     public static void subscribe(String name, Subscription subscription) {
