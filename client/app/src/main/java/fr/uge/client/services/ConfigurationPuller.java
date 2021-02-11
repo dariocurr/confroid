@@ -10,7 +10,7 @@ public class ConfigurationPuller extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e("version", intent.getStringExtra("version"));
+        Log.e("name", intent.getStringExtra("name"));
         return START_NOT_STICKY;
     }
 

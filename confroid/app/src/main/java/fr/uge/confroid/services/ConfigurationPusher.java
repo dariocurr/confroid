@@ -32,7 +32,7 @@ public class ConfigurationPusher extends Service {
             }
             */
             ConfroidManager.saveConfiguration(this.getApplicationContext(), bundle);
-            this.notifyObservers(name, intent);
+            //this.notifyObservers(name, intent);
         } else {
             Log.e("TokenNotValidException","Token " + token + " isn't valid!");
         }
@@ -41,6 +41,12 @@ public class ConfigurationPusher extends Service {
 
     private void notifyObservers(String name, Intent intent) {
         List<Subscription> observers = OBSERVERS.get(name);
+        Intent outgoingIntent = new Intent();
+        // TODO get latest version content
+        //Bundle content = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, version);
+        //outgoingIntent.putExtra("content", content);
+        outgoingIntent.putExtra("name", name);
+        //outgoingIntent.putExtra("version", version);
         for (Subscription subscription : getObservers(name)) {
             if (subscription.isExpired(System.currentTimeMillis())) {
                 observers.remove(subscription);
