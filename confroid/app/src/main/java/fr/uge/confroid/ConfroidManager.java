@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.EditText;
 import fr.uge.confroid.utlis.ConfroidUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,89 +28,57 @@ public class ConfroidManager {
     public static void saveConfiguration(Context context, Bundle bundle) {
         /* SAVE TO JSON FILE */
         File file = new File(context.getFilesDir(), bundle.getString("name").replaceAll("\\.", "_") + ".json");
-        if(!file.exists()){
-            Log.i("fileStatus", "file not exist");
-            try {
-                FileWriter fileWriter = new FileWriter(file, false);
-                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-                bufferedWriter.write(ConfroidUtils.fromBundleToJson(bundle).toString());
-                bufferedWriter.newLine();
-                bufferedWriter.close();
-            } catch (IOException ex) {
-                Log.e("IOException", "");
+        try {
+            if (!file.exists()) {
+                writeFile(file, ConfroidUtils.fromBundleToJson(bundle).toString());
+            } else {
+                JSONObject oldJsonObject = new JSONObject(readFile(file));
+                writeFile(file, ConfroidUtils.addVersionFromBundleToJson(oldJsonObject, bundle).toString());
             }
+        } catch (JSONException e) {
+            Log.e("JSONException", "");
         }
-        else{
-            Log.i("fileStatus", "file exists");
-            FileReader fileReader = null;
-            try {
-                fileReader = new FileReader(file);
-                BufferedReader bufferedReader = new BufferedReader(fileReader);
-                StringBuilder stringBuilder = new StringBuilder();
-                String line = bufferedReader.readLine();
-
-                JSONObject jsonObject = new JSONObject(line);
-                Bundle jsonBundle = ConfroidUtils.fromJsonToBundle(jsonObject);
-                Log.i("jsonBundle", jsonBundle.toString());
-
-
-                Bundle newConfBundle = bundle.getBundle("configurations");
-                Bundle contentBundle = new Bundle();
-                contentBundle.putString("tag", "latest");
-                contentBundle.putString("content", newConfBundle.getBundle("3").getString("content")); //ADD LAST VERSION HERE
-                Bundle newBundle = jsonBundle.getBundle("configurations");
-                newBundle.putBundle("3", contentBundle);
-
-                Bundle resultBundle = new Bundle();
-                resultBundle.putString("name", jsonBundle.getString("name"));
-                resultBundle.putString("token", jsonBundle.getString("token"));
-                resultBundle.putBundle("configurations", newBundle);
-
-                Log.i("resultBundle", resultBundle.toString());
-
-
-                FileWriter fileWriter = new FileWriter(file, false);
-                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-                bufferedWriter.write(ConfroidUtils.fromBundleToJson(resultBundle).toString());
-                bufferedWriter.close();
-                bufferedReader.close();
-
-                } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
     }
 
-    public static Bundle loadConfiguration(Context context, String name, Integer version) {
-        /* LOAD FROM JSON FILE */
-        String fileName = name.replaceAll("\\.", "_") + ".json";
-        File file = new File(context.getFilesDir(), fileName);
-        FileReader fileReader = null;
+    private static void writeFile(File file, String content) {
         try {
-            fileReader = new FileReader(file);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            StringBuilder stringBuilder = new StringBuilder();
-            String line = bufferedReader.readLine();
-            while (line != null){
-                JSONObject jsonObject = new JSONObject(line);
-                if(jsonObject.get("version").equals(version))
-                    stringBuilder.append(line).append("\n");
-                line = bufferedReader.readLine();
-
-            }
-            bufferedReader.close();
-            return ConfroidUtils.fromJsonToBundle(new JSONObject(stringBuilder.toString()));
-        } catch (FileNotFoundException ex) {
-            Log.e("FileNotFoundException", "File " + fileName + " not found!");
-        } catch (JSONException ex) {
-            Log.e("JSONException", "");
-        } catch (IOException ex) {
+            FileWriter fileWriter = new FileWriter(file, false);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(content);
+            bufferedWriter.close();
+        } catch (IOException e) {
             Log.e("IOException", "");
         }
-        return null;
+    }
+
+    private static String readFile(File file) {
+        try {
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            StringBuilder content = new StringBuilder();
+            String line = bufferedReader.readLine();
+            while (line != null) {
+                content.append(line);
+                line = bufferedReader.readLine();
+            }
+            bufferedReader.close();
+            return content.toString();
+        } catch (IOException e) {
+            Log.e("IOException", "");
+            return null;
+        }
+    }
+
+    public static Bundle loadConfigurationByVersionNumber(Context context, String name, Integer version) {
+        /* LOAD FROM JSON FILE */
+        File file = new File(context.getFilesDir(), name.replaceAll("\\.", "_") + ".json");
+        try {
+            JSONObject jsonObject = new JSONObject(readFile(file));
+            return ConfroidUtils.getVersionFromJsonToBundle(jsonObject, version);
+        } catch (JSONException e) {
+            Log.e("JSONException", "");
+            return null;
+        }
     }
 
     public static List<String> loadAllConfigurationNames(Context context) throws JSONException {

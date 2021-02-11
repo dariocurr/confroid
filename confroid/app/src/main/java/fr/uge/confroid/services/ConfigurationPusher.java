@@ -4,9 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.text.TextUtils;
 import android.util.Log;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import fr.uge.confroid.ConfroidManager;
 import fr.uge.confroid.receivers.TokenDispenser;
@@ -17,6 +15,7 @@ import java.util.*;
 public class ConfigurationPusher extends Service {
 
     private static final Map<String, List<Subscription>> OBSERVERS = new HashMap<>();
+    private static final Map<String, Integer> VERSION_NUMBER = new HashMap<>();
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -31,29 +30,31 @@ public class ConfigurationPusher extends Service {
                 // TODO edit last configuration
             }
             */
+            /*
+            TODO add tag to version (il est aussi possible d'attribuer une étiquette à la dernière version en ne spécifiant pas content et en indiquant uniquement un tag)
+             */
+            bundle.putInt("version", getNextVersionNumber(name));
             ConfroidManager.saveConfiguration(this.getApplicationContext(), bundle);
-            this.notifyObservers(name, intent);
+            //this.notifyObservers(name);
         } else {
-            Log.e("TokenNotValidException","Token " + token + " isn't valid!");
+            Log.e("TokenNotValidException", "Token " + token + " isn't valid!");
         }
         return START_NOT_STICKY;
     }
 
-    private void notifyObservers(String name, Intent intent) {
+    private void notifyObservers(String name) {
+        Bundle bundle = ConfroidManager.loadConfigurationByVersionNumber(this.getApplicationContext(), name, getLatestVersionNumber(name));
+        Intent intent = new Intent();
+        intent.putExtra("name", name);
+        intent.putExtra("version", bundle.getInt("version"));
+        intent.putExtra("content", bundle.getBundle("content"));
         List<Subscription> observers = OBSERVERS.get(name);
-        Intent outgoingIntent = new Intent();
-        // TODO get latest version content
-        Bundle content = intent.getBundleExtra("bundle").getBundle("content");
-        //Bundle content = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, version);
-        outgoingIntent.putExtra("content", content);
-        outgoingIntent.putExtra("name", name);
-        //outgoingIntent.putExtra("version", version);
         for (Subscription subscription : getObservers(name)) {
             if (subscription.isExpired(System.currentTimeMillis())) {
                 observers.remove(subscription);
             } else {
-                outgoingIntent.setClassName(ConfroidUtils.getPackageName(subscription.getSubscriber()), subscription.getSubscriber());
-                this.startService(outgoingIntent);
+                intent.setClassName(ConfroidUtils.getPackageName(subscription.getSubscriber()), subscription.getSubscriber());
+                this.startService(intent);
             }
         }
     }
@@ -64,6 +65,19 @@ public class ConfigurationPusher extends Service {
             observers = OBSERVERS.get(name);
         }
         return observers;
+    }
+
+    private static int getNextVersionNumber(String name) {
+        if (!VERSION_NUMBER.containsKey(name)) {
+            VERSION_NUMBER.put(name, -1);
+        }
+        int version = VERSION_NUMBER.get(name) + 1;
+        VERSION_NUMBER.put(name, version);
+        return version;
+    }
+
+    public static int getLatestVersionNumber(String name) {
+        return VERSION_NUMBER.get(name);
     }
 
     public static void subscribe(String name, Subscription subscription) {
