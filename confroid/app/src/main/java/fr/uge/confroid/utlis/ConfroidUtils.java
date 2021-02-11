@@ -82,6 +82,7 @@ public class ConfroidUtils {
         Set<String> keys = bundle.keySet();
         for (String key : keys) {
             Log.i("jsonObject", key);
+
             try {
                 Object value = bundle.get(key);
                 if(value instanceof Bundle)

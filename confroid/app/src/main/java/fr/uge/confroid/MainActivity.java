@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
             e.printStackTrace();
         }
 
-        Bundle bundle = new Bundle();
+       /* Bundle bundle = new Bundle();
 
         bundle.putString("name", "ciao");
         bundle.putString("tag", "TAG");
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         ConfroidManager.saveConfiguration(this.getApplicationContext(), bundle);
 
         Bundle resultBundle = ConfroidManager.loadConfiguration(this.getApplicationContext(), "ciao", "2");
-        Log.i("resultBundle", resultBundle.toString());
+        Log.i("resultBundle", resultBundle.toString());*/
         /*
         HashMap<String, List<String>> content = new HashMap<>();
 

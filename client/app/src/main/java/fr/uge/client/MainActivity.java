@@ -18,14 +18,17 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.saveConfigurationButton).setOnClickListener(ev -> {
             Bundle bundle = new Bundle();
             bundle.putString("name", getPackageName());
-            bundle.putString("tag", "latest");
             bundle.putString("token", TokenPuller.getToken(this.getApplicationContext()));
             Bundle contentBundle = new Bundle();
-            contentBundle.putString("text", ((EditText) findViewById(R.id.configurationEditText)).getText().toString());
-            bundle.putBundle("content", contentBundle);
+            contentBundle.putString("tag", "latest");
+            contentBundle.putString("content", ((EditText) findViewById(R.id.configurationEditText)).getText().toString());
+            Bundle versionBundle = new Bundle();
+            versionBundle.putBundle("3", contentBundle);
+            bundle.putBundle("configurations", versionBundle);
             Intent intent = new Intent();
             intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPusher");
             intent.putExtra("bundle", bundle);
+            Log.i("Bundle123", bundle.toString());
             this.startService(intent);
         });
 

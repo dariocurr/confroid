@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.EditText;
 import fr.uge.confroid.utlis.ConfroidUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,15 +29,60 @@ public class ConfroidManager {
     public static void saveConfiguration(Context context, Bundle bundle) {
         /* SAVE TO JSON FILE */
         File file = new File(context.getFilesDir(), bundle.getString("name").replaceAll("\\.", "_") + ".json");
-        try {
-            FileWriter fileWriter = new FileWriter(file, true);
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            bufferedWriter.write(ConfroidUtils.fromBundleToJson(bundle).toString());
-            bufferedWriter.newLine();
-            bufferedWriter.close();
-        } catch (IOException ex) {
-            Log.e("IOException", "");
+        if(!file.exists()){
+            Log.i("fileStatus", "file not exist");
+            try {
+                FileWriter fileWriter = new FileWriter(file, false);
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                bufferedWriter.write(ConfroidUtils.fromBundleToJson(bundle).toString());
+                bufferedWriter.newLine();
+                bufferedWriter.close();
+            } catch (IOException ex) {
+                Log.e("IOException", "");
+            }
         }
+        else{
+            Log.i("fileStatus", "file exists");
+            FileReader fileReader = null;
+            try {
+                fileReader = new FileReader(file);
+                BufferedReader bufferedReader = new BufferedReader(fileReader);
+                StringBuilder stringBuilder = new StringBuilder();
+                String line = bufferedReader.readLine();
+
+                JSONObject jsonObject = new JSONObject(line);
+                Bundle jsonBundle = ConfroidUtils.fromJsonToBundle(jsonObject);
+                Log.i("jsonBundle", jsonBundle.toString());
+
+
+                Bundle newConfBundle = bundle.getBundle("configurations");
+                Bundle contentBundle = new Bundle();
+                contentBundle.putString("tag", "latest");
+                contentBundle.putString("content", newConfBundle.getBundle("3").getString("content")); //ADD LAST VERSION HERE
+                Bundle newBundle = jsonBundle.getBundle("configurations");
+                newBundle.putBundle("3", contentBundle);
+
+                Bundle resultBundle = new Bundle();
+                resultBundle.putString("name", jsonBundle.getString("name"));
+                resultBundle.putString("token", jsonBundle.getString("token"));
+                resultBundle.putBundle("configurations", newBundle);
+
+                Log.i("resultBundle", resultBundle.toString());
+
+
+                FileWriter fileWriter = new FileWriter(file, false);
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                bufferedWriter.write(ConfroidUtils.fromBundleToJson(resultBundle).toString());
+                bufferedWriter.close();
+                bufferedReader.close();
+
+                } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public static Bundle loadConfiguration(Context context, String name, String version) {
