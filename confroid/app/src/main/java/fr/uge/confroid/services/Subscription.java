@@ -1,5 +1,7 @@
 package fr.uge.confroid.services;
 
+import android.util.Log;
+
 public class Subscription {
 
     private String subscriber;

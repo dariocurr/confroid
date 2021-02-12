@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
             Bundle bundle = new Bundle();
             Bundle contentBundle = new Bundle();
             EditText configurationEditText = findViewById(R.id.configurationEditText);
-            contentBundle.putString("content", String.valueOf(configurationEditText.getText()));
+            contentBundle.putString("abc", String.valueOf(configurationEditText.getText()));
             bundle.putString("name", getPackageName());
             bundle.putString("tag", "latest");
             bundle.putString("token", TokenPuller.getToken(this.getApplicationContext()));
@@ -66,7 +66,21 @@ public class MainActivity extends AppCompatActivity {
             this.startService(intent);
         });
 
-        /***** PRINT IN THE TEXTVIEW ALL THE VERSIONS *******/
+        findViewById(R.id.editConfigurationButton).setOnClickListener(ev -> {
+            Bundle bundle = new Bundle();
+            Bundle contentBundle = new Bundle();
+            contentBundle.putString("A", "B");
+            bundle.putString("name", getPackageName() + "/0/abc");
+            bundle.putString("token", TokenPuller.getToken(this.getApplicationContext()));
+            bundle.putBundle("content", contentBundle);
+            Intent intent = new Intent();
+            intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPusher");
+            intent.putExtra("bundle", bundle);
+            Log.i("Bundle123", bundle.toString());
+            this.startService(intent);
+        });
+
+        /* PRINT IN THE TEXTVIEW ALL THE VERSIONS ******
         Intent inComingIntent = getIntent();
         Bundle versionsBundle = new Bundle();
         versionsBundle = inComingIntent.getBundleExtra("versions");
@@ -74,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(versionsBundle != null)
             textView.setText(fromBundleToString(versionsBundle));
+         */
 
     }
 

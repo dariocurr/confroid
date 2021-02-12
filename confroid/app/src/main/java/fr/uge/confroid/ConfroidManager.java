@@ -85,8 +85,25 @@ public class ConfroidManager {
                 JSONObject jsonObject = new JSONObject(ConfroidManagerUtils.readFile(file));
                 ConfroidManagerUtils.writeFile(file,
                         ConfroidManagerUtils.updateTagFromStringToJson(jsonObject, newTag, latestVersion.toString()).toString());
+                return true;
             }
-            return true;
+            return false;
+        } catch (JSONException e) {
+            Log.e("JSONException", "");
+            return false;
+        }
+    }
+
+    public static boolean updateContent(Context context, Bundle bundle, String contentToEdit) {
+        File file = new File(context.getFilesDir(), bundle.getString("name").replaceAll("\\.", "_") + ".json");
+        try {
+            if (file.exists()) {
+                JSONObject jsonObject = new JSONObject(ConfroidManagerUtils.readFile(file));
+                ConfroidManagerUtils.writeFile(file,
+                        ConfroidManagerUtils.updateContentFromStringToJson(jsonObject, bundle, contentToEdit).toString());
+                return true;
+            }
+            return false;
         } catch (JSONException e) {
             Log.e("JSONException", "");
             return false;

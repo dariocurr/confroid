@@ -24,20 +24,20 @@ public class ConfigurationPusher extends Service {
         String name = bundle.getString("name");
         String token = bundle.getString("token");
         if (TokenDispenser.getToken(ConfroidManagerUtils.getPackageName(name)).equalsIgnoreCase(token)) {
-            /*
-            if (name.contains("/")) {
-                String cellToEdit = name.split("/")[1];
-                // TODO retrieve last configuration
-                // TODO edit last configuration
-            }
-            */
             if (!bundle.containsKey("content") && bundle.containsKey("tag")) {
-                ConfroidManager.updateTag(this.getApplicationContext(), name, bundle.get("tag").toString(), getLatestVersionNumber(name));
+                ConfroidManager.updateTag(this.getApplicationContext(), ConfroidManagerUtils.getPackageName(name), bundle.get("tag").toString(), getLatestVersionNumber(name));
             } else {
-                bundle.putInt("version", getNextVersionNumber(name));
-                ConfroidManager.saveConfiguration(this.getApplicationContext(), bundle);
+                bundle.putInt("version", getNextVersionNumber(ConfroidManagerUtils.getPackageName(name)));
+                if (name.contains("/")) {
+                    String contentToEdit = name.substring(name.indexOf("/"));
+                    name = ConfroidManagerUtils.getPackageName(name);
+                    bundle.putString("name", name);
+                    ConfroidManager.updateContent(this.getApplicationContext(), bundle, contentToEdit);
+                } else {
+                    ConfroidManager.saveConfiguration(this.getApplicationContext(), bundle);
+                }
             }
-            //this.notifyObservers(name);
+            this.notifyObservers(name);
         } else {
             Log.e("TokenNotValidException", "Token " + token + " isn't valid!");
         }
@@ -45,15 +45,18 @@ public class ConfigurationPusher extends Service {
     }
 
     private void notifyObservers(String name) {
+        Log.e("name", name);
         Bundle bundle = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, getLatestVersionNumber(name));
+        Log.e("bundle", bundle.toString());
         Intent intent = new Intent();
         intent.putExtra("name", name);
-        intent.putExtra("version", bundle.getString("version"));
+        intent.putExtra("version", getLatestVersionNumber(name) + "");
         intent.putExtra("content", bundle.getBundle("content"));
         intent.putExtra("requestId", UPDATE_OBSERVER_REQUEST_ID);
         List<Subscription> observers = OBSERVERS.get(name);
         for (Subscription subscription : getObservers(name)) {
-            if (subscription.isExpired(System.currentTimeMillis())) {
+            long currentTime = System.currentTimeMillis();
+            if (subscription.isExpired(currentTime)) {
                 observers.remove(subscription);
             } else {
                 intent.setClassName(ConfroidManagerUtils.getPackageName(subscription.getSubscriber()), subscription.getSubscriber());

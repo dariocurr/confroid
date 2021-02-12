@@ -78,110 +78,85 @@ public class ConfroidManagerUtils {
         return content;
     }
 
-    public static JSONObject fromBundleToJson(Bundle bundle) {
-        try {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("name", bundle.getString("name"));
-            jsonObject.put("token", bundle.getString("token"));
-            JSONObject contentJsonObject = new JSONObject();
-            contentJsonObject.put(String.valueOf(bundle.getInt("version")), extractVersionContent(bundle));
-            jsonObject.put("configurations", contentJsonObject);
-            Log.e("JSON", jsonObject.toString());
-            return jsonObject;
-        } catch(JSONException e) {
-            Log.e("JSONException", "");
-            return null;
-        }
+    public static JSONObject fromBundleToJson(Bundle bundle) throws JSONException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("name", bundle.getString("name"));
+        jsonObject.put("token", bundle.getString("token"));
+        JSONObject contentJsonObject = new JSONObject();
+        contentJsonObject.put(String.valueOf(bundle.getInt("version")), extractBundleContent(bundle));
+        jsonObject.put("configurations", contentJsonObject);
+        Log.e("JSON", jsonObject.toString());
+        return jsonObject;
     }
 
-    public static JSONObject addVersionFromBundleToJson(JSONObject jsonObject, Bundle newVersionBundle) {
+    public static JSONObject addVersionFromBundleToJson(JSONObject jsonObject, Bundle newVersionBundle) throws JSONException {
         String newVersion = String.valueOf(newVersionBundle.getInt("version"));
-        try {
-            JSONObject configurationsJsonObject = jsonObject.getJSONObject("configurations");
-            Iterator<String> iter = configurationsJsonObject.keys();
-            if (newVersionBundle.containsKey("tag")) {
-                while (iter.hasNext()) {
-                    JSONObject oldVersion = configurationsJsonObject.getJSONObject(iter.next());
-                    if (oldVersion.has("tag")
-                            && oldVersion.get("tag").toString().equalsIgnoreCase(newVersionBundle.get("tag").toString())) {
-                        oldVersion.remove("tag");
-                    }
+        JSONObject configurationsJsonObject = jsonObject.getJSONObject("configurations");
+        Iterator<String> iter = configurationsJsonObject.keys();
+        if (newVersionBundle.containsKey("tag")) {
+            while (iter.hasNext()) {
+                JSONObject oldVersion = configurationsJsonObject.getJSONObject(iter.next());
+                if (oldVersion.has("tag")
+                        && oldVersion.get("tag").toString().equalsIgnoreCase(newVersionBundle.get("tag").toString())) {
+                    oldVersion.remove("tag");
                 }
             }
-            configurationsJsonObject.put(newVersion, extractVersionContent(newVersionBundle));
-            Log.e("JSON", jsonObject.toString());
-            return jsonObject;
-        } catch (JSONException e) {
-            Log.e("JSONException", "");
-            return null;
         }
+        configurationsJsonObject.put(newVersion, extractBundleContent(newVersionBundle));
+        Log.e("JSON", jsonObject.toString());
+        return jsonObject;
     }
 
-    private static JSONObject extractVersionContent(Bundle bundle) {
+    private static JSONObject extractBundleContent(Bundle bundle) throws JSONException {
         JSONObject versionJSONObject = new JSONObject();
-        try {
-            if (bundle.containsKey("tag")) {
-                versionJSONObject.put("tag", bundle.get("tag"));
-            }
-            Bundle contentBundle = bundle.getBundle("content");
-            JSONObject contentJSONObject = new JSONObject();
-            for (String key : contentBundle.keySet()) {
-                contentJSONObject.put(key, contentBundle.get(key));
-            }
-            versionJSONObject.put("date", new Date());
-            versionJSONObject.put("content", contentJSONObject);
-        } catch (JSONException e) {
-            Log.e("JSONException", "");
+        if (bundle.containsKey("tag")) {
+            versionJSONObject.put("tag", bundle.get("tag"));
         }
+        Bundle contentBundle = bundle.getBundle("content");
+        versionJSONObject.put("date", new Date());
+        versionJSONObject.put("content", extractContent(contentBundle));
         return versionJSONObject;
     }
 
-    public static Bundle getVersionFromJsonToBundle(JSONObject jsonObject, Object version) {
-        try {
-            if(version instanceof Integer)
-                return getVersionFromJsonToBundle(jsonObject.getJSONObject("configurations").getJSONObject(String.valueOf(version)));
-            else if(version instanceof String){
-                JSONObject versionsJsonObject = jsonObject.getJSONObject("configurations");
-                for (Iterator<String> it = versionsJsonObject.keys(); it.hasNext(); ) {
-                    String versionNum = it.next();
-                    if(versionsJsonObject.getJSONObject(versionNum).getString("tag").equals(version))
-                        return getVersionFromJsonToBundle(jsonObject.getJSONObject("configurations").getJSONObject(versionNum));
-                }
-            }
-            return null;
-        } catch (JSONException e) {
-            Log.e("JSONException", "");
-            return null;
+    private static JSONObject extractContent(Bundle contentBundle) throws JSONException {
+        JSONObject contentJSONObject = new JSONObject();
+        for (String key : contentBundle.keySet()) {
+            contentJSONObject.put(key, contentBundle.get(key));
         }
+        return contentJSONObject;
     }
 
-    private static Bundle getVersionFromJsonToBundle(JSONObject jsonObject) {
-        try {
-            Iterator iter = jsonObject.keys();
-            Bundle bundle = new Bundle();
-            while (iter.hasNext()) {
-                String key = (String) iter.next();
-                Object value = jsonObject.get(key);
-                if(value instanceof JSONObject) {
-                    bundle.putBundle(key, getVersionFromJsonToBundle((JSONObject) value));
-                } else {
-                    bundle.putString(key, value.toString());
-                }
+    public static Bundle getVersionFromJsonToBundle(JSONObject jsonObject, Object version) throws JSONException {
+        if(version instanceof Integer)
+            return getVersionFromJsonToBundle(jsonObject.getJSONObject("configurations").getJSONObject(String.valueOf(version)));
+        else if(version instanceof String){
+            JSONObject versionsJsonObject = jsonObject.getJSONObject("configurations");
+            for (Iterator<String> it = versionsJsonObject.keys(); it.hasNext(); ) {
+                String versionNum = it.next();
+                if(versionsJsonObject.getJSONObject(versionNum).getString("tag").equals(version))
+                    return getVersionFromJsonToBundle(jsonObject.getJSONObject("configurations").getJSONObject(versionNum));
             }
-            return bundle;
-        } catch (JSONException e) {
-            Log.e("JSONException", "");
-            return null;
         }
+        return null;
     }
 
-    public static Bundle getAllVersionsFromJsonToBundle(JSONObject jsonObject){
-        try {
-            return getVersionFromJsonToBundle(jsonObject.getJSONObject("configurations"));
-        } catch (JSONException e) {
-            Log.e("JSONException", "");
-            return null;
+    private static Bundle getVersionFromJsonToBundle(JSONObject jsonObject) throws JSONException {
+        Iterator iter = jsonObject.keys();
+        Bundle bundle = new Bundle();
+        while (iter.hasNext()) {
+            String key = (String) iter.next();
+            Object value = jsonObject.get(key);
+            if(value instanceof JSONObject) {
+                bundle.putBundle(key, getVersionFromJsonToBundle((JSONObject) value));
+            } else {
+                bundle.putString(key, value.toString());
+            }
         }
+        return bundle;
+    }
+
+    public static Bundle getAllVersionsFromJsonToBundle(JSONObject jsonObject) throws JSONException {
+        return getVersionFromJsonToBundle(jsonObject.getJSONObject("configurations"));
     }
 
     public static void writeFile(File file, String content) {
@@ -214,19 +189,33 @@ public class ConfroidManagerUtils {
     }
 
     public static String getPackageName(String string) {
-        List<String> fullName = Arrays.asList(string.split("\\."));
-        return TextUtils.join(".", fullName.subList(0, 3));
-    }
-
-    public static JSONObject updateTagFromStringToJson(JSONObject jsonObject, String newTag, String latestVersion) {
-        try {
-            jsonObject.getJSONObject("configurations").getJSONObject(latestVersion).put("tag", newTag);
-            Log.e("JSON", jsonObject.toString());
-            return jsonObject;
-        } catch (JSONException e) {
-            Log.e("JSONException", "");
-            return null;
+        String[] fullName = string.split("\\.");
+        String lastName = fullName[2];
+        if (lastName.contains("/")) {
+            fullName[2] = lastName.substring(0, lastName.indexOf("/"));
         }
+        return TextUtils.join(".", Arrays.copyOfRange(fullName, 0, 3));
     }
 
+    public static JSONObject updateTagFromStringToJson(JSONObject jsonObject, String newTag, String latestVersion) throws JSONException {
+        jsonObject.getJSONObject("configurations").getJSONObject(latestVersion).put("tag", newTag);
+        Log.e("JSON", jsonObject.toString());
+        return jsonObject;
+    }
+
+    public static JSONObject updateContentFromStringToJson(JSONObject jsonObject, Bundle bundle, String contentToEdit) throws JSONException {
+        String[] pathToContent = contentToEdit.split("/");
+        String lastKey = pathToContent[pathToContent.length - 1];
+        JSONObject jsonObjectToEdit = jsonObject.getJSONObject("configurations").getJSONObject(pathToContent[1]).getJSONObject("content");
+        if (pathToContent.length > 3) {
+            String[] keys = Arrays.copyOfRange(pathToContent, 1, pathToContent.length - 1);
+            for (String key : keys) {
+                jsonObjectToEdit = jsonObjectToEdit.getJSONObject(key);
+            }
+        }
+        Bundle contentBundle = bundle.getBundle("content");
+        jsonObjectToEdit.put(lastKey, extractContent(contentBundle));
+        Log.e("JSON", jsonObject.toString());
+        return jsonObject;
+    }
 }

@@ -25,7 +25,6 @@ public class ConfigurationPuller extends Service {
             if (expiration > 0) {
                 ConfigurationPusher.subscribe(name, new Subscription(receiver, expiration));
             }
-            Intent outgoingIntent = new Intent();
             Bundle content;
             if (TextUtils.isDigitsOnly(version)) {
                 content = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, Integer.parseInt(version));
@@ -36,6 +35,7 @@ public class ConfigurationPuller extends Service {
                     content = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, version);
                 }
             }
+            Intent outgoingIntent = new Intent();
             outgoingIntent.putExtra("content", content);
             outgoingIntent.putExtra("name", name);
             outgoingIntent.putExtra("requestId", requestId);
