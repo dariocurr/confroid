@@ -78,14 +78,19 @@ public class ConfroidManager {
         }
     }
 
-    /*public static Bundle loadConfigurationByTag(Context context, String name, String tag) {
+    public static boolean updateTag(Context context, String name, String newTag, Integer latestVersion) {
         File file = new File(context.getFilesDir(), name.replaceAll("\\.", "_") + ".json");
         try {
-            JSONObject jsonObject = new JSONObject(readFile(file));
-            return ConfroidUtils.getVersionFromJsonToBundle(jsonObject, version);
+            if (file.exists()) {
+                JSONObject jsonObject = new JSONObject(ConfroidManagerUtils.readFile(file));
+                ConfroidManagerUtils.writeFile(file,
+                        ConfroidManagerUtils.updateTagFromStringToJson(jsonObject, newTag, latestVersion.toString()).toString());
+            }
+            return true;
         } catch (JSONException e) {
             Log.e("JSONException", "");
-            return null;
+            return false;
         }
-    }*/
+    }
+
 }

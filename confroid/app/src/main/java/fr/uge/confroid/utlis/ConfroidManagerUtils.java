@@ -218,4 +218,15 @@ public class ConfroidManagerUtils {
         return TextUtils.join(".", fullName.subList(0, 3));
     }
 
+    public static JSONObject updateTagFromStringToJson(JSONObject jsonObject, String newTag, String latestVersion) {
+        try {
+            jsonObject.getJSONObject("configurations").getJSONObject(latestVersion).put("tag", newTag);
+            Log.e("JSON", jsonObject.toString());
+            return jsonObject;
+        } catch (JSONException e) {
+            Log.e("JSONException", "");
+            return null;
+        }
+    }
+
 }

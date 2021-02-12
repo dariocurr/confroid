@@ -54,6 +54,18 @@ public class MainActivity extends AppCompatActivity {
             this.startService(intent);
         });
 
+        findViewById(R.id.updateTagButton).setOnClickListener(ev -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("name", getPackageName());
+            bundle.putString("tag", "dario");
+            bundle.putString("token", TokenPuller.getToken(this.getApplicationContext()));
+            Intent intent = new Intent();
+            intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPusher");
+            intent.putExtra("bundle", bundle);
+            Log.i("Bundle123", bundle.toString());
+            this.startService(intent);
+        });
+
         /***** PRINT IN THE TEXTVIEW ALL THE VERSIONS *******/
         Intent inComingIntent = getIntent();
         Bundle versionsBundle = new Bundle();

@@ -16,6 +16,7 @@ public class ConfigurationPusher extends Service {
 
     private static final Map<String, List<Subscription>> OBSERVERS = new HashMap<>();
     private static final Map<String, Integer> VERSION_NUMBER = new HashMap<>();
+    private static final String UPDATE_OBSERVER_REQUEST_ID = "-1";
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -31,10 +32,11 @@ public class ConfigurationPusher extends Service {
             }
             */
             if (!bundle.containsKey("content") && bundle.containsKey("tag")) {
-                ConfroidManager.updateTag(this.getApplicationContext(), name, tag);
+                ConfroidManager.updateTag(this.getApplicationContext(), name, bundle.get("tag").toString(), getLatestVersionNumber(name));
+            } else {
+                bundle.putInt("version", getNextVersionNumber(name));
+                ConfroidManager.saveConfiguration(this.getApplicationContext(), bundle);
             }
-            bundle.putInt("version", getNextVersionNumber(name));
-            ConfroidManager.saveConfiguration(this.getApplicationContext(), bundle);
             //this.notifyObservers(name);
         } else {
             Log.e("TokenNotValidException", "Token " + token + " isn't valid!");
@@ -46,8 +48,9 @@ public class ConfigurationPusher extends Service {
         Bundle bundle = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, getLatestVersionNumber(name));
         Intent intent = new Intent();
         intent.putExtra("name", name);
-        intent.putExtra("version", bundle.getInt("version"));
+        intent.putExtra("version", bundle.getString("version"));
         intent.putExtra("content", bundle.getBundle("content"));
+        intent.putExtra("requestId", UPDATE_OBSERVER_REQUEST_ID);
         List<Subscription> observers = OBSERVERS.get(name);
         for (Subscription subscription : getObservers(name)) {
             if (subscription.isExpired(System.currentTimeMillis())) {
