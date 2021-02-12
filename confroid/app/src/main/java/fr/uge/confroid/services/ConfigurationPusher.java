@@ -8,7 +8,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import fr.uge.confroid.ConfroidManager;
 import fr.uge.confroid.receivers.TokenDispenser;
-import fr.uge.confroid.utlis.ConfroidUtils;
+import fr.uge.confroid.utlis.ConfroidManagerUtils;
 
 import java.util.*;
 
@@ -22,7 +22,7 @@ public class ConfigurationPusher extends Service {
         Bundle bundle = intent.getBundleExtra("bundle");
         String name = bundle.getString("name");
         String token = bundle.getString("token");
-        if (TokenDispenser.getToken(ConfroidUtils.getPackageName(name)).equalsIgnoreCase(token)) {
+        if (TokenDispenser.getToken(ConfroidManagerUtils.getPackageName(name)).equalsIgnoreCase(token)) {
             /*
             if (name.contains("/")) {
                 String cellToEdit = name.split("/")[1];
@@ -30,9 +30,9 @@ public class ConfigurationPusher extends Service {
                 // TODO edit last configuration
             }
             */
-            /*
-            TODO add tag to version (il est aussi possible d'attribuer une étiquette à la dernière version en ne spécifiant pas content et en indiquant uniquement un tag)
-             */
+            if (!bundle.containsKey("content") && bundle.containsKey("tag")) {
+                ConfroidManager.updateTag(this.getApplicationContext(), name, tag);
+            }
             bundle.putInt("version", getNextVersionNumber(name));
             ConfroidManager.saveConfiguration(this.getApplicationContext(), bundle);
             //this.notifyObservers(name);
@@ -53,7 +53,7 @@ public class ConfigurationPusher extends Service {
             if (subscription.isExpired(System.currentTimeMillis())) {
                 observers.remove(subscription);
             } else {
-                intent.setClassName(ConfroidUtils.getPackageName(subscription.getSubscriber()), subscription.getSubscriber());
+                intent.setClassName(ConfroidManagerUtils.getPackageName(subscription.getSubscriber()), subscription.getSubscriber());
                 this.startService(intent);
             }
         }
