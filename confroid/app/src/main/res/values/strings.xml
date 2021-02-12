@@ -6,4 +6,5 @@
     <string name="submission">Saving...</string>
     <string name="done">Done</string>
     <string name="submit_error">An error occured during saving</string>
+    <string name="created_on">Created on</string>
 </resources>
