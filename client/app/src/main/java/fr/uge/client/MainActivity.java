@@ -3,6 +3,7 @@ package fr.uge.client;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import fr.uge.client.services.TokenPuller;
@@ -42,6 +43,46 @@ public class MainActivity extends AppCompatActivity {
             this.startService(intent);
         });
 
+        findViewById(R.id.loadVersionsButton).setOnClickListener(ev -> {
+            Intent intent = new Intent();
+            intent.putExtra("name", this.getPackageName());
+            intent.putExtra("token", TokenPuller.getToken(this.getApplicationContext()));
+            intent.putExtra("requestId", "1");
+            intent.putExtra("receiver", "fr.uge.client.services.ConfigurationVersions");
+            intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationVersions");
+            this.startService(intent);
+        });
+
+        Intent inComingIntent = getIntent();
+        Bundle versionsBundle = new Bundle();
+        versionsBundle = inComingIntent.getBundleExtra("versions");
+        TextView textView = findViewById(R.id.configurationTextView);
+
+        if(versionsBundle != null)
+            textView.setText(fromBundleToString(versionsBundle));
+
+    }
+
+    public static String fromBundleToString(Bundle bundle) {
+        return fromBundleToString(bundle, 0);
+    }
+
+    private static String fromBundleToString(Bundle bundle, int tabNumber) {
+        String content = "";
+        for (String key : bundle.keySet()) {
+            for (int i = 0; i < tabNumber; i++) {
+                content += "\t";
+            }
+            content += key + ": ";
+            Object contentObject = bundle.get(key);
+            if (contentObject instanceof Bundle) {
+                content += "\n" + fromBundleToString((Bundle) contentObject, tabNumber + 1);
+            } else {
+                content += contentObject.toString();
+            }
+            content += "\n";
+        }
+        return content;
     }
 
 }

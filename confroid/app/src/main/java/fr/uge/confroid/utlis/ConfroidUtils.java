@@ -117,6 +117,7 @@ public class ConfroidUtils {
             for (String key : contentBundle.keySet()) {
                 contentJSONObject.put(key, contentBundle.get(key));
             }
+            versionJSONObject.put("date", new Date());
             versionJSONObject.put("content", contentJSONObject);
         } catch (JSONException e) {
             Log.e("JSONException", "");
@@ -127,6 +128,15 @@ public class ConfroidUtils {
     public static Bundle getVersionFromJsonToBundle(JSONObject jsonObject, Integer version) {
         try {
             return getVersionFromJsonToBundle(jsonObject.getJSONObject("configurations").getJSONObject(String.valueOf(version)));
+        } catch (JSONException e) {
+            Log.e("JSONException", "");
+            return null;
+        }
+    }
+
+    public static Bundle getAllVersionsFromJsonToBundle(JSONObject jsonObject){
+        try {
+            return getVersionFromJsonToBundle(jsonObject.getJSONObject("configurations"));
         } catch (JSONException e) {
             Log.e("JSONException", "");
             return null;
@@ -152,6 +162,7 @@ public class ConfroidUtils {
             return null;
         }
     }
+
 
     /*
     public static void saveConfiguration (Context context, String name, Object value, String versionName) {

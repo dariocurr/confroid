@@ -20,6 +20,7 @@
         </activity>
         <service android:name=".services.ConfigurationPuller" android:exported="true"/>
         <service android:name=".services.ConfigurationPusher" android:exported="true"/>
+        <service android:name=".services.ConfigurationVersions" android:exported="true"/>
         <receiver android:name=".receivers.TokenDispenser"  android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>

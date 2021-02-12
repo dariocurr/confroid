@@ -1,49 +1,45 @@
 package fr.uge.confroid.services;
 
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.util.Log;
+import androidx.annotation.Nullable;
 import fr.uge.confroid.ConfroidManager;
 import fr.uge.confroid.receivers.TokenDispenser;
+import fr.uge.confroid.utlis.ConfroidUtils;
 
-public class ConfigurationVersions {
+public class ConfigurationVersions extends Service {
 
-    /*
-    public static void pullAllConfigurations(Context context, Intent intent) throws Exception {
-        String name = intent.getStringExtra("name");
-        String token = intent.getStringExtra("token");
+    @Override
+    public int onStartCommand(Intent incomingIntent, int flags, int startId) {
+        String name = incomingIntent.getStringExtra("name");
+        String token = incomingIntent.getStringExtra("token");
+        if (TokenDispenser.getToken(ConfroidUtils.getPackageName(name)).equalsIgnoreCase(token)) {
+            String requestId = incomingIntent.getStringExtra("requestId");
+            String receiver = incomingIntent.getStringExtra("receiver");
 
-        if (TokenDispenser.getDispensedTokens().get(name).equalsIgnoreCase(token)) {
-            String requestId = intent.getStringExtra("requestId");
-            String receiver = intent.getStringExtra("receiver");
-            // TODO retrieve allConfiguration
-            // TODO send intent to receiver
-            /*
-            Class cls = null;
-            try {
-                cls = Class.forName(receiver);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-            //Intent intentToApp = new Intent(null, cls);
-            Intent intentToApp = new Intent(Intent.ACTION_SEND);
-            intentToApp.setClassName(cls.getPackage().getName(),
-                    receiver);
+            Intent outgoingIntent = new Intent();
+            Bundle content;
+            content = ConfroidManager.loadAllConfigurationVersions(this.getApplicationContext(), name, requestId);
 
-            intentToApp.putExtra("requestId", requestID);
-            intentToApp.putExtra("name", name);
-            intentToApp.putExtra("version", version);
 
-            Bundle content = ConfroidManager.loadConfiguration(context, name, requestID, version);
-
-            intentToApp.putExtra("content", content);
-            intentToApp.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-            context.startActivity(intentToApp);
-
+            outgoingIntent.putExtra("name", name);
+            outgoingIntent.putExtra("requestId", requestId);
+            outgoingIntent.putExtra("versions", content);
+            outgoingIntent.setClassName(ConfroidUtils.getPackageName(receiver), receiver);
+            this.startService(outgoingIntent);
         } else {
-            // TODO raise tokenNotValidException
+            Log.e("TokenNotValidException","Token " + token + " isn't valid!");
         }
+        return START_NOT_STICKY;
     }
-    */
 
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
 }

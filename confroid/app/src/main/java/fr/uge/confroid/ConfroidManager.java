@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import fr.uge.confroid.utlis.ConfroidUtils;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -95,59 +94,31 @@ public class ConfroidManager {
 
     }
 
-    public static Intent loadAllConfigurationVersions(Context context, String name, String requestId) {
+    public static Bundle loadAllConfigurationVersions(Context context, String name, String requestId) {
         //***** LOAD FROM JSON FILE *****/
 
-        File file = new File(context.getFilesDir(), "config.json");
-        FileReader fileReader = null;
-        String response = null;
-        try {
-            fileReader = new FileReader(file);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            StringBuilder stringBuilder = new StringBuilder();
-            String line = bufferedReader.readLine();
-            while (line != null) {
-                stringBuilder.append(line).append("\n");
-                line = bufferedReader.readLine();
-            }
-            bufferedReader.close();
-            response = stringBuilder.toString();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        File file = new File(context.getFilesDir(), name.replaceAll("\\.", "_") + ".json");
 
-        JSONArray jsonArray = new JSONArray();
-        Map<String, Bundle> versions = new HashMap<>();
+        String response = readFile(file);
 
+        JSONObject jsonObject = null;
         try {
-            jsonArray = new JSONArray(response);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject obj = jsonArray.getJSONObject(i);
-                if(obj.get("name").equals(name)){
-                    Bundle bundle = new Bundle();
-                    bundle.putString("tag", obj.getString("tag"));
-                    bundle.putString("date", obj.get("date").toString());
-                    bundle.putString("content", obj.get("content").toString());
-                    versions.put(obj.getString("version"), bundle);
-                }
-            }
+           jsonObject = new JSONObject(response);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        Bundle contentBundle = ConfroidUtils.toBundle(versions);
+        Bundle versionsBundle = ConfroidUtils.getAllVersionsFromJsonToBundle(jsonObject);
 
-        Intent intent = new Intent();
-        intent.putExtra("requestId", requestId);
-        intent.putExtra("name", name);
-        intent.putExtra("content", contentBundle);
+        for(String key : versionsBundle.keySet()){
+
+        }
+
 
         Log.i("loadVersions", requestId);
         Log.i("loadVersions", name);
-        Log.i("loadVersions", contentBundle.toString());
+        Log.i("loadVersions", versionsBundle.toString());
 
-        return intent;
+        return versionsBundle;
     }
 }
