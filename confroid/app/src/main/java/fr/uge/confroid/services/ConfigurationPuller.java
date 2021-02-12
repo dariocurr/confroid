@@ -27,15 +27,17 @@ public class ConfigurationPuller extends Service {
             Intent outgoingIntent = new Intent();
             Bundle content;
             try {
-                content = ConfroidManager.loadConfigurationByVersionNumber(this.getApplicationContext(), name, Integer.parseInt(version));
+                content = ConfroidManager.loadConfigurationByVersion(this.getApplicationContext(), name, Integer.parseInt(version));
             } catch (NumberFormatException ex) {
-                if (version.equalsIgnoreCase("latest")) {
+                /*if (version.equalsIgnoreCase("latest")) {
                     content = ConfroidManager.loadConfigurationByVersionNumber(
                             this.getApplicationContext(), name, ConfigurationPusher.getLatestVersionNumber(name));
                 } else {
-                    // TODO loadConfigurationByTag
+                    content = ConfroidManager.loadConfigurationByTag(
+                            this.getApplicationContext(), name, version);
                     content = null;
-                }
+                }*/
+                content = ConfroidManager.loadConfigurationByVersion(this.getApplicationContext(), name, version);
             }
             outgoingIntent.putExtra("content", content);
             outgoingIntent.putExtra("name", name);

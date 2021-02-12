@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("name", this.getPackageName());
             intent.putExtra("token", TokenPuller.getToken(this.getApplicationContext()));
             intent.putExtra("requestId", "1");
-            intent.putExtra("version", "latest");
+            intent.putExtra("version", "0");
             intent.putExtra("receiver", "fr.uge.client.services.ConfigurationPuller");
             intent.putExtra("expiration", 60);
             intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPuller");
@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
             this.startService(intent);
         });
 
+        /***** PRINT IN THE TEXTVIEW ALL THE VERSIONS *******/
         Intent inComingIntent = getIntent();
         Bundle versionsBundle = new Bundle();
         versionsBundle = inComingIntent.getBundleExtra("versions");

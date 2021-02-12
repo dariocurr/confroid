@@ -68,7 +68,7 @@ public class ConfroidManager {
         }
     }
 
-    public static Bundle loadConfigurationByVersionNumber(Context context, String name, Integer version) {
+    public static Bundle loadConfigurationByVersion(Context context, String name, Object version) {
         /* LOAD FROM JSON FILE */
         File file = new File(context.getFilesDir(), name.replaceAll("\\.", "_") + ".json");
         try {
@@ -121,4 +121,15 @@ public class ConfroidManager {
 
         return versionsBundle;
     }
+
+    /*public static Bundle loadConfigurationByTag(Context context, String name, String tag) {
+        File file = new File(context.getFilesDir(), name.replaceAll("\\.", "_") + ".json");
+        try {
+            JSONObject jsonObject = new JSONObject(readFile(file));
+            return ConfroidUtils.getVersionFromJsonToBundle(jsonObject, version);
+        } catch (JSONException e) {
+            Log.e("JSONException", "");
+            return null;
+        }
+    }*/
 }

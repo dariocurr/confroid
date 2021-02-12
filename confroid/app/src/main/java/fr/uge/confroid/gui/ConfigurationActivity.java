@@ -1,9 +1,6 @@
 package fr.uge.confroid.gui;
 
 import android.app.AlertDialog;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
@@ -27,7 +24,7 @@ public class ConfigurationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuration);
 
-        bundle = ConfroidManager.loadConfigurationByVersionNumber(this.getApplicationContext(), getIntent().getExtras().getString("EXTRA_TEST_STRING"), 1);
+        bundle = ConfroidManager.loadConfigurationByVersion(this.getApplicationContext(), getIntent().getExtras().getString("EXTRA_TEST_STRING"), 1);
         Log.i("bundle", bundle.toString());
 
         initContent();

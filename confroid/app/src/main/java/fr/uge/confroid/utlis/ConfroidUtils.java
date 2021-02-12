@@ -125,9 +125,19 @@ public class ConfroidUtils {
         return versionJSONObject;
     }
 
-    public static Bundle getVersionFromJsonToBundle(JSONObject jsonObject, Integer version) {
+    public static Bundle getVersionFromJsonToBundle(JSONObject jsonObject, Object version) {
         try {
-            return getVersionFromJsonToBundle(jsonObject.getJSONObject("configurations").getJSONObject(String.valueOf(version)));
+            if(version instanceof Integer)
+                return getVersionFromJsonToBundle(jsonObject.getJSONObject("configurations").getJSONObject(String.valueOf(version)));
+            else if(version instanceof String){
+                JSONObject versionsJsonObject = jsonObject.getJSONObject("configurations");
+                for (Iterator<String> it = versionsJsonObject.keys(); it.hasNext(); ) {
+                    String versionNum = it.next();
+                    if(versionsJsonObject.getJSONObject(versionNum).getString("tag").equals(version))
+                        return getVersionFromJsonToBundle(jsonObject.getJSONObject("configurations").getJSONObject(versionNum));
+                }
+            }
+            return null;
         } catch (JSONException e) {
             Log.e("JSONException", "");
             return null;
