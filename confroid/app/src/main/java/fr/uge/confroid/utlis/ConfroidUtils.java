@@ -144,15 +144,6 @@ public class ConfroidUtils {
         }
     }
 
-    public static Bundle getAllVersionsFromJsonToBundle(JSONObject jsonObject){
-        try {
-            return getVersionFromJsonToBundle(jsonObject.getJSONObject("configurations"));
-        } catch (JSONException e) {
-            Log.e("JSONException", "");
-            return null;
-        }
-    }
-
     private static Bundle getVersionFromJsonToBundle(JSONObject jsonObject) {
         try {
             Iterator iter = jsonObject.keys();
@@ -167,6 +158,15 @@ public class ConfroidUtils {
                 }
             }
             return bundle;
+        } catch (JSONException e) {
+            Log.e("JSONException", "");
+            return null;
+        }
+    }
+
+    public static Bundle getAllVersionsFromJsonToBundle(JSONObject jsonObject){
+        try {
+            return getVersionFromJsonToBundle(jsonObject.getJSONObject("configurations"));
         } catch (JSONException e) {
             Log.e("JSONException", "");
             return null;

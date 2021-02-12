@@ -23,7 +23,7 @@ public class ConfigurationVersions extends Service {
 
             Intent outgoingIntent = new Intent();
             Bundle content;
-            content = ConfroidManager.loadAllConfigurationVersions(this.getApplicationContext(), name, requestId);
+            content = ConfroidManager.loadAllConfigurations(this.getApplicationContext(), name);
 
 
             outgoingIntent.putExtra("name", name);

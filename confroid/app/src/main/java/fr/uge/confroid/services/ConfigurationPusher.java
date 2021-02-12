@@ -43,7 +43,7 @@ public class ConfigurationPusher extends Service {
     }
 
     private void notifyObservers(String name) {
-        Bundle bundle = ConfroidManager.loadConfigurationByVersion(this.getApplicationContext(), name, getLatestVersionNumber(name));
+        Bundle bundle = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, getLatestVersionNumber(name));
         Intent intent = new Intent();
         intent.putExtra("name", name);
         intent.putExtra("version", bundle.getInt("version"));

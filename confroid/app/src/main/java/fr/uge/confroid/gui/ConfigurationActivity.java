@@ -24,7 +24,7 @@ public class ConfigurationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuration);
 
-        bundle = ConfroidManager.loadConfigurationByVersion(this.getApplicationContext(), getIntent().getExtras().getString("EXTRA_TEST_STRING"), 1);
+        bundle = ConfroidManager.loadAllConfigurations(this.getApplicationContext(), getIntent().getExtras().getString("EXTRA_TEST_STRING"));
         Log.i("bundle", bundle.toString());
 
         initContent();

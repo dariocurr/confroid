@@ -1,28 +1,16 @@
 package fr.uge.confroid;
 
-import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import fr.uge.confroid.gui.ConfigurationActivity;
 import fr.uge.confroid.gui.MyRecyclerViewAdapter;
-import fr.uge.confroid.receivers.TokenDispenser;
-import fr.uge.confroid.services.ConfigurationPuller;
-import fr.uge.confroid.services.ConfigurationPusher;
-import fr.uge.confroid.services.ConfigurationVersions;
-import fr.uge.confroid.utlis.ConfroidUtils;
 import org.json.JSONException;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener{
     private MyRecyclerViewAdapter adapter;
@@ -235,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
     private void initRecyclerView() throws JSONException {
         //-------------------- RECYCLER VIEW ----------------------
         // data to populate the RecyclerView with
-        List<String> configurations = ConfroidManager.loadAllConfigurationNames(this.getApplicationContext());
+        List<String> configurations = ConfroidManager.loadAllConfigurationsNames(this.getApplicationContext());
         // set up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

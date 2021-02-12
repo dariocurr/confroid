@@ -68,7 +68,7 @@ public class ConfroidManager {
         }
     }
 
-    public static Bundle loadConfigurationByVersion(Context context, String name, Object version) {
+    public static Bundle loadConfiguration(Context context, String name, Object version) {
         /* LOAD FROM JSON FILE */
         File file = new File(context.getFilesDir(), name.replaceAll("\\.", "_") + ".json");
         try {
@@ -80,7 +80,7 @@ public class ConfroidManager {
         }
     }
 
-    public static List<String> loadAllConfigurationNames(Context context) throws JSONException {
+    public static List<String> loadAllConfigurationsNames(Context context) {
         //***** LOAD FROM JSON FILE *****/
 
         List<String> names = new ArrayList<>();
@@ -94,7 +94,7 @@ public class ConfroidManager {
 
     }
 
-    public static Bundle loadAllConfigurationVersions(Context context, String name, String requestId) {
+    public static Bundle loadAllConfigurations(Context context, String name) {
         //***** LOAD FROM JSON FILE *****/
 
         File file = new File(context.getFilesDir(), name.replaceAll("\\.", "_") + ".json");
@@ -110,12 +110,7 @@ public class ConfroidManager {
 
         Bundle versionsBundle = ConfroidUtils.getAllVersionsFromJsonToBundle(jsonObject);
 
-        for(String key : versionsBundle.keySet()){
 
-        }
-
-
-        Log.i("loadVersions", requestId);
         Log.i("loadVersions", name);
         Log.i("loadVersions", versionsBundle.toString());
 
