@@ -8,12 +8,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import fr.uge.confroid.R;
 import fr.uge.confroid.ConfroidManager;
+import fr.uge.confroid.utlis.ConfroidManagerUtils;
 
 import java.util.ArrayList;
 
 public class ConfigurationActivity extends AppCompatActivity {
     private Spinner dropdownMenu;
     private TextView contentText;
+    private TextView datetext;
     /*private Button editButton;
     private Button backButton;*/
     private String oldContentText;
@@ -25,12 +27,10 @@ public class ConfigurationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_configuration);
 
         bundle = ConfroidManager.loadAllConfigurations(this.getApplicationContext(), getIntent().getExtras().getString("EXTRA_TEST_STRING"));
-        Log.i("bundle", bundle.toString());
 
         initContent();
         initVersionMenu();
 
-        //initButtons();
     }
 
     private void initVersionMenu() {
@@ -47,7 +47,8 @@ public class ConfigurationActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String version = parent.getItemAtPosition(position).toString();
                 //TODO
-                contentText.setText(bundle.get(version).toString());
+                datetext.setText(getString(R.string.created_on)+" "+((Bundle) bundle.get(version)).get("date").toString());
+                contentText.setText(ConfroidManagerUtils.fromBundleToString(bundle.getBundle(version).getBundle("content")));
             }
 
             @Override
@@ -59,10 +60,7 @@ public class ConfigurationActivity extends AppCompatActivity {
 
     private void initContent() {
         contentText = findViewById(R.id.contentView);
-
-        //Bundle bundle = intent.getBundleExtra("content");
-
-        //contentText.setText(bundle.get(dropdownMenu.getSelectedItem().toString()).toString());
+        datetext = findViewById(R.id.dateView);
     }
 
     /*public void setProgressDialog() {
@@ -87,11 +85,21 @@ public class ConfigurationActivity extends AppCompatActivity {
         progressText.setText(R.string.submission);
 
         //TODO PUSH CONF
-        if(true) {
+        Bundle newBundle = bundle.deepCopy();
+        for (String s : contentText.getText().toString().split("\n")) {
+            String[] row = s.split(":");
+            String key = row[0];
+            String value = row[1];
+            newBundle.getBundle(dropdownMenu.getSelectedItem().toString()).getBundle("content").putString(key, value);
+        }
+        //newBundle.getBundle("content").putBundle();
+        //Log.i("ciao123", "old: "+oldBundle.toString()+" new: "+newBundle.toString());
+        if(ConfroidManager.saveConfiguration(this, newBundle)) {
             Toast.makeText(this, this.getString(R.string.done)+"!", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, this.getString(R.string.submit_error)+".", Toast.LENGTH_LONG).show();
         }
+
         dialog.dismiss();
 
     }

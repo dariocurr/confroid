@@ -7,9 +7,6 @@
         android:title="@string/edit"
         app:showAsAction="ifRoom" />
     <item
-        android:title="Item"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/back_item"
         android:checkable="false"
         android:enabled="false"
@@ -24,5 +21,8 @@
         android:icon="@drawable/ic_baseline_save_24"
         android:title="@string/save"
         android:visible="false"
+        app:showAsAction="ifRoom" />
+    <item
+        android:title="Item"
         app:showAsAction="ifRoom" />
 </menu>
