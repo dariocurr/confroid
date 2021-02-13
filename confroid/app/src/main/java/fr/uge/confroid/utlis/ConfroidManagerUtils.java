@@ -108,6 +108,13 @@ public class ConfroidManagerUtils {
         return jsonObject;
     }
 
+    public static JSONObject addVersionFromJsonToJson(JSONObject jsonObject, JSONObject newVersionJsonObject) throws JSONException {
+        JSONObject configurationsJsonObject = jsonObject.getJSONObject("configurations");
+        configurationsJsonObject.put(newVersionJsonObject.getInt("version") + "",
+                newVersionJsonObject.getJSONObject("content"));
+        return jsonObject;
+    }
+
     private static JSONObject extractBundleContent(Bundle bundle) throws JSONException {
         JSONObject versionJSONObject = new JSONObject();
         if (bundle.containsKey("tag")) {

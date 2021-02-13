@@ -41,6 +41,19 @@ public class ConfroidManager {
         }
     }
 
+    public static boolean saveConfiguration(Context context, JSONObject newVersionJsonObject) {
+        /* SAVE TO JSON FILE */
+        try {
+            File file = new File(context.getFilesDir(), newVersionJsonObject.getString("name").replaceAll("\\.", "_") + ".json");
+            JSONObject oldJsonObject = new JSONObject(FileUtils.readFile(file));
+            FileUtils.writeFile(file, ConfroidManagerUtils.addVersionFromJsonToJson(oldJsonObject, newVersionJsonObject).toString());
+            return true;
+        } catch (JSONException e) {
+            Log.e("JSONException", "");
+            return false;
+        }
+    }
+
     public static Bundle loadConfiguration(Context context, String name, Object version) {
         /* LOAD FROM JSON FILE */
         File file = new File(context.getFilesDir(), name.replaceAll("\\.", "_") + ".json");
