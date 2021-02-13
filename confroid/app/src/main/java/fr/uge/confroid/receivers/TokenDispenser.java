@@ -13,6 +13,7 @@ public class TokenDispenser extends BroadcastReceiver {
     public static String getToken(String receiver) {
         String token = "";
         int count = TOKEN_LENGTH;
+        /* not truly random */
         Integer randomNumber = receiver.hashCode();
         while (count-- > 0) {
             randomNumber = Math.abs((randomNumber + "").hashCode() % CHARACTERS.length());

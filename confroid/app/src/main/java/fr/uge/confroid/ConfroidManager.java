@@ -53,26 +53,21 @@ public class ConfroidManager {
         }
     }
 
-    public static List<String> loadAllConfigurationsNames(Context context) {
+    public static Bundle loadAllVersionsBundle(Context context, String name) {
         //***** LOAD FROM JSON FILE *****/
-        List<String> names = new ArrayList<>();
-        for (String strFile : context.getFilesDir().list()) {
-            names.add(strFile.substring(0, strFile.length()-5));
+        try {
+            return ConfroidManagerUtils.getAllVersionsFromJsonToBundle(loadAllVersionsJson(context, name));
+        } catch (JSONException e) {
+            Log.e("JSONException", "");
+            return null;
         }
-        Log.i("names", names.toString());
-        return names;
-
     }
 
-    public static Bundle loadAllConfigurations(Context context, String name) {
+    public static JSONObject loadAllVersionsJson(Context context, String name) {
         //***** LOAD FROM JSON FILE *****/
         File file = new File(context.getFilesDir(), name.replaceAll("\\.", "_") + ".json");
         try {
-            JSONObject jsonObject = new JSONObject(FileUtils.readFile(file));
-            Bundle versionsBundle = ConfroidManagerUtils.getAllVersionsFromJsonToBundle(jsonObject);
-            Log.i("loadVersions", name);
-            Log.i("loadVersions", versionsBundle.toString());
-            return versionsBundle;
+            return new JSONObject(FileUtils.readFile(file));
         } catch (JSONException e) {
             Log.e("JSONException", "");
             return null;
@@ -110,13 +105,23 @@ public class ConfroidManager {
         }
     }
 
+    public static List<String> loadAllConfigurationsNames(Context context) {
+        //***** LOAD FROM JSON FILE *****/
+        List<String> names = new ArrayList<>();
+        for (String strFile : context.getFilesDir().list()) {
+            names.add(strFile.substring(0, strFile.length()-5));
+        }
+        Log.i("names", names.toString());
+        return names;
+    }
+
     public static JSONObject getAllConfigurations(Context context) {
         JSONObject configurations = new JSONObject();
         for (String strFile : context.getFilesDir().list()) {
             File file = new File(context.getFilesDir(), strFile);
             try {
                 JSONObject jsonObject = new JSONObject(FileUtils.readFile(file));
-                configurations.put(strFile,jsonObject);
+                configurations.put(strFile, jsonObject);
             } catch (JSONException e) {
                 Log.e("JSONException", "");
                 return null;
