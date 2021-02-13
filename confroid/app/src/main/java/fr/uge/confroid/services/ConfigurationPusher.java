@@ -27,30 +27,30 @@ public class ConfigurationPusher extends Service {
             if (!bundle.containsKey("content") && bundle.containsKey("tag")) {
                 ConfroidManager.updateTag(this.getApplicationContext(), ConfroidManagerUtils.getPackageName(name), bundle.get("tag").toString(), getLatestVersionNumber(name));
             } else {
-                bundle.putInt("version", getNextVersionNumber(ConfroidManagerUtils.getPackageName(name)));
                 if (name.contains("/")) {
-                    String contentToEdit = name.substring(name.indexOf("/"));
+                    String contentToEdit = name.substring(name.indexOf("/") + 1);
                     name = ConfroidManagerUtils.getPackageName(name);
                     bundle.putString("name", name);
                     ConfroidManager.updateContent(this.getApplicationContext(), bundle, contentToEdit);
+                    this.notifyObservers(name, Integer.valueOf(contentToEdit.substring(0, contentToEdit.indexOf("/"))));
                 } else {
+                    int newVersionNumber = getNextVersionNumber(name);
+                    bundle.putInt("version", newVersionNumber);
                     ConfroidManager.saveConfiguration(this.getApplicationContext(), bundle);
+                    this.notifyObservers(name, newVersionNumber);
                 }
             }
-            this.notifyObservers(name);
         } else {
             Log.e("TokenNotValidException", "Token " + token + " isn't valid!");
         }
         return START_NOT_STICKY;
     }
 
-    private void notifyObservers(String name) {
-        Log.e("name", name);
-        Bundle bundle = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, getLatestVersionNumber(name));
-        Log.e("bundle", bundle.toString());
+    private void notifyObservers(String name, Integer versionNumber) {
+        Bundle bundle = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, versionNumber);
         Intent intent = new Intent();
         intent.putExtra("name", name);
-        intent.putExtra("version", getLatestVersionNumber(name) + "");
+        intent.putExtra("version", versionNumber.toString());
         intent.putExtra("content", bundle.getBundle("content"));
         intent.putExtra("requestId", UPDATE_OBSERVER_REQUEST_ID);
         List<Subscription> observers = OBSERVERS.get(name);

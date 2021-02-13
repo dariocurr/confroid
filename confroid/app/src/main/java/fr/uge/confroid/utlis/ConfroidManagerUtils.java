@@ -122,7 +122,12 @@ public class ConfroidManagerUtils {
     private static JSONObject extractContent(Bundle contentBundle) throws JSONException {
         JSONObject contentJSONObject = new JSONObject();
         for (String key : contentBundle.keySet()) {
-            contentJSONObject.put(key, contentBundle.get(key));
+            Object object = contentBundle.get(key);
+            if (object instanceof Bundle) {
+                contentJSONObject.put(key, extractContent((Bundle) object));
+            } else {
+                contentJSONObject.put(key, object.toString());
+            }
         }
         return contentJSONObject;
     }
@@ -134,7 +139,7 @@ public class ConfroidManagerUtils {
             JSONObject versionsJsonObject = jsonObject.getJSONObject("configurations");
             for (Iterator<String> it = versionsJsonObject.keys(); it.hasNext(); ) {
                 String versionNum = it.next();
-                if(versionsJsonObject.getJSONObject(versionNum).getString("tag").equals(version))
+                if (versionsJsonObject.getJSONObject(versionNum).getString("tag").equals(version))
                     return getVersionFromJsonToBundle(jsonObject.getJSONObject("configurations").getJSONObject(versionNum));
             }
         }
@@ -160,39 +165,6 @@ public class ConfroidManagerUtils {
         return getVersionFromJsonToBundle(jsonObject.getJSONObject("configurations"));
     }
 
-    public static void writeFile(File file, String content) {
-        try {
-            FileWriter fileWriter = new FileWriter(file, false);
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            bufferedWriter.write(content);
-            bufferedWriter.close();
-        } catch (IOException e) {
-            Log.e("IOException", "");
-        }
-    }
-
-    public static String readFile(File file) {
-        try {
-
-            FileReader fileReader = new FileReader(file);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            StringBuilder content = new StringBuilder();
-
-            String line = bufferedReader.readLine();
-            while (line != null) {
-                Log.i("CONTENTFILE", line);
-                content.append(line);
-                line = bufferedReader.readLine();
-            }
-            bufferedReader.close();
-            Log.i("CONTENTFILE", content.toString());
-            return content.toString();
-        } catch (IOException e) {
-            Log.e("IOException", "");
-            return null;
-        }
-    }
-
     public static String getPackageName(String string) {
         String[] fullName = string.split("\\.");
         String lastName = fullName[2];
@@ -211,14 +183,17 @@ public class ConfroidManagerUtils {
     public static JSONObject updateContentFromStringToJson(JSONObject jsonObject, Bundle bundle, String contentToEdit) throws JSONException {
         String[] pathToContent = contentToEdit.split("/");
         String lastKey = pathToContent[pathToContent.length - 1];
-        JSONObject jsonObjectToEdit = jsonObject.getJSONObject("configurations").getJSONObject(pathToContent[1]).getJSONObject("content");
-        if (pathToContent.length > 3) {
-            String[] keys = Arrays.copyOfRange(pathToContent, 1, pathToContent.length - 1);
-            for (String key : keys) {
+        JSONObject jsonObjectToEdit = jsonObject.getJSONObject("configurations").getJSONObject(pathToContent[0]).getJSONObject("content");
+        Log.e("json bject", jsonObjectToEdit.toString());
+        if (pathToContent.length > 2) {
+            String[] innerPath = Arrays.copyOfRange(pathToContent, 0, pathToContent.length - 1);
+            for (String key : innerPath) {
                 jsonObjectToEdit = jsonObjectToEdit.getJSONObject(key);
             }
         }
+        Log.e("json bject", jsonObjectToEdit.toString());
         Bundle contentBundle = bundle.getBundle("content");
+        Log.e("Content Bundle", extractContent(contentBundle).toString());
         jsonObjectToEdit.put(lastKey, extractContent(contentBundle));
         Log.e("JSON", jsonObject.toString());
         return jsonObject;
@@ -228,9 +203,8 @@ public class ConfroidManagerUtils {
         JSONObject configurations = new JSONObject();
         for (String strFile : context.getFilesDir().list()) {
             File file = new File(context.getFilesDir(), strFile);
-
             try {
-                JSONObject jsonObject = new JSONObject(ConfroidManagerUtils.readFile(file));
+                JSONObject jsonObject = new JSONObject(FileUtils.readFile(file));
                 configurations.put(strFile,jsonObject);
             } catch (JSONException e) {
                 Log.e("JSONException", "");

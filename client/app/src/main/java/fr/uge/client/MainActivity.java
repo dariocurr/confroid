@@ -19,8 +19,10 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.saveConfigurationButton).setOnClickListener(ev -> {
             Bundle bundle = new Bundle();
             Bundle contentBundle = new Bundle();
+            Bundle innerContentBundle = new Bundle();
             EditText configurationEditText = findViewById(R.id.configurationEditText);
-            contentBundle.putString("abc", String.valueOf(configurationEditText.getText()));
+            innerContentBundle.putString("a", String.valueOf(configurationEditText.getText()));
+            contentBundle.putBundle("abc", innerContentBundle);
             bundle.putString("name", getPackageName());
             bundle.putString("tag", "latest");
             bundle.putString("token", TokenPuller.getToken(this.getApplicationContext()));
