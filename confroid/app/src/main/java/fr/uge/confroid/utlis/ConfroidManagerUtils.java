@@ -1,5 +1,6 @@
 package fr.uge.confroid.utlis;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -172,15 +173,19 @@ public class ConfroidManagerUtils {
 
     public static String readFile(File file) {
         try {
+
             FileReader fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             StringBuilder content = new StringBuilder();
+
             String line = bufferedReader.readLine();
             while (line != null) {
+                Log.i("CONTENTFILE", line);
                 content.append(line);
                 line = bufferedReader.readLine();
             }
             bufferedReader.close();
+            Log.i("CONTENTFILE", content.toString());
             return content.toString();
         } catch (IOException e) {
             Log.e("IOException", "");
@@ -218,4 +223,24 @@ public class ConfroidManagerUtils {
         Log.e("JSON", jsonObject.toString());
         return jsonObject;
     }
+
+    public static JSONObject getAllConfigurations(Context context){
+        JSONObject configurations = new JSONObject();
+        for (String strFile : context.getFilesDir().list()) {
+            File file = new File(context.getFilesDir(), strFile);
+
+            try {
+                JSONObject jsonObject = new JSONObject(ConfroidManagerUtils.readFile(file));
+                configurations.put(strFile,jsonObject);
+            } catch (JSONException e) {
+                Log.e("JSONException", "");
+                return null;
+            }
+        }
+
+        return configurations;
+    }
+
+
+
 }

@@ -1,19 +1,34 @@
 package fr.uge.confroid;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import fr.uge.confroid.gui.ConfigurationActivity;
 import fr.uge.confroid.gui.MyRecyclerViewAdapter;
+import fr.uge.confroid.utlis.ConfroidManagerUtils;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.*;
+import java.net.URI;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener{
     private MyRecyclerViewAdapter adapter;
+    private static final int CREATE_REQUEST_CODE = 0;
+    private static final int OPEN_REQUEST_CODE = 1;
+    private static final int SAVE_REQUEST_CODE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,198 +41,17 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
             e.printStackTrace();
         }
 
-       /* Bundle bundle = new Bundle();
+        findViewById(R.id.newFileButton).setOnClickListener(ev -> {
+            newFile();
+        });
 
-        bundle.putString("name", "ciao");
-        bundle.putString("tag", "TAG");
-        bundle.putString("token", "1");
-        bundle.putString("version", "1");
-        Bundle contentBundle = new Bundle();
-        contentBundle.putString("configuration", "conf1");
-        bundle.putBundle("content", contentBundle);
+        findViewById(R.id.exportConfigurationsButton).setOnClickListener(ev -> {
+            saveFile();
+        });
 
-        ConfroidManager.saveConfiguration(this.getApplicationContext(), bundle);
-
-        bundle = new Bundle();
-
-        bundle.putString("name", "ciao");
-        bundle.putString("tag", "TAG");
-        bundle.putString("token", "1");
-        bundle.putString("version", "2");
-        contentBundle = new Bundle();
-        contentBundle.putString("configuration", "conf2");
-        bundle.putBundle("content", contentBundle);
-
-        ConfroidManager.saveConfiguration(this.getApplicationContext(), bundle);
-
-        Bundle resultBundle = ConfroidManager.loadConfiguration(this.getApplicationContext(), "ciao", "2");
-        Log.i("resultBundle", resultBundle.toString());*/
-        /*
-        HashMap<String, List<String>> content = new HashMap<>();
-
-        ArrayList<String> values = new ArrayList<>();
-        values.add("configurazione1");
-        values.add("configurazione2");
-        values.add("configurazione3");
-        content.put("confs", values);
-
-        Intent intentPush = new Intent(getApplicationContext(), ConfroidManager.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("name", "fr.uge.calculator");
-        bundle.putString("token", "1");
-        bundle.putBundle("content", ConfroidUtils.toBundle(content));
-
-        intentPush.putExtra("bundle", bundle);
-
-        try {
-            ConfigurationPusher.pushConfiguration(getApplicationContext(), intentPush);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-        HashMap<String, List<String>> content2 = new HashMap<>();
-
-        ArrayList<String> values2 = new ArrayList<>();
-        values2.add("configurazione1");
-        values2.add("configurazione2");
-        values2.add("configurazione3");
-        content2.put("confs", values2);
-
-        Intent intentPush2 = new Intent(getApplicationContext(), ConfroidManager.class);
-        Bundle bundle2 = new Bundle();
-        bundle2.putString("name", "fr.uge.ciao");
-        bundle2.putString("token", "1");
-        bundle2.putBundle("content", ConfroidUtils.toBundle(content2));
-
-        intentPush2.putExtra("bundle", bundle2);
-
-        try {
-            ConfigurationPusher.pushConfiguration(getApplicationContext(), intentPush2);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-        Intent intent = new Intent();
-        intent.putExtra("name", "fr.uge.calculator");
-        intent.putExtra("token", "1");
-        intent.putExtra("requestId", "1");
-        intent.putExtra("version", "1");
-        intent.putExtra("receiver", "fr.uge.client.MainActivity");
-        intent.putExtra("expiration", 10);
-
-        //TODO
-        try {
-            ConfigurationPuller.pullConfiguration(getApplicationContext(), intent);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            ConfroidManager.loadAllConfigurationNames(this.getApplicationContext());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        /*
-        initRecyclerView();
-
-        HashMap<String, List<String>> content = new HashMap<>();
-
-        ArrayList<String> values = new ArrayList<>();
-        values.add("configurazione1");
-        values.add("configurazione2");
-        values.add("configurazione3");
-        content.put("confs", values);
-
-        Intent intent = new Intent(getApplicationContext(), ConfroidManager.class);
-        intent.putExtra("name", "shoppingInfos");
-        intent.putExtra("content", ConfroidUtils.toBundle(content));
-
-        ConfigurationPusher configurationPusher = new ConfigurationPusher();
-        configurationPusher.pushConfiguration(getApplicationContext(), intent);
-
-        */
-
-        /*HashMap<String, List<String>> content = new HashMap<>();
-        ArrayList<String> c = new ArrayList<>();
-        c.add("content");
-        content.put("1", c);
-        Intent intent = new Intent(getApplicationContext(), ConfroidManager.class);
-        intent.putExtra("name", "ciao");
-        intent.putExtra("content", ConfroidUtils.toBundle(content));
-
-        ConfigurationPusher configurationPusher = new ConfigurationPusher();
-        configurationPusher.pushConfiguration(getApplicationContext(), intent);
-
-
-        Intent intent1 = new Intent(getApplicationContext(), this.getClass());
-        intent1.putExtra("name", "ciao");
-        intent1.putExtra("requestId", "1");
-        intent1.putExtra("version", "3");
-        intent1.putExtra("receiver", "fr.uge.confroid.MainActivity");
-        intent1.putExtra("expiration", "1");
-
-        ConfigurationPuller configurationPuller = new ConfigurationPuller();
-        Intent receive = new Intent();
-        //TODO
-        try {
-            receive = configurationPuller.pullConfiguration(getApplicationContext(), intent1);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Log.i("receive1", "name = " + receive.getStringExtra("name"));
-        Log.i("receive1", "requestID = " + receive.getStringExtra("requestId"));
-        Log.i("receive1", "version = " + receive.getStringExtra("version"));
-
-        Bundle contentBundle = receive.getBundleExtra("content");
-        for (String key: contentBundle.keySet())
-        {
-            Log.i("receive1", key + " = \"" + contentBundle.get(key) + "\"");
-        }
-
-
-        Intent intent2 = new Intent(getApplicationContext(), this.getClass());
-
-        intent2.putExtra("name", "ciao");
-        intent2.putExtra("requestId", "1");
-        intent2.putExtra("receiver", "fr.uge.confroid.MainActivity");
-
-        ConfigurationVersions configurationVersions = new ConfigurationVersions();
-        Intent receive1 = new Intent();
-        try {
-            receive1 = configurationVersions.loadVersions(getApplicationContext(), intent2);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Log.i("receive2", "name = " + receive1.getStringExtra("name"));
-        Log.i("receive2", "requestID = " + receive1.getStringExtra("requestId"));
-
-        Bundle contentBundle1 = receive1.getBundleExtra("content");
-        for (String key: contentBundle1.keySet())
-        {
-            Log.i("receive2", key + " = \"" + contentBundle1.get(key) + "\"");
-        }*/
-
-
-
-
-        /* TEST SQLITE DB SAVE AND LOAD A CONFIGURATION */
-        /*ArrayList<Map<String, Object>> content = new ArrayList<>();
-        HashMap<String, Object> entry = new HashMap<>();
-        entry.put("1", "ciao");
-        content.add(entry);
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("1", content);
-
-         */
-
-        //ConfroidUtils.saveConfiguration(getApplicationContext(), "fr.uge.calculator", map, "0");
-
-        //ConfroidUtils.loadConfiguration(getApplicationContext(), "fr.uge.calculator", "0", null);
+        findViewById(R.id.importConfigurationsButton).setOnClickListener(ev -> {
+            openFile();
+        });
     }
 
     private void initRecyclerView() throws JSONException {
@@ -242,5 +76,100 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         intent.putExtras(conf);
         startActivity(intent);
     }
+
+    public void newFile() {
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("application/json");
+        intent.putExtra(Intent.EXTRA_TITLE, ".json");
+
+        startActivityForResult(intent, CREATE_REQUEST_CODE);
+    }
+
+    public void saveFile() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("application/json");
+
+        startActivityForResult(intent, SAVE_REQUEST_CODE);
+    }
+
+    public void openFile()
+    {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("application/json");
+        startActivityForResult(intent, OPEN_REQUEST_CODE);
+    }
+
+
+    public void onActivityResult(int requestCode, int resultCode,
+                                 Intent resultData) {
+        Uri currentUri = null;
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == CREATE_REQUEST_CODE) {
+                if (resultData != null) {
+                }
+            } else if (requestCode == SAVE_REQUEST_CODE) {
+                if (resultData != null) {
+                    currentUri = resultData.getData();
+                    writeFileContent(currentUri);
+                }
+            } else if (requestCode == OPEN_REQUEST_CODE) {
+
+                if (resultData != null) {
+                    currentUri = resultData.getData();
+                    try {
+                        String content = readFileContent(currentUri);
+                    } catch (IOException e) {
+                        // Handle error here
+                    }
+                }
+            }
+        }
+    }
+
+    public void writeFileContent(Uri uri){
+        try{
+            ParcelFileDescriptor pfd =
+                    getContentResolver().
+                            openFileDescriptor(uri, "w");
+
+            FileOutputStream fileOutputStream =
+                    new FileOutputStream(
+                            pfd.getFileDescriptor());
+
+
+            JSONObject configurationsJsonObject = ConfroidManagerUtils.getAllConfigurations(this.getApplicationContext());;
+
+            fileOutputStream.write(configurationsJsonObject.toString().getBytes());
+
+            fileOutputStream.close();
+            pfd.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String readFileContent(Uri uri) throws IOException {
+        InputStream in = getContentResolver().openInputStream(uri);
+
+
+        BufferedReader r = new BufferedReader(new InputStreamReader(in));
+        StringBuilder total = new StringBuilder();
+        for (String line; (line = r.readLine()) != null; ) {
+            total.append(line).append('\n');
+        }
+
+        String content = total.toString();
+
+
+        return content;
+    }
+
 
 }
