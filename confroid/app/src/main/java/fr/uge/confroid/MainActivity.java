@@ -42,14 +42,8 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        /*
-        findViewById(R.id.newFileButton).setOnClickListener(ev -> {
-            newFile();
-        });
-        */
 
         findViewById(R.id.exportConfigurationsButton).setOnClickListener(ev -> {
-            //saveFile();
             createAndSaveFile();
         });
 
@@ -70,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         recyclerView.setAdapter(adapter);
     }
 
-
     @Override
     public void onItemClick(View view, int position) {
         //Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
@@ -81,106 +74,68 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         startActivity(intent);
     }
 
-    /*
-    public void newFile() {
-        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("application/json");
-        intent.putExtra(Intent.EXTRA_TITLE, ".json");
-        startActivityForResult(intent, CREATE_REQUEST_CODE);
-    }
-     */
-
     private void createAndSaveFile() {
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("application/json");
         intent.putExtra(Intent.EXTRA_TITLE, "confroid_configurations.json");
-        startActivityForResult(intent, OPEN_REQUEST_CODE);
+        startActivityForResult(intent, CREATE_REQUEST_CODE);
     }
 
-    public void openFile()
-    {
+    public void openFile() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("application/json");
+        // Surprisingly, old Android versions does NOT support "application/json"
+        intent.setType("application/octet-stream");
         startActivityForResult(intent, OPEN_REQUEST_CODE);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        //super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent resultData) {
+        super.onActivityResult(requestCode, resultCode, resultData);
+        if (requestCode == CREATE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                try {
-                    Uri uri = data.getData();
-                    OutputStream outputStream = getContentResolver().openOutputStream(uri);
-                    JSONObject configurationsJsonObject = ConfroidManager.getAllConfigurations(this.getApplicationContext());
-                    outputStream.write(configurationsJsonObject.toString().getBytes());
-                    outputStream.close();
-                    Toast.makeText(this, "Write file successfully", Toast.LENGTH_SHORT).show();
-                } catch (IOException e) {
-                    Toast.makeText(this, "Fail to write file", Toast.LENGTH_SHORT).show();
-                }
+                writeFileContent(resultData.getData());
+                Toast.makeText(this, "Write file successfully!", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "File not saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "File not saved!", Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == OPEN_REQUEST_CODE) {
+            if (resultData != null) {
+                String content = readFileContent(resultData.getData());
+                Log.e("backup content", content);
+                // TODO restoreConfigurationsFromString
             }
         }
     }
-
-    /*
-    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
-        if (resultCode == Activity.RESULT_OK) {
-            Uri currentUri = null;
-            if (requestCode == SAVE_REQUEST_CODE) {
-                if (resultData != null) {
-                    currentUri = resultData.getData();
-                    writeFileContent(currentUri);
-                }
-            } else if (requestCode == OPEN_REQUEST_CODE) {
-                if (resultData != null) {
-                    currentUri = resultData.getData();
-                    try {
-                        String content = readFileContent(currentUri);
-                    } catch (IOException e) {
-                        // Handle error here
-                    }
-                }
-            }
-        }
-    }
-    */
 
     public void writeFileContent(Uri uri) {
-        try{
-            ParcelFileDescriptor pfd = getContentResolver().openFileDescriptor(uri, "w");
-
-            FileOutputStream fileOutputStream = new FileOutputStream(pfd.getFileDescriptor());
-
-
+        try {
+            OutputStream outputStream = getContentResolver().openOutputStream(uri);
             JSONObject configurationsJsonObject = ConfroidManager.getAllConfigurations(this.getApplicationContext());
-
-            fileOutputStream.write(configurationsJsonObject.toString().getBytes());
-
-            fileOutputStream.close();
-            pfd.close();
+            outputStream.write(configurationsJsonObject.toString().getBytes());
+            outputStream.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Log.e("FileNotFoundException", "");
         } catch (IOException e) {
-            e.printStackTrace();
+            Toast.makeText(this, "Fail to write file!", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private String readFileContent(Uri uri) throws IOException {
-        InputStream in = getContentResolver().openInputStream(uri);
-        BufferedReader r = new BufferedReader(new InputStreamReader(in));
-        StringBuilder total = new StringBuilder();
-        for (String line; (line = r.readLine()) != null; ) {
-            total.append(line).append('\n');
+    private String readFileContent(Uri uri) {
+        try{
+            InputStream in = getContentResolver().openInputStream(uri);
+            BufferedReader r = new BufferedReader(new InputStreamReader(in));
+            StringBuilder total = new StringBuilder();
+            for (String line; (line = r.readLine()) != null; ) {
+                total.append(line).append('\n');
+            }
+            String content = total.toString();
+            return content;
+        } catch (IOException e) {
+            Toast.makeText(this, "Fail to read file!", Toast.LENGTH_SHORT).show();
+            return null;
         }
-        String content = total.toString();
-        return content;
     }
-
 
 }

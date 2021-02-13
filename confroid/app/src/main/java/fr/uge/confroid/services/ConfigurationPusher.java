@@ -43,7 +43,7 @@ public class ConfigurationPusher extends Service {
         } else {
             Log.e("TokenNotValidException", "Token " + token + " isn't valid!");
         }
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
     private void notifyObservers(String name, Integer versionNumber) {
