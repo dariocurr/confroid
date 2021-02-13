@@ -5,6 +5,7 @@ import android.util.Log;
 import java.io.*;
 
 public class FileUtils {
+
     public static void writeFile(File file, String content) {
         try {
             FileWriter fileWriter = new FileWriter(file, false);

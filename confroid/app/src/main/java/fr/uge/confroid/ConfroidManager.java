@@ -110,4 +110,19 @@ public class ConfroidManager {
         }
     }
 
+    public static JSONObject getAllConfigurations(Context context) {
+        JSONObject configurations = new JSONObject();
+        for (String strFile : context.getFilesDir().list()) {
+            File file = new File(context.getFilesDir(), strFile);
+            try {
+                JSONObject jsonObject = new JSONObject(FileUtils.readFile(file));
+                configurations.put(strFile,jsonObject);
+            } catch (JSONException e) {
+                Log.e("JSONException", "");
+                return null;
+            }
+        }
+        return configurations;
+    }
+
 }

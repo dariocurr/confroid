@@ -184,37 +184,16 @@ public class ConfroidManagerUtils {
         String[] pathToContent = contentToEdit.split("/");
         String lastKey = pathToContent[pathToContent.length - 1];
         JSONObject jsonObjectToEdit = jsonObject.getJSONObject("configurations").getJSONObject(pathToContent[0]).getJSONObject("content");
-        Log.e("json bject", jsonObjectToEdit.toString());
         if (pathToContent.length > 2) {
             String[] innerPath = Arrays.copyOfRange(pathToContent, 0, pathToContent.length - 1);
             for (String key : innerPath) {
                 jsonObjectToEdit = jsonObjectToEdit.getJSONObject(key);
             }
         }
-        Log.e("json bject", jsonObjectToEdit.toString());
         Bundle contentBundle = bundle.getBundle("content");
-        Log.e("Content Bundle", extractContent(contentBundle).toString());
         jsonObjectToEdit.put(lastKey, extractContent(contentBundle));
         Log.e("JSON", jsonObject.toString());
         return jsonObject;
     }
-
-    public static JSONObject getAllConfigurations(Context context){
-        JSONObject configurations = new JSONObject();
-        for (String strFile : context.getFilesDir().list()) {
-            File file = new File(context.getFilesDir(), strFile);
-            try {
-                JSONObject jsonObject = new JSONObject(FileUtils.readFile(file));
-                configurations.put(strFile,jsonObject);
-            } catch (JSONException e) {
-                Log.e("JSONException", "");
-                return null;
-            }
-        }
-
-        return configurations;
-    }
-
-
 
 }

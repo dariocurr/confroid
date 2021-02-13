@@ -40,10 +40,11 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        /*
         findViewById(R.id.newFileButton).setOnClickListener(ev -> {
             newFile();
         });
+        */
 
         findViewById(R.id.exportConfigurationsButton).setOnClickListener(ev -> {
             saveFile();
@@ -77,22 +78,26 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         startActivity(intent);
     }
 
+    /*
     public void newFile() {
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("application/json");
         intent.putExtra(Intent.EXTRA_TITLE, ".json");
-
         startActivityForResult(intent, CREATE_REQUEST_CODE);
     }
+     */
 
     public void saveFile() {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("application/json");
-
-        startActivityForResult(intent, SAVE_REQUEST_CODE);
+        Intent createIntent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        createIntent.setType("application/json");
+        createIntent.addCategory(Intent.CATEGORY_OPENABLE);
+        Intent saveIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        saveIntent.setType("application/json");
+        saveIntent.addCategory(Intent.CATEGORY_OPENABLE);
+        createIntent.putExtra(Intent.EXTRA_TITLE, "confroid_configurations.json");
+        startActivityForResult(createIntent, CREATE_REQUEST_CODE);
+        startActivityForResult(saveIntent, SAVE_REQUEST_CODE);
     }
 
     public void openFile()
@@ -104,21 +109,15 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
     }
 
 
-    public void onActivityResult(int requestCode, int resultCode,
-                                 Intent resultData) {
-        Uri currentUri = null;
-
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == CREATE_REQUEST_CODE) {
-                if (resultData != null) {
-                }
-            } else if (requestCode == SAVE_REQUEST_CODE) {
+            Uri currentUri = null;
+            if (requestCode == SAVE_REQUEST_CODE) {
                 if (resultData != null) {
                     currentUri = resultData.getData();
                     writeFileContent(currentUri);
                 }
             } else if (requestCode == OPEN_REQUEST_CODE) {
-
                 if (resultData != null) {
                     currentUri = resultData.getData();
                     try {
@@ -131,18 +130,14 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         }
     }
 
-    public void writeFileContent(Uri uri){
+    public void writeFileContent(Uri uri) {
         try{
-            ParcelFileDescriptor pfd =
-                    getContentResolver().
-                            openFileDescriptor(uri, "w");
+            ParcelFileDescriptor pfd = getContentResolver().openFileDescriptor(uri, "w");
 
-            FileOutputStream fileOutputStream =
-                    new FileOutputStream(
-                            pfd.getFileDescriptor());
+            FileOutputStream fileOutputStream = new FileOutputStream(pfd.getFileDescriptor());
 
 
-            JSONObject configurationsJsonObject = ConfroidManagerUtils.getAllConfigurations(this.getApplicationContext());;
+            JSONObject configurationsJsonObject = ConfroidManager.getAllConfigurations(this.getApplicationContext());;
 
             fileOutputStream.write(configurationsJsonObject.toString().getBytes());
 
@@ -157,17 +152,12 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
 
     private String readFileContent(Uri uri) throws IOException {
         InputStream in = getContentResolver().openInputStream(uri);
-
-
         BufferedReader r = new BufferedReader(new InputStreamReader(in));
         StringBuilder total = new StringBuilder();
         for (String line; (line = r.readLine()) != null; ) {
             total.append(line).append('\n');
         }
-
         String content = total.toString();
-
-
         return content;
     }
 

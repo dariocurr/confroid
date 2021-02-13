@@ -19,12 +19,9 @@ public class ConfigurationVersions extends Service {
         if (TokenDispenser.getToken(ConfroidManagerUtils.getPackageName(name)).equalsIgnoreCase(token)) {
             String requestId = incomingIntent.getStringExtra("requestId");
             String receiver = incomingIntent.getStringExtra("receiver");
-
             Intent outgoingIntent = new Intent();
             Bundle content;
             content = ConfroidManager.loadAllConfigurations(this.getApplicationContext(), name);
-
-
             outgoingIntent.putExtra("name", name);
             outgoingIntent.putExtra("requestId", requestId);
             outgoingIntent.putExtra("versions", content);
