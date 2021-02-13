@@ -10,6 +10,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -47,7 +49,8 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         */
 
         findViewById(R.id.exportConfigurationsButton).setOnClickListener(ev -> {
-            saveFile();
+            //saveFile();
+            createAndSaveFile();
         });
 
         findViewById(R.id.importConfigurationsButton).setOnClickListener(ev -> {
@@ -88,16 +91,12 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
     }
      */
 
-    public void saveFile() {
-        Intent createIntent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-        createIntent.setType("application/json");
-        createIntent.addCategory(Intent.CATEGORY_OPENABLE);
-        Intent saveIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        saveIntent.setType("application/json");
-        saveIntent.addCategory(Intent.CATEGORY_OPENABLE);
-        createIntent.putExtra(Intent.EXTRA_TITLE, "confroid_configurations.json");
-        startActivityForResult(createIntent, CREATE_REQUEST_CODE);
-        startActivityForResult(saveIntent, SAVE_REQUEST_CODE);
+    private void createAndSaveFile() {
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("application/json");
+        intent.putExtra(Intent.EXTRA_TITLE, "confroid_configurations.json");
+        startActivityForResult(intent, OPEN_REQUEST_CODE);
     }
 
     public void openFile()
@@ -108,7 +107,28 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         startActivityForResult(intent, OPEN_REQUEST_CODE);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                try {
+                    Uri uri = data.getData();
+                    OutputStream outputStream = getContentResolver().openOutputStream(uri);
+                    JSONObject configurationsJsonObject = ConfroidManager.getAllConfigurations(this.getApplicationContext());
+                    outputStream.write(configurationsJsonObject.toString().getBytes());
+                    outputStream.close();
+                    Toast.makeText(this, "Write file successfully", Toast.LENGTH_SHORT).show();
+                } catch (IOException e) {
+                    Toast.makeText(this, "Fail to write file", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, "File not saved", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
+    /*
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         if (resultCode == Activity.RESULT_OK) {
             Uri currentUri = null;
@@ -129,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
             }
         }
     }
+    */
 
     public void writeFileContent(Uri uri) {
         try{
@@ -137,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
             FileOutputStream fileOutputStream = new FileOutputStream(pfd.getFileDescriptor());
 
 
-            JSONObject configurationsJsonObject = ConfroidManager.getAllConfigurations(this.getApplicationContext());;
+            JSONObject configurationsJsonObject = ConfroidManager.getAllConfigurations(this.getApplicationContext());
 
             fileOutputStream.write(configurationsJsonObject.toString().getBytes());
 
