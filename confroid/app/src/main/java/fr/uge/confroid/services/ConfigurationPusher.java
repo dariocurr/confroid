@@ -23,6 +23,8 @@ public class ConfigurationPusher extends Service {
         Bundle bundle = intent.getBundleExtra("bundle");
         String name = bundle.getString("name");
         String token = bundle.getString("token");
+        Log.e("token1", TokenDispenser.getToken(ConfroidManagerUtils.getPackageName(name)));
+        Log.e("token2", token);
         if (TokenDispenser.getToken(ConfroidManagerUtils.getPackageName(name)).equalsIgnoreCase(token)) {
             if (!bundle.containsKey("content") && bundle.containsKey("tag")) {
                 ConfroidManager.updateTag(this.getApplicationContext(), ConfroidManagerUtils.getPackageName(name), bundle.get("tag").toString(), getLatestVersionNumber(name));
