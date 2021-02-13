@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import fr.uge.confroid.utlis.ConfroidManagerUtils;
+import fr.uge.confroid.utlis.FileUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,10 +29,10 @@ public class ConfroidManager {
         File file = new File(context.getFilesDir(), bundle.getString("name").replaceAll("\\.", "_") + ".json");
         try {
             if (!file.exists()) {
-                ConfroidManagerUtils.writeFile(file, ConfroidManagerUtils.fromBundleToJson(bundle).toString());
+                FileUtils.writeFile(file, ConfroidManagerUtils.fromBundleToJson(bundle).toString());
             } else {
-                JSONObject oldJsonObject = new JSONObject(ConfroidManagerUtils.readFile(file));
-                ConfroidManagerUtils.writeFile(file, ConfroidManagerUtils.addVersionFromBundleToJson(oldJsonObject, bundle).toString());
+                JSONObject oldJsonObject = new JSONObject(FileUtils.readFile(file));
+                FileUtils.writeFile(file, ConfroidManagerUtils.addVersionFromBundleToJson(oldJsonObject, bundle).toString());
             }
             return true;
         } catch (JSONException e) {
@@ -44,7 +45,7 @@ public class ConfroidManager {
         /* LOAD FROM JSON FILE */
         File file = new File(context.getFilesDir(), name.replaceAll("\\.", "_") + ".json");
         try {
-            JSONObject jsonObject = new JSONObject(ConfroidManagerUtils.readFile(file));
+            JSONObject jsonObject = new JSONObject(FileUtils.readFile(file));
             return ConfroidManagerUtils.getVersionFromJsonToBundle(jsonObject, version);
         } catch (JSONException e) {
             Log.e("JSONException", "");
@@ -67,7 +68,7 @@ public class ConfroidManager {
         //***** LOAD FROM JSON FILE *****/
         File file = new File(context.getFilesDir(), name.replaceAll("\\.", "_") + ".json");
         try {
-            JSONObject jsonObject = new JSONObject(ConfroidManagerUtils.readFile(file));
+            JSONObject jsonObject = new JSONObject(FileUtils.readFile(file));
             Bundle versionsBundle = ConfroidManagerUtils.getAllVersionsFromJsonToBundle(jsonObject);
             Log.i("loadVersions", name);
             Log.i("loadVersions", versionsBundle.toString());
@@ -82,8 +83,8 @@ public class ConfroidManager {
         File file = new File(context.getFilesDir(), name.replaceAll("\\.", "_") + ".json");
         try {
             if (file.exists()) {
-                JSONObject jsonObject = new JSONObject(ConfroidManagerUtils.readFile(file));
-                ConfroidManagerUtils.writeFile(file,
+                JSONObject jsonObject = new JSONObject(FileUtils.readFile(file));
+                FileUtils.writeFile(file,
                         ConfroidManagerUtils.updateTagFromStringToJson(jsonObject, newTag, latestVersion.toString()).toString());
                 return true;
             }
@@ -98,9 +99,8 @@ public class ConfroidManager {
         File file = new File(context.getFilesDir(), bundle.getString("name").replaceAll("\\.", "_") + ".json");
         try {
             if (file.exists()) {
-                JSONObject jsonObject = new JSONObject(ConfroidManagerUtils.readFile(file));
-                ConfroidManagerUtils.writeFile(file,
-                        ConfroidManagerUtils.updateContentFromStringToJson(jsonObject, bundle, contentToEdit).toString());
+                JSONObject jsonObject = new JSONObject(FileUtils.readFile(file));
+                FileUtils.writeFile(file, ConfroidManagerUtils.updateContentFromStringToJson(jsonObject, bundle, contentToEdit).toString());
                 return true;
             }
             return false;
