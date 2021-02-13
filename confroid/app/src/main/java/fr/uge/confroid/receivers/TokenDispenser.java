@@ -5,37 +5,32 @@ import android.content.Context;
 import android.content.Intent;
 import fr.uge.confroid.utlis.ConfroidManagerUtils;
 
-import java.util.*;
-
 public class TokenDispenser extends BroadcastReceiver {
 
     private static final int TOKEN_LENGTH = 20;
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private static final Map<String, String>  DISPENSED_TOKENS = new HashMap<>();
 
-    private static String getRandomToken(int count) {
+    public static String getToken(String receiver) {
         String token = "";
+        int count = TOKEN_LENGTH;
+        Integer randomNumber = receiver.hashCode();
         while (count-- > 0) {
-            token += (CHARACTERS.charAt((int)(Math.random() * CHARACTERS.length())));
+            randomNumber = Math.abs((randomNumber + "").hashCode() % CHARACTERS.length());
+            token += CHARACTERS.charAt(randomNumber);
         }
         return token;
-    }
-
-    public static String getToken(String key) {
-        return DISPENSED_TOKENS.get(key);
     }
 
     @Override
     public void onReceive(Context context, Intent incomingIntent) {
         String receiver = incomingIntent.getStringExtra("receiver");
         String packageName = ConfroidManagerUtils.getPackageName(receiver);
-        if (!DISPENSED_TOKENS.keySet().contains(packageName)) {
-            DISPENSED_TOKENS.put(packageName, getRandomToken(TOKEN_LENGTH));
-        }
         Intent outgoingIntent = new Intent();
         outgoingIntent.setClassName(packageName, receiver);
-        outgoingIntent.putExtra("token", DISPENSED_TOKENS.get(packageName));
+        outgoingIntent.putExtra("token", getToken(receiver));
         context.startService(outgoingIntent);
     }
+
+
 
 }

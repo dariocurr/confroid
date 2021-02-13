@@ -1,7 +1,6 @@
 package fr.uge.client.services;
 
 import android.app.Service;
-import android.content.ContentProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
@@ -15,6 +14,7 @@ public class TokenPuller extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         TOKEN = intent.getStringExtra("token");
+        Log.e("TOKEN", TOKEN);
         return START_NOT_STICKY;
     }
 
