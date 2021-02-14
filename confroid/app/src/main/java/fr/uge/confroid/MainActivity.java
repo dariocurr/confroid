@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -45,13 +47,6 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
             e.printStackTrace();
         }
 
-        findViewById(R.id.exportConfigurationsButton).setOnClickListener(ev -> {
-            createAndSaveFile();
-        });
-
-        findViewById(R.id.importConfigurationsButton).setOnClickListener(ev -> {
-            openFile();
-        });
     }
 
     private void initRecyclerView() throws JSONException {
@@ -105,6 +100,29 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         // Surprisingly, old Android versions does NOT support "application/json"
         intent.setType("*/*");
         startActivityForResult(intent, OPEN_REQUEST_CODE);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.import_item:
+                openFile();
+                return true;
+
+            case R.id.export_item:
+                createAndSaveFile();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
     @Override
