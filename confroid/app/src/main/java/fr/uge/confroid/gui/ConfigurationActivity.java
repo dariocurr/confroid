@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ConfigurationActivity extends AppCompatActivity {
     private Spinner dropdownMenu;
@@ -48,6 +49,7 @@ public class ConfigurationActivity extends AppCompatActivity {
             JSONObject content = configuration.getJSONObject("configurations");
             ArrayList<String> items = new ArrayList<>();
             content.keys().forEachRemaining(items::add);
+            Collections.reverse(items);
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
             dropdownMenu.setAdapter(adapter);
 
@@ -106,7 +108,7 @@ public class ConfigurationActivity extends AppCompatActivity {
         try {
             JSONObject upload = new JSONObject();
             upload.put("name", getIntent().getExtras().getString("EXTRA_TEST_STRING"));
-            upload.put("version", ConfigurationPusher.getNextVersionNumber(getIntent().getExtras().getString("EXTRA_TEST_STRING"))+1);
+            upload.put("version", ConfigurationPusher.getNextVersionNumber(getIntent().getExtras().getString("EXTRA_TEST_STRING")));
             upload.put("content", new JSONObject(contentText.getText().toString()));
 
             if(ConfroidManager.saveConfiguration(this, upload)) {
@@ -119,6 +121,9 @@ public class ConfigurationActivity extends AppCompatActivity {
         }
 
         dialog.dismiss();
+
+        finish();
+        startActivity(getIntent());
 
     }
 
