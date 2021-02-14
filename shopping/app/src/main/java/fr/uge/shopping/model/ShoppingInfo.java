@@ -1,4 +1,4 @@
-package fr.uge.client.model;
+package fr.uge.shopping.model;
 
 public class ShoppingInfo {
 
