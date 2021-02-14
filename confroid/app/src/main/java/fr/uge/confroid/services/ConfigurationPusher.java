@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import fr.uge.confroid.ConfroidManager;
-import fr.uge.confroid.MainActivity;
 import fr.uge.confroid.receivers.TokenDispenser;
 import fr.uge.confroid.utlis.ConfroidManagerUtils;
 
