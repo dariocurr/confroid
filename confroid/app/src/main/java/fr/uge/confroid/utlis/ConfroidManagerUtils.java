@@ -108,8 +108,10 @@ public class ConfroidManagerUtils {
 
     public static JSONObject addVersionFromJsonToJson(JSONObject jsonObject, JSONObject newVersionJsonObject) throws JSONException {
         JSONObject configurationsJsonObject = jsonObject.getJSONObject("configurations");
-        configurationsJsonObject.put(newVersionJsonObject.getInt("version") + "",
-                newVersionJsonObject.getJSONObject("content"));
+        JSONObject contentJsonObject = new JSONObject();
+        contentJsonObject.put("date", new Date());
+        contentJsonObject.put("content", newVersionJsonObject.getJSONObject("content"));
+        configurationsJsonObject.put(newVersionJsonObject.getInt("version") + "", contentJsonObject);
         return jsonObject;
     }
 

@@ -106,7 +106,6 @@ public class ConfigurationActivity extends AppCompatActivity {
         try {
             JSONObject upload = new JSONObject();
             upload.put("name", getIntent().getExtras().getString("EXTRA_TEST_STRING"));
-            Log.i("add123", "version "+ConfigurationPusher.getNextVersionNumber(getIntent().getExtras().getString("EXTRA_TEST_STRING")));
             upload.put("version", ConfigurationPusher.getNextVersionNumber(getIntent().getExtras().getString("EXTRA_TEST_STRING"))+1);
             upload.put("content", new JSONObject(contentText.getText().toString()));
 
