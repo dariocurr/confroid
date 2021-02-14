@@ -61,8 +61,14 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         recyclerView.setAdapter(adapter);
     }
 
+    private void refreshConfigurationsList() {
+        adapter.setData(ConfroidManager.loadAllConfigurationsNames(this.getApplicationContext()));
+        adapter.notifyDataSetChanged();
+    }
+
     @Override
     protected void onResume() {
+        refreshConfigurationsList();
         super.onResume();
     }
 
@@ -119,6 +125,10 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
                 createAndSaveFile();
                 return true;
 
+            case R.id.refresh_item:
+                refreshConfigurationsList();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
 
@@ -131,9 +141,9 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         if (requestCode == CREATE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 writeFileContent(resultData.getData());
-                Toast.makeText(this, "Write file successfully!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.saved_successfully), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "File not saved!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.file_not_saved), Toast.LENGTH_SHORT).show();
             }
         } else if (requestCode == OPEN_REQUEST_CODE) {
             if (resultData != null) {
