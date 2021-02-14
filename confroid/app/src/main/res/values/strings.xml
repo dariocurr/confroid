@@ -7,4 +7,8 @@
     <string name="done">Done</string>
     <string name="submit_error">An error occured during saving</string>
     <string name="created_on">Created on</string>
+    <string name="button_import">Import</string>
+    <string name="button_export">Export</string>
+    <string name="saved_successfully">File exported successfully</string>
+    <string name="file_not_saved">An error occured during export</string>
 </resources>
