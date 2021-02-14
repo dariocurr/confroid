@@ -45,6 +45,9 @@ public class ConfigurationPuller extends Service {
         } else {
             Log.e("TokenNotValidException","Token " + token + " isn't valid!");
         }
+
+        stopSelf();
+
         return START_STICKY;
     }
 

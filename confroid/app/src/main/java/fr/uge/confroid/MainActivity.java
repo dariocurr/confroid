@@ -19,11 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import fr.uge.confroid.gui.ConfigurationActivity;
 import fr.uge.confroid.gui.MyRecyclerViewAdapter;
 import fr.uge.confroid.utlis.ConfroidManagerUtils;
+import fr.uge.confroid.utlis.FileUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
 import java.net.URI;
+import java.util.Iterator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener{
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Log.i("ONCREATE", "ON CREATE");
 
         try {
             initRecyclerView();
@@ -86,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         // Surprisingly, old Android versions does NOT support "application/json"
-        intent.setType("application/octet-stream");
+        intent.setType("*/*");
         startActivityForResult(intent, OPEN_REQUEST_CODE);
     }
 
@@ -105,6 +109,36 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
                 String content = readFileContent(resultData.getData());
                 Log.e("backup content", content);
                 // TODO restoreConfigurationsFromString
+                try {
+
+                    JSONObject configurations = new JSONObject(content);
+                    Log.i("CONFIGURATI", configurations.toString());
+                    for (Iterator<String> it = configurations.keys(); it.hasNext(); ) {
+                        String key = it.next();
+                        JSONObject jsonObject = configurations.getJSONObject(key);
+
+                        Bundle contentBundle = ConfroidManagerUtils.getAllVersionsFromJsonToBundle(jsonObject);
+                        //bundle.putBundle("content", contentBundle);
+                        Log.i("CONFIGURATI", contentBundle.toString());
+
+                        for(String keyBundle : contentBundle.keySet()){
+                            Bundle bundle = new Bundle();
+                            Bundle versionBundle = new Bundle();
+                            bundle.putString("name", jsonObject.getString("name"));
+                            bundle.putString("token", jsonObject.getString("token"));
+                            bundle.putInt("version", Integer.parseInt(keyBundle));
+
+                            bundle.putBundle("content", contentBundle.getBundle(keyBundle));
+
+                            ConfroidManager.saveConfiguration(this.getApplicationContext(), bundle);
+                        }
+                        finish();
+                        startActivity(getIntent());
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
         }
     }

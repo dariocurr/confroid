@@ -27,10 +27,13 @@ public class ConfroidManager {
     public static boolean saveConfiguration(Context context, Bundle bundle) {
         /* SAVE TO JSON FILE */
         File file = new File(context.getFilesDir(), bundle.getString("name").replaceAll("\\.", "_") + ".json");
+        Log.i("FILENAME", file.getAbsolutePath());
         try {
             if (!file.exists()) {
+                Log.i("FILEEXIST", "File not exist");
                 FileUtils.writeFile(file, ConfroidManagerUtils.fromBundleToJson(bundle).toString());
             } else {
+                Log.i("FILEEXIST", "File exist");
                 JSONObject oldJsonObject = new JSONObject(FileUtils.readFile(file));
                 FileUtils.writeFile(file, ConfroidManagerUtils.addVersionFromBundleToJson(oldJsonObject, bundle).toString());
             }

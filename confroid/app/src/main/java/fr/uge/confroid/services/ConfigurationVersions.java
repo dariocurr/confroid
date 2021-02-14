@@ -30,6 +30,7 @@ public class ConfigurationVersions extends Service {
         } else {
             Log.e("TokenNotValidException","Token " + token + " isn't valid!");
         }
+        stopSelf();
         return START_STICKY;
     }
 
