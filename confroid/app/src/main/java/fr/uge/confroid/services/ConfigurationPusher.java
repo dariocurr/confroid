@@ -100,7 +100,7 @@ public class ConfigurationPusher extends Service {
         return observers;
     }
 
-    private static int getNextVersionNumber(String name) {
+    public static int getNextVersionNumber(String name) {
         if (!VERSION_NUMBER.containsKey(name)) {
             VERSION_NUMBER.put(name, -1);
         }

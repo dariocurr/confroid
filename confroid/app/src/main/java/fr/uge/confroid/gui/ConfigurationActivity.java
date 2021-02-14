@@ -1,13 +1,17 @@
 package fr.uge.confroid.gui;
 
 import android.app.AlertDialog;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import fr.uge.confroid.R;
 import fr.uge.confroid.ConfroidManager;
+import fr.uge.confroid.services.ConfigurationPusher;
 import fr.uge.confroid.utlis.ConfroidManagerUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -18,14 +22,19 @@ public class ConfigurationActivity extends AppCompatActivity {
     /*private Button editButton;
     private Button backButton;*/
     private String oldContentText;
-    private Bundle bundle;
+    private JSONObject configuration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuration);
 
-        bundle = ConfroidManager.loadAllVersionsBundle(this.getApplicationContext(), getIntent().getExtras().getString("EXTRA_TEST_STRING"));
+        configuration = ConfroidManager.loadAllVersionsJson(this, getIntent().getExtras().getString("EXTRA_TEST_STRING"));
+        try {
+            Log.i("all123", configuration.toString(2));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         initContent();
         initVersionMenu();
@@ -35,26 +44,34 @@ public class ConfigurationActivity extends AppCompatActivity {
     private void initVersionMenu() {
         dropdownMenu = findViewById(R.id.versionList);
 
-        ArrayList<String> items = new ArrayList<>(bundle.keySet());
+        try {
+            JSONObject content = configuration.getJSONObject("configurations");
+            ArrayList<String> items = new ArrayList<>();
+            content.keys().forEachRemaining(items::add);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+            dropdownMenu.setAdapter(adapter);
 
+            dropdownMenu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    String version = parent.getItemAtPosition(position).toString();
+                    //TODO
+                    try {
+                        datetext.setText(getString(R.string.created_on)+" "+content.getJSONObject(version).getString("date"));
+                        contentText.setText(content.getJSONObject(version).getJSONObject("content").toString(2));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        dropdownMenu.setAdapter(adapter);
-
-        dropdownMenu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String version = parent.getItemAtPosition(position).toString();
-                //TODO
-                datetext.setText(getString(R.string.created_on)+" "+((Bundle) bundle.get(version)).get("date").toString());
-                contentText.setText(ConfroidManagerUtils.fromBundleToString(bundle.getBundle(version).getBundle("content")));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // nothing ??
-            }
-        });
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    // nothing ??
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initContent() {
@@ -84,18 +101,22 @@ public class ConfigurationActivity extends AppCompatActivity {
         progressText.setText(R.string.submission);
 
         //TODO PUSH CONF
-        Bundle newBundle = bundle.deepCopy();
-        for (String s : contentText.getText().toString().split("\n")) {
-            String[] row = s.split(":");
-            String key = row[0];
-            String value = row[1];
-            newBundle.getBundle(dropdownMenu.getSelectedItem().toString()).getBundle("content").putString(key, value);
-        }
-        //newBundle.getBundle("content").putBundle();
-        if(ConfroidManager.saveConfiguration(this, newBundle)) {
-            Toast.makeText(this, this.getString(R.string.done)+"!", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, this.getString(R.string.submit_error)+".", Toast.LENGTH_LONG).show();
+
+
+        try {
+            JSONObject upload = new JSONObject();
+            upload.put("name", getIntent().getExtras().getString("EXTRA_TEST_STRING"));
+            Log.i("add123", "version "+ConfigurationPusher.getNextVersionNumber(getIntent().getExtras().getString("EXTRA_TEST_STRING")));
+            upload.put("version", ConfigurationPusher.getNextVersionNumber(getIntent().getExtras().getString("EXTRA_TEST_STRING"))+1);
+            upload.put("content", new JSONObject(contentText.getText().toString()));
+
+            if(ConfroidManager.saveConfiguration(this, upload)) {
+                Toast.makeText(this, this.getString(R.string.done)+"!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, this.getString(R.string.submit_error)+".", Toast.LENGTH_LONG).show();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
         dialog.dismiss();

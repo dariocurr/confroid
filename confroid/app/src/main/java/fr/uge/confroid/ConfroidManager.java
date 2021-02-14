@@ -46,6 +46,8 @@ public class ConfroidManager {
         try {
             File file = new File(context.getFilesDir(), newVersionJsonObject.getString("name").replaceAll("\\.", "_") + ".json");
             JSONObject oldJsonObject = new JSONObject(FileUtils.readFile(file));
+            Log.i("add123", "old "+oldJsonObject);
+            Log.i("add123", "new "+newVersionJsonObject);
             FileUtils.writeFile(file, ConfroidManagerUtils.addVersionFromJsonToJson(oldJsonObject, newVersionJsonObject).toString());
             return true;
         } catch (JSONException e) {
