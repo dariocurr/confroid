@@ -3,6 +3,7 @@
           package="fr.uge.confroid">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
             android:allowBackup="true"
@@ -19,7 +20,7 @@
             </intent-filter>
         </activity>
         <service android:name=".services.ConfigurationPuller" android:exported="true"/>
-        <service android:name=".services.ConfigurationPusher" android:exported="true"/>
+        <service android:name=".services.ConfigurationPusher" android:exported="true" android:permission="android.permission.FOREGROUND_SERVICE"/>
         <service android:name=".services.ConfigurationVersions" android:exported="true"/>
         <receiver android:name=".receivers.TokenDispenser"  android:exported="true">
             <intent-filter>

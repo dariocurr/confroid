@@ -69,6 +69,24 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
     }
 
     @Override
+    protected void onResume() {
+        Log.i("ONSTOP", "ONRESUME");
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.i("ONSTOP", "ONPAUSE");
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.i("ONSTOP", "ONSTOP");
+        super.onStop();
+    }
+
+    @Override
     public void onItemClick(View view, int position) {
         //Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getBaseContext(), ConfigurationActivity.class);

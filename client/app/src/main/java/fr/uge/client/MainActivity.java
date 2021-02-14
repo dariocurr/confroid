@@ -29,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent();
             intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPusher");
             intent.putExtra("bundle", bundle);
-            Log.i("Bundle123", bundle.toString());
-            this.startService(intent);
+
+            this.startForegroundService(intent);
         });
 
         findViewById(R.id.loadConfigurationButton).setOnClickListener(ev -> {
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("receiver", "fr.uge.client.services.ConfigurationPuller");
             intent.putExtra("expiration", 60);
             intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPuller");
-            this.startService(intent);
+            this.startForegroundService(intent);
         });
 
         findViewById(R.id.loadVersionsButton).setOnClickListener(ev -> {
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("requestId", "1");
             intent.putExtra("receiver", "fr.uge.client.services.ConfigurationVersions");
             intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationVersions");
-            this.startService(intent);
+            this.startForegroundService(intent);
         });
 
         findViewById(R.id.updateTagButton).setOnClickListener(ev -> {
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPusher");
             intent.putExtra("bundle", bundle);
             Log.i("Bundle123", bundle.toString());
-            this.startService(intent);
+            this.startForegroundService(intent);
         });
 
         findViewById(R.id.editConfigurationButton).setOnClickListener(ev -> {
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPusher");
             intent.putExtra("bundle", bundle);
             Log.i("Bundle123", bundle.toString());
-            this.startService(intent);
+            this.startForegroundService(intent);
         });
 
         /* PRINT IN THE TEXTVIEW ALL THE VERSIONS ******
