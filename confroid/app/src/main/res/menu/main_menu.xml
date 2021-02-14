@@ -3,6 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/refresh_item"
+        android:icon="@drawable/ic_baseline_refresh_24"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/import_item"
         android:title="@string/button_import" />
     <item
