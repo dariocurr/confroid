@@ -17,9 +17,10 @@ public class TokenDispenser extends BroadcastReceiver {
         /* not truly random */
         Integer randomNumber = receiver.hashCode();
         while (count-- > 0) {
-            randomNumber = Math.abs((randomNumber + "").hashCode() % CHARACTERS.length());
+            randomNumber = Math.abs((randomNumber + receiver).hashCode() % CHARACTERS.length());
             token += CHARACTERS.charAt(randomNumber);
         }
+        Log.e("TOKEN", receiver + " " + token);
         return token;
     }
 
@@ -29,12 +30,8 @@ public class TokenDispenser extends BroadcastReceiver {
         String packageName = ConfroidManagerUtils.getPackageName(receiver);
         Intent outgoingIntent = new Intent();
         outgoingIntent.setClassName(packageName, receiver);
-        Log.e("Z", "Z");
-        outgoingIntent.putExtra("token", getToken(receiver));
-        Log.e("X", "X");
+        outgoingIntent.putExtra("token", getToken(packageName));
         context.startService(outgoingIntent);
     }
-
-
 
 }

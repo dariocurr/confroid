@@ -92,7 +92,6 @@ public class ConfigurationActivity extends AppCompatActivity {
             newBundle.getBundle(dropdownMenu.getSelectedItem().toString()).getBundle("content").putString(key, value);
         }
         //newBundle.getBundle("content").putBundle();
-        //Log.i("ciao123", "old: "+oldBundle.toString()+" new: "+newBundle.toString());
         if(ConfroidManager.saveConfiguration(this, newBundle)) {
             Toast.makeText(this, this.getString(R.string.done)+"!", Toast.LENGTH_SHORT).show();
         } else {

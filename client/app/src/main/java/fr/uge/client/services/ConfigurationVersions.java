@@ -14,9 +14,6 @@ public class ConfigurationVersions extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e("contentVersions", intent.getBundleExtra("versions").toString());
-        Log.e("contentVersions", intent.getStringExtra("name"));
-        Log.e("contentVersions", intent.getStringExtra("requestId"));
         Intent outComingIntent = new Intent(this.getApplicationContext(), MainActivity.class);
         outComingIntent.putExtra("versions", intent.getBundleExtra("versions"));
         outComingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

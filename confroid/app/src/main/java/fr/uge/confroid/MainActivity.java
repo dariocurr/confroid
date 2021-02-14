@@ -39,8 +39,6 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.i("ONCREATE", "ON CREATE");
-
         try {
             initRecyclerView();
         } catch (JSONException e) {
@@ -70,19 +68,16 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
 
     @Override
     protected void onResume() {
-        Log.i("ONSTOP", "ONRESUME");
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-        Log.i("ONSTOP", "ONPAUSE");
         super.onPause();
     }
 
     @Override
     protected void onStop() {
-        Log.i("ONSTOP", "ONSTOP");
         super.onStop();
     }
 
@@ -125,19 +120,16 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         } else if (requestCode == OPEN_REQUEST_CODE) {
             if (resultData != null) {
                 String content = readFileContent(resultData.getData());
-                Log.e("backup content", content);
                 // TODO restoreConfigurationsFromString
                 try {
 
                     JSONObject configurations = new JSONObject(content);
-                    Log.i("CONFIGURATI", configurations.toString());
                     for (Iterator<String> it = configurations.keys(); it.hasNext(); ) {
                         String key = it.next();
                         JSONObject jsonObject = configurations.getJSONObject(key);
 
                         Bundle contentBundle = ConfroidManagerUtils.getAllVersionsFromJsonToBundle(jsonObject);
                         //bundle.putBundle("content", contentBundle);
-                        Log.i("CONFIGURATI", contentBundle.toString());
 
                         for(String keyBundle : contentBundle.keySet()){
                             Bundle bundle = new Bundle();

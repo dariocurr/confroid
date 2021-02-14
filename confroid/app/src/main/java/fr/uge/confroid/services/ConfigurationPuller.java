@@ -21,14 +21,11 @@ public class ConfigurationPuller extends Service {
     @Override
     public int onStartCommand(Intent incomingIntent, int flags, int startId) {
 
-        String channelId = "";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            channelId = createNotificationChannel("my_service", "My Background Service");
-        } else {
-            channelId = "";
+            String channelId = createNotificationChannel("my_service", "My Background Service");
+            Notification notification = new NotificationCompat.Builder(this, channelId).build();
+            startForeground(1337, notification);
         }
-        Notification notification = new NotificationCompat.Builder(this, channelId).build();
-        startForeground(1337, notification);
 
         String name = incomingIntent.getStringExtra("name");
         String token = incomingIntent.getStringExtra("token");
@@ -60,8 +57,9 @@ public class ConfigurationPuller extends Service {
         } else {
             Log.e("TokenNotValidException","Token " + token + " isn't valid!");
         }
-
-        stopForeground(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            stopForeground(true);
+        }
 
         return START_STICKY;
     }

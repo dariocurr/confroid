@@ -86,7 +86,6 @@ public class ConfroidManagerUtils {
         JSONObject contentJsonObject = new JSONObject();
         contentJsonObject.put(String.valueOf(bundle.getInt("version")), extractBundleContent(bundle));
         jsonObject.put("configurations", contentJsonObject);
-        Log.e("JSON", jsonObject.toString());
         return jsonObject;
     }
 
@@ -104,7 +103,6 @@ public class ConfroidManagerUtils {
             }
         }
         configurationsJsonObject.put(newVersion, extractBundleContent(newVersionBundle));
-        Log.e("JSON", jsonObject.toString());
         return jsonObject;
     }
 
@@ -183,7 +181,6 @@ public class ConfroidManagerUtils {
 
     public static JSONObject updateTagFromStringToJson(JSONObject jsonObject, String newTag, String latestVersion) throws JSONException {
         jsonObject.getJSONObject("configurations").getJSONObject(latestVersion).put("tag", newTag);
-        Log.e("JSON", jsonObject.toString());
         return jsonObject;
     }
 
@@ -199,7 +196,6 @@ public class ConfroidManagerUtils {
         }
         Bundle contentBundle = bundle.getBundle("content");
         jsonObjectToEdit.put(lastKey, extractContent(contentBundle));
-        Log.e("JSON", jsonObject.toString());
         return jsonObject;
     }
 

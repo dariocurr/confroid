@@ -8,6 +8,7 @@ public class FileUtils {
 
     public static void writeFile(File file, String content) {
         try {
+            Log.i("WRITING", content);
             FileWriter fileWriter = new FileWriter(file, false);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(content);
@@ -24,12 +25,11 @@ public class FileUtils {
             StringBuilder content = new StringBuilder();
             String line = bufferedReader.readLine();
             while (line != null) {
-                Log.i("CONTENTFILE", line);
                 content.append(line);
                 line = bufferedReader.readLine();
             }
             bufferedReader.close();
-            Log.i("CONTENTFILE", content.toString());
+            Log.i("READING", content.toString());
             return content.toString();
         } catch (IOException e) {
             Log.e("IOException", "");

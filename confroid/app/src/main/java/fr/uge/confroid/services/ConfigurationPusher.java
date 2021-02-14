@@ -26,22 +26,18 @@ public class ConfigurationPusher extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String channelId = "";
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            channelId = createNotificationChannel("my_service", "My Background Service");
-        } else {
-            channelId = "";
-        }
 
-        Notification notification = new NotificationCompat.Builder(this, channelId).build();
-        startForeground(1337, notification);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelId = createNotificationChannel("my_service", "My Background Service");
+            Notification notification = new NotificationCompat.Builder(this, channelId).build();
+            startForeground(1337, notification);
+        }
 
         Bundle bundle = intent.getBundleExtra("bundle");
         String name = bundle.getString("name");
         String token = bundle.getString("token");
-        Log.e("token1", TokenDispenser.getToken(ConfroidManagerUtils.getPackageName(name)));
 
-        if (TokenDispenser.getToken(ConfroidManagerUtils.getPackageName(name)).equalsIgnoreCase("YQNKHDZROLIEAWOLIEAW")) {
+        if (TokenDispenser.getToken(ConfroidManagerUtils.getPackageName(name)).equalsIgnoreCase(token)) {
             if (!bundle.containsKey("content") && bundle.containsKey("tag")) {
                 ConfroidManager.updateTag(this.getApplicationContext(), ConfroidManagerUtils.getPackageName(name), bundle.get("tag").toString(), getLatestVersionNumber(name));
             } else {
@@ -61,7 +57,9 @@ public class ConfigurationPusher extends Service {
         } else {
             Log.e("TokenNotValidException", "Token " + token + " isn't valid!");
         }
-        stopForeground(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            stopForeground(true);
+        }
         return START_STICKY;
     }
 

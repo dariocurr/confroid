@@ -1,10 +1,13 @@
 package fr.uge.client;
 
+import android.app.Notification;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import androidx.core.app.NotificationCompat;
 import fr.uge.client.services.TokenPuller;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,8 +32,12 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent();
             intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPusher");
             intent.putExtra("bundle", bundle);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                this.startForegroundService(intent);
+            } else {
+                this.startService(intent);
+            }
 
-            this.startForegroundService(intent);
         });
 
         findViewById(R.id.loadConfigurationButton).setOnClickListener(ev -> {
@@ -42,7 +49,11 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("receiver", "fr.uge.client.services.ConfigurationPuller");
             intent.putExtra("expiration", 60);
             intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPuller");
-            this.startForegroundService(intent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                this.startForegroundService(intent);
+            } else {
+                this.startService(intent);
+            }
         });
 
         findViewById(R.id.loadVersionsButton).setOnClickListener(ev -> {
@@ -52,7 +63,11 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("requestId", "1");
             intent.putExtra("receiver", "fr.uge.client.services.ConfigurationVersions");
             intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationVersions");
-            this.startForegroundService(intent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                this.startForegroundService(intent);
+            } else {
+                this.startService(intent);
+            }
         });
 
         findViewById(R.id.updateTagButton).setOnClickListener(ev -> {
@@ -63,8 +78,11 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent();
             intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPusher");
             intent.putExtra("bundle", bundle);
-            Log.i("Bundle123", bundle.toString());
-            this.startForegroundService(intent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                this.startForegroundService(intent);
+            } else {
+                this.startService(intent);
+            }
         });
 
         findViewById(R.id.editConfigurationButton).setOnClickListener(ev -> {
@@ -77,8 +95,11 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent();
             intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPusher");
             intent.putExtra("bundle", bundle);
-            Log.i("Bundle123", bundle.toString());
-            this.startForegroundService(intent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                this.startForegroundService(intent);
+            } else {
+                this.startService(intent);
+            }
         });
 
         /* PRINT IN THE TEXTVIEW ALL THE VERSIONS ******
