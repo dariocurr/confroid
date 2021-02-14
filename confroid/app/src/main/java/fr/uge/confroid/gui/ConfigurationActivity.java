@@ -20,8 +20,6 @@ public class ConfigurationActivity extends AppCompatActivity {
     private Spinner dropdownMenu;
     private TextView contentText;
     private TextView datetext;
-    /*private Button editButton;
-    private Button backButton;*/
     private String oldContentText;
     private JSONObject configuration;
 
@@ -29,6 +27,8 @@ public class ConfigurationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuration);
+
+        Log.i("sel123", "on create old text "+oldContentText);
 
         configuration = ConfroidManager.loadAllVersionsJson(this, getIntent().getExtras().getString("EXTRA_TEST_STRING"));
         try {
@@ -40,6 +40,22 @@ public class ConfigurationActivity extends AppCompatActivity {
         initContent();
         initVersionMenu();
 
+        if(savedInstanceState != null) {
+            contentText.setEnabled(true);
+            contentText.setText(savedInstanceState.getString("CONTENT_TEXT"));
+            oldContentText = savedInstanceState.getString("OLD_CONTENT_TEXT");
+        } else {
+            updateContent();
+        }
+
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("CONTENT_TEXT", contentText.getText().toString());
+        outState.putString("OLD_CONTENT_TEXT", oldContentText);
     }
 
     private void initVersionMenu() {
@@ -56,11 +72,14 @@ public class ConfigurationActivity extends AppCompatActivity {
             dropdownMenu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    String version = parent.getItemAtPosition(position).toString();
-                    //TODO
                     try {
-                        datetext.setText(getString(R.string.created_on)+" "+content.getJSONObject(version).getString("date"));
-                        contentText.setText(content.getJSONObject(version).getJSONObject("content").toString(2));
+                        datetext.setText(
+                                getString(R.string.created_on)+" "+content
+                                        .getJSONObject(parent.getItemAtPosition(position).toString())
+                                        .getString("date"));
+                        if (!contentText.isEnabled()) {
+                            updateContent();
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -68,7 +87,7 @@ public class ConfigurationActivity extends AppCompatActivity {
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
-                    // nothing ??
+                    //?
                 }
             });
         } catch (JSONException e) {
@@ -81,29 +100,31 @@ public class ConfigurationActivity extends AppCompatActivity {
         datetext = findViewById(R.id.dateView);
     }
 
-    /*public void setProgressDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(false);
-        builder.setView(R.layout.progress_layout);
+    private void updateContent() {
+        try {
+            contentText.setText(
+                    configuration.getJSONObject("configurations")
+                            .getJSONObject(String.valueOf(Integer.parseInt(dropdownMenu.getSelectedItem().toString())))
+                            .getJSONObject("content").toString(2)
+            );
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }*/
 
     private void handleConfigSubmission() {
         contentText.setEnabled(false);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //DIALOG WITH PROGRESS BAR, MAYBE FOR ASYNC CALLS LIKE HTTP REQUESTS
+        /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
         builder.setView(R.layout.progress_layout);
         AlertDialog dialog = builder.create();
         dialog.show();
 
         TextView progressText = dialog.findViewById(R.id.progress_text);
-        progressText.setText(R.string.submission);
-
-        //TODO PUSH CONF
-
+        progressText.setText(R.string.submission);*/
 
         try {
             JSONObject upload = new JSONObject();
@@ -120,25 +141,11 @@ public class ConfigurationActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        dialog.dismiss();
+        //dialog.dismiss();
 
         finish();
         startActivity(getIntent());
-
     }
-
-    /*private void initButtons() {
-        editButton = findViewById(R.id.editButton);
-        editButton.setOnClickListener(v -> {
-            contentText.setEnabled(true);
-            //TODO save/cancel button
-        });
-
-        backButton = findViewById(R.id.backButton);
-        backButton.setOnClickListener(v -> {
-            finish();
-        });
-    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -179,6 +186,7 @@ public class ConfigurationActivity extends AppCompatActivity {
         setMenuItemEnabled(menu.findItem(R.id.back_item), contentText.isEnabled());
         setMenuItemEnabled(menu.findItem(R.id.save_item), contentText.isEnabled());
         setMenuItemEnabled(menu.findItem(R.id.edit_item), !contentText.isEnabled());
+
 
         return super.onPrepareOptionsMenu(menu);
     }
