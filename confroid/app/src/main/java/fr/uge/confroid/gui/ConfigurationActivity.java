@@ -20,8 +20,6 @@ public class ConfigurationActivity extends AppCompatActivity {
     private Spinner dropdownMenu;
     private TextView contentText;
     private TextView datetext;
-    /*private Button editButton;
-    private Button backButton;*/
     private String oldContentText;
     private JSONObject configuration;
 
@@ -29,6 +27,8 @@ public class ConfigurationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuration);
+
+        Log.i("sel123", "on create old text "+oldContentText);
 
         configuration = ConfroidManager.loadAllVersionsJson(this, getIntent().getExtras().getString("EXTRA_TEST_STRING"));
         try {
@@ -43,6 +43,7 @@ public class ConfigurationActivity extends AppCompatActivity {
         if(savedInstanceState != null) {
             contentText.setEnabled(true);
             contentText.setText(savedInstanceState.getString("CONTENT_TEXT"));
+            oldContentText = savedInstanceState.getString("OLD_CONTENT_TEXT");
         } else {
             updateContent();
         }
@@ -53,8 +54,8 @@ public class ConfigurationActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i("ref123", "content text is "+contentText.getText().toString());
         outState.putString("CONTENT_TEXT", contentText.getText().toString());
+        outState.putString("OLD_CONTENT_TEXT", oldContentText);
     }
 
     private void initVersionMenu() {
@@ -77,7 +78,6 @@ public class ConfigurationActivity extends AppCompatActivity {
                                         .getJSONObject(parent.getItemAtPosition(position).toString())
                                         .getString("date"));
                         if (!contentText.isEnabled()) {
-                            Log.i("select123", "event");
                             updateContent();
                         }
                     } catch (JSONException e) {
