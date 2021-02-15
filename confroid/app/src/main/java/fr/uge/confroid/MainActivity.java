@@ -148,9 +148,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         } else if (requestCode == OPEN_REQUEST_CODE) {
             if (resultData != null) {
                 String content = readFileContent(resultData.getData());
-                // TODO restoreConfigurationsFromString
                 try {
-
                     JSONObject configurations = new JSONObject(content);
                     for (Iterator<String> it = configurations.keys(); it.hasNext(); ) {
                         String key = it.next();
@@ -166,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
                             bundle.putString("token", jsonObject.getString("token"));
                             bundle.putInt("version", Integer.parseInt(keyBundle));
 
-                            bundle.putBundle("content", contentBundle.getBundle(keyBundle));
+                            bundle.putBundle("content", contentBundle.getBundle(keyBundle).getBundle("content"));
 
                             ConfroidManager.saveConfiguration(this.getApplicationContext(), bundle);
                         }
