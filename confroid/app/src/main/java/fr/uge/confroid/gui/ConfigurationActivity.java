@@ -28,8 +28,6 @@ public class ConfigurationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuration);
 
-        Log.i("sel123", "on create old text "+oldContentText);
-
         configuration = ConfroidManager.loadAllVersionsJson(this, getIntent().getExtras().getString("EXTRA_TEST_STRING"));
         try {
             Log.i("all123", configuration.toString(2));
@@ -41,9 +39,12 @@ public class ConfigurationActivity extends AppCompatActivity {
         initVersionMenu();
 
         if(savedInstanceState != null) {
-            contentText.setEnabled(true);
-            contentText.setText(savedInstanceState.getString("CONTENT_TEXT"));
-            oldContentText = savedInstanceState.getString("OLD_CONTENT_TEXT");
+            if (savedInstanceState.getBoolean("EDIT_STATE")) {
+                contentText.setEnabled(true);
+                dropdownMenu.setEnabled(false);
+                contentText.setText(savedInstanceState.getString("CONTENT_TEXT"));
+                oldContentText = savedInstanceState.getString("OLD_CONTENT_TEXT");
+            }
         } else {
             updateContent();
         }
@@ -54,6 +55,7 @@ public class ConfigurationActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putBoolean("EDIT_STATE", contentText.isEnabled());
         outState.putString("CONTENT_TEXT", contentText.getText().toString());
         outState.putString("OLD_CONTENT_TEXT", oldContentText);
     }
@@ -156,12 +158,14 @@ public class ConfigurationActivity extends AppCompatActivity {
                 contentText.setText(oldContentText);
                 //TODO confirm pop up?
                 contentText.setEnabled(false);
+                dropdownMenu.setEnabled(true);
                 invalidateOptionsMenu();
                 return true;
 
             case R.id.edit_item:
                 oldContentText = contentText.getText().toString();
                 contentText.setEnabled(true);
+                dropdownMenu.setEnabled(false);
                 invalidateOptionsMenu();
                 return true;
 
