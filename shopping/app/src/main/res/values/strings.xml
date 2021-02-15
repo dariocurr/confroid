@@ -5,4 +5,8 @@
     <string name="expirationMonth">Expiration Month</string>
     <string name="expirationYear">Expiration Year</string>
     <string name="cryptogram">Cryptogram</string>
+    <string name="addressName">Address Name</string>
+    <string name="addressStreet">Address Street</string>
+    <string name="addressCity">Address City</string>
+    <string name="addressCountry">Address Country</string>
 </resources>
