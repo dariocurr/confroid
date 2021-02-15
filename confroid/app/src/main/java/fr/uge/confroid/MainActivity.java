@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import fr.uge.confroid.gui.ConfigurationActivity;
 import fr.uge.confroid.gui.MyRecyclerViewAdapter;
+import fr.uge.confroid.services.ConfigurationPusher;
 import fr.uge.confroid.utlis.ConfroidManagerUtils;
 import fr.uge.confroid.utlis.FileUtils;
 import org.json.JSONException;
@@ -148,11 +149,16 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         } else if (requestCode == OPEN_REQUEST_CODE) {
             if (resultData != null) {
                 String content = readFileContent(resultData.getData());
+
                 try {
                     JSONObject configurations = new JSONObject(content);
                     for (Iterator<String> it = configurations.keys(); it.hasNext(); ) {
                         String key = it.next();
                         JSONObject jsonObject = configurations.getJSONObject(key);
+
+                        File file = new File(this.getApplicationContext().getFilesDir(), jsonObject.getString("name").replaceAll("\\.", "_") + ".json");
+                        file.delete();
+                        ConfigurationPusher.resetVersionNumber(jsonObject.getString("name"));
 
                         Bundle contentBundle = ConfroidManagerUtils.getAllVersionsFromJsonToBundle(jsonObject);
 
@@ -160,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
                             Bundle bundle = new Bundle();
                             bundle.putString("name", jsonObject.getString("name"));
                             bundle.putString("token", jsonObject.getString("token"));
-                            bundle.putInt("version", Integer.parseInt(keyBundle));
+                            bundle.putInt("version", ConfigurationPusher.getNextVersionNumber(jsonObject.getString("name")));
 
                             bundle.putBundle("content", contentBundle.getBundle(keyBundle).getBundle("content"));
 

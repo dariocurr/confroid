@@ -108,6 +108,11 @@ public class ConfigurationPusher extends Service {
         return version;
     }
 
+    public static void resetVersionNumber(String name){
+        if(VERSION_NUMBER.containsKey(name))
+            VERSION_NUMBER.put(name, -1);
+    }
+
     public static int getLatestVersionNumber(String name) {
         return VERSION_NUMBER.get(name);
     }
