@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
             contentBundle.putBundle("abc", innerContentBundle);
             bundle.putString("name", getPackageName());
             bundle.putString("tag", "latest");
-            bundle.putString("token", TokenPuller.getToken(this.getApplicationContext()));
+            bundle.putString("token", TokenPuller.getToken());
             bundle.putBundle("content", contentBundle);
             Intent intent = new Intent();
             intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPusher");
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.loadConfigurationButton).setOnClickListener(ev -> {
             Intent intent = new Intent();
             intent.putExtra("name", this.getPackageName());
-            intent.putExtra("token", TokenPuller.getToken(this.getApplicationContext()));
+            intent.putExtra("token", TokenPuller.getToken());
             intent.putExtra("requestId", "1");
             intent.putExtra("version", "0");
             intent.putExtra("receiver", "fr.uge.client.services.ConfigurationPuller");
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.loadVersionsButton).setOnClickListener(ev -> {
             Intent intent = new Intent();
             intent.putExtra("name", this.getPackageName());
-            intent.putExtra("token", TokenPuller.getToken(this.getApplicationContext()));
+            intent.putExtra("token", TokenPuller.getToken());
             intent.putExtra("requestId", "1");
             intent.putExtra("receiver", "fr.uge.client.services.ConfigurationVersions");
             intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationVersions");
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
             Bundle bundle = new Bundle();
             bundle.putString("name", getPackageName());
             bundle.putString("tag", "dario");
-            bundle.putString("token", TokenPuller.getToken(this.getApplicationContext()));
+            bundle.putString("token", TokenPuller.getToken());
             Intent intent = new Intent();
             intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPusher");
             intent.putExtra("bundle", bundle);
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             Bundle contentBundle = new Bundle();
             contentBundle.putString("A", "B");
             bundle.putString("name", getPackageName() + "/0/abc");
-            bundle.putString("token", TokenPuller.getToken(this.getApplicationContext()));
+            bundle.putString("token", TokenPuller.getToken());
             bundle.putBundle("content", contentBundle);
             Intent intent = new Intent();
             intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPusher");
