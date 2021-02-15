@@ -10,7 +10,7 @@ import fr.uge.confroid.R;
 
 import java.util.List;
 
-public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder> {
+public class ConfigurationAdapter extends RecyclerView.Adapter<ConfigurationAdapter.ViewHolder> {
 
     private List<String> Data;
     private LayoutInflater Inflater;
@@ -18,11 +18,11 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView myTextView;
+        private TextView textView;
 
         ViewHolder(View itemView) {
             super(itemView);
-            myTextView = itemView.findViewById(R.id.tvAnimalName);
+            textView = itemView.findViewById(R.id.configuration_name);
             itemView.setOnClickListener(this);
         }
 
@@ -33,7 +33,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     }
 
     // data is passed into the constructor
-    public MyRecyclerViewAdapter(Context context, List<String> data) {
+    public ConfigurationAdapter(Context context, List<String> data) {
         this.Inflater = LayoutInflater.from(context);
         this.Data = data;
     }
@@ -53,7 +53,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         String row = Data.get(position);
-        holder.myTextView.setText(row);
+        holder.textView.setText(row);
     }
 
     // total number of rows

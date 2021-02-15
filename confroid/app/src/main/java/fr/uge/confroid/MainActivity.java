@@ -1,17 +1,11 @@
 package fr.uge.confroid;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
-import android.os.ParcelFileDescriptor;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,20 +13,19 @@ import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import fr.uge.confroid.gui.ConfigurationActivity;
-import fr.uge.confroid.gui.MyRecyclerViewAdapter;
+import fr.uge.confroid.gui.ImportActivity;
+import fr.uge.confroid.gui.ConfigurationAdapter;
 import fr.uge.confroid.services.ConfigurationPusher;
 import fr.uge.confroid.utlis.ConfroidManagerUtils;
-import fr.uge.confroid.utlis.FileUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.net.URI;
 import java.util.Iterator;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener{
-    private MyRecyclerViewAdapter adapter;
+public class MainActivity extends AppCompatActivity implements ConfigurationAdapter.ItemClickListener{
+    private ConfigurationAdapter adapter;
     private static final int CREATE_REQUEST_CODE = 0;
     private static final int OPEN_REQUEST_CODE = 1;
     private static final int SAVE_REQUEST_CODE = 2;
@@ -55,9 +48,9 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         // data to populate the RecyclerView with
         List<String> configurations = ConfroidManager.loadAllConfigurationsNames(this.getApplicationContext());
         // set up the RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.configuration_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new MyRecyclerViewAdapter(this, configurations);
+        adapter = new ConfigurationAdapter(this, configurations);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
     }
@@ -119,7 +112,9 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.import_item:
-                openFile();
+                Intent intent = new Intent(getBaseContext(), ImportActivity.class);
+                startActivity(intent);
+                //openFile();
                 return true;
 
             case R.id.export_item:
