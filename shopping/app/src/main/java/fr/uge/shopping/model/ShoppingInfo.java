@@ -1,9 +1,17 @@
 package fr.uge.shopping.model;
 
 public class ShoppingInfo {
+
     public ShippingAddress address;
-    public BillingDetail billing;
+    public BillingDetails billing;
     public boolean favorite;
 
-    // TODO: constructor
+    public ShoppingInfo() {}
+
+    public ShoppingInfo(ShippingAddress address, BillingDetails billing, boolean favorite) {
+        this.address = address;
+        this.billing = billing;
+        this.favorite = favorite;
+    }
+
 }
