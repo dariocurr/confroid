@@ -129,8 +129,10 @@ public class ConfigurationActivity extends AppCompatActivity {
         try {
             JSONObject upload = new JSONObject();
             upload.put("name", getIntent().getExtras().getString("EXTRA_TEST_STRING"));
-            upload.put("version", ConfigurationPusher.getNextVersionNumber(getIntent().getExtras().getString("EXTRA_TEST_STRING")));
+            upload.put("version", ConfigurationPusher.getNextVersionNumber(getIntent().getExtras().getString("EXTRA_TEST_STRING").replaceAll("_", "\\.")));
             upload.put("content", new JSONObject(contentText.getText().toString()));
+
+            Log.i("UPLOADJSON", upload.toString());
 
             if(ConfroidManager.saveConfiguration(this, upload)) {
                 Toast.makeText(this, this.getString(R.string.done)+"!", Toast.LENGTH_SHORT).show();

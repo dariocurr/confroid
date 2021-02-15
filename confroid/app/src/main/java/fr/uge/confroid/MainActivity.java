@@ -155,11 +155,9 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
                         JSONObject jsonObject = configurations.getJSONObject(key);
 
                         Bundle contentBundle = ConfroidManagerUtils.getAllVersionsFromJsonToBundle(jsonObject);
-                        //bundle.putBundle("content", contentBundle);
 
                         for(String keyBundle : contentBundle.keySet()){
                             Bundle bundle = new Bundle();
-                            Bundle versionBundle = new Bundle();
                             bundle.putString("name", jsonObject.getString("name"));
                             bundle.putString("token", jsonObject.getString("token"));
                             bundle.putInt("version", Integer.parseInt(keyBundle));
