@@ -39,25 +39,23 @@ public class ConfigurationPuller extends Service {
                 ConfigurationPusher.unsubscribe(name, receiver);
             }
             String version = incomingIntent.getStringExtra("version");
-            if (version != null) {
-                Bundle content;
-                if (TextUtils.isDigitsOnly(version)) {
-                    content = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, Integer.parseInt(version));
+            Bundle content;
+            if (TextUtils.isDigitsOnly(version)) {
+                content = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, Integer.parseInt(version));
+            } else {
+                if (version.equalsIgnoreCase("latest")) {
+                    content = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, ConfigurationPusher.getLatestVersionNumber(name));
                 } else {
-                    if (version.equalsIgnoreCase("latest")) {
-                        content = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, ConfigurationPusher.getLatestVersionNumber(name));
-                    } else {
-                        content = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, version);
-                    }
+                    content = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, version);
                 }
-                Intent outgoingIntent = new Intent();
-                outgoingIntent.putExtra("content", content);
-                outgoingIntent.putExtra("name", name);
-                outgoingIntent.putExtra("requestId", requestId);
-                outgoingIntent.putExtra("version", version);
-                outgoingIntent.setClassName(ConfroidManagerUtils.getPackageName(receiver), receiver);
-                this.startService(outgoingIntent);
             }
+            Intent outgoingIntent = new Intent();
+            outgoingIntent.putExtra("content", content);
+            outgoingIntent.putExtra("name", name);
+            outgoingIntent.putExtra("requestId", requestId);
+            outgoingIntent.putExtra("version", version);
+            outgoingIntent.setClassName(ConfroidManagerUtils.getPackageName(receiver), receiver);
+            this.startService(outgoingIntent);
         } else {
             Log.e("TokenNotValidException","Token " + token + " isn't valid!");
         }

@@ -3,7 +3,6 @@ package fr.uge.client.services;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
 import androidx.annotation.Nullable;
 
 public class ConfigurationPuller extends Service {

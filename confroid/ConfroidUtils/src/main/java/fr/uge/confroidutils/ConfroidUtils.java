@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import androidx.core.util.Consumer;
 import fr.uge.confroidutils.services.TokenPuller;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class ConfroidUtils {
@@ -18,9 +16,9 @@ public class ConfroidUtils {
     void saveConfiguration(Context context, String name, Object value, String versionName) {
         Bundle bundle = new Bundle();
         bundle.putString("name", name);
-        bundle.putString("tag", "latest");
+        bundle.putString("tag", versionName);
         bundle.putString("token", TokenPuller.getToken());
-        //bundle.putBundle("content", contentBundle);
+        // TODO add value Object
         Intent intent = new Intent();
         intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPusher");
         intent.putExtra("bundle", bundle);
@@ -44,7 +42,8 @@ public class ConfroidUtils {
             context.startForegroundService(intent);
         } else {
             context.startService(intent);
-        };
+        }
+        // TODO use consumer
     }
 
     <T> void subscribeConfiguration(Context context, Consumer<T> callback) {
@@ -52,6 +51,7 @@ public class ConfroidUtils {
         intent.putExtra("name", context.getPackageName());
         intent.putExtra("token", TokenPuller.getToken());
         intent.putExtra("requestId", requestId++);
+        intent.putExtra("version", "latest");
         intent.putExtra("receiver", "fr.uge.confroidutils.services.ConfigurationPuller");
         intent.putExtra("expiration", Integer.MAX_VALUE);
         intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPuller");
@@ -60,6 +60,7 @@ public class ConfroidUtils {
         } else {
             context.startService(intent);
         }
+        // TODO use consumer
     }
 
     <T> void cancelConfigurationSubscription(Context context, Consumer<T> callback) {
@@ -67,6 +68,7 @@ public class ConfroidUtils {
         intent.putExtra("name", context.getPackageName());
         intent.putExtra("token", TokenPuller.getToken());
         intent.putExtra("requestId", requestId++);
+        intent.putExtra("version", "latest");
         intent.putExtra("receiver", "fr.uge.confroidutils.services.ConfigurationPuller");
         intent.putExtra("expiration", -1);
         intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPuller");
@@ -75,6 +77,7 @@ public class ConfroidUtils {
         } else {
             context.startService(intent);
         }
+        // TODO use consumer
     }
 
     void getConfigurationVersions(Context context, String name, Consumer<List<Version>> callback) {
@@ -89,6 +92,7 @@ public class ConfroidUtils {
         } else {
             context.startService(intent);
         }
+        // TODO use consumer
     }
 
 }
