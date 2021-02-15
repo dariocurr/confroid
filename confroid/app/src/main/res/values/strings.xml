@@ -11,4 +11,5 @@
     <string name="button_export">Export</string>
     <string name="saved_successfully">File exported successfully</string>
     <string name="file_not_saved">An error occured during export</string>
+    <string name="logo">Logo</string>
 </resources>
