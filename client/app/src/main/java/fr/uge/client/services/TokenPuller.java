@@ -31,6 +31,7 @@ public class TokenPuller extends Service {
     }
 
     public static String getToken() {
+        while (TOKEN == null) {}
         return TOKEN;
     }
 

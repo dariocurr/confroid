@@ -3,7 +3,6 @@ package fr.uge.confroid.services;
 import android.app.*;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -19,7 +18,7 @@ import java.util.*;
 
 public class ConfigurationPusher extends Service {
 
-    private static final Map<String, List<Subscription>> OBSERVERS = new HashMap<>();
+    private static final Map<String, Set<Subscription>> OBSERVERS = new HashMap<>();
     private static final Map<String, Integer> VERSION_NUMBER = new HashMap<>();
     private static final String UPDATE_OBSERVER_REQUEST_ID = "-1";
 
@@ -79,7 +78,7 @@ public class ConfigurationPusher extends Service {
         intent.putExtra("version", versionNumber.toString());
         intent.putExtra("content", bundle.getBundle("content"));
         intent.putExtra("requestId", UPDATE_OBSERVER_REQUEST_ID);
-        List<Subscription> observers = OBSERVERS.get(name);
+        Set<Subscription> observers = OBSERVERS.get(name);
         for (Subscription subscription : getObservers(name)) {
             long currentTime = System.currentTimeMillis();
             if (subscription.isExpired(currentTime)) {
@@ -91,8 +90,8 @@ public class ConfigurationPusher extends Service {
         }
     }
 
-    private List<Subscription> getObservers(String name) {
-        List<Subscription> observers = new ArrayList<>();
+    private Set<Subscription> getObservers(String name) {
+        Set<Subscription> observers = new HashSet<>();
         if (OBSERVERS.containsKey(name)) {
             observers = OBSERVERS.get(name);
         }
@@ -119,9 +118,23 @@ public class ConfigurationPusher extends Service {
 
     public static void subscribe(String name, Subscription subscription) {
         if (!OBSERVERS.containsKey(name)) {
-            OBSERVERS.put(name, new ArrayList<>());
+            OBSERVERS.put(name, new HashSet<>());
         }
         OBSERVERS.get(name).add(subscription);
+    }
+
+    public static void unsubscribe(String name, String receiver) {
+        if (OBSERVERS.containsKey(name)) {
+            Subscription subscriptionToRemove = null;
+            for (Subscription subscription : OBSERVERS.get(name)) {
+                if (subscription.getSubscriber().equalsIgnoreCase(receiver)) {
+                    subscriptionToRemove = subscription;
+                }
+            }
+            if (subscriptionToRemove != null) {
+                OBSERVERS.get(name).remove(subscriptionToRemove);
+            }
+        }
     }
 
     @Nullable

@@ -1,6 +1,9 @@
 package fr.uge.confroid.services;
 
-import android.util.Log;
+import android.os.Build;
+import androidx.annotation.RequiresApi;
+
+import java.util.Objects;
 
 public class Subscription {
 
@@ -20,5 +23,19 @@ public class Subscription {
 
     public String getSubscriber() {
         return subscriber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Subscription that = (Subscription) o;
+        return subscriber.equals(that.subscriber);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public int hashCode() {
+        return Objects.hash(subscriber);
     }
 }

@@ -1,13 +1,10 @@
 package fr.uge.client;
 
-import android.app.Notification;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import androidx.core.app.NotificationCompat;
 import fr.uge.client.services.TokenPuller;
 
 public class MainActivity extends AppCompatActivity {
@@ -112,28 +109,6 @@ public class MainActivity extends AppCompatActivity {
             textView.setText(fromBundleToString(versionsBundle));
          */
 
-    }
-
-    public static String fromBundleToString(Bundle bundle) {
-        return fromBundleToString(bundle, 0);
-    }
-
-    private static String fromBundleToString(Bundle bundle, int tabNumber) {
-        String content = "";
-        for (String key : bundle.keySet()) {
-            for (int i = 0; i < tabNumber; i++) {
-                content += "\t";
-            }
-            content += key + ": ";
-            Object contentObject = bundle.get(key);
-            if (contentObject instanceof Bundle) {
-                content += "\n" + fromBundleToString((Bundle) contentObject, tabNumber + 1);
-            } else {
-                content += contentObject.toString();
-            }
-            content += "\n";
-        }
-        return content;
     }
 
 }
