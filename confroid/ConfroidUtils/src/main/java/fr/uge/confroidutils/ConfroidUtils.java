@@ -7,11 +7,7 @@ import android.os.Bundle;
 import androidx.core.util.Consumer;
 import fr.uge.confroidutils.services.TokenPuller;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ConfroidUtils {
 
@@ -99,5 +95,9 @@ public class ConfroidUtils {
         }
         // TODO use consumer
     }
+
+    <T> void editObject (Context context, T originalObject, Consumer <T> callback) {}
+
+    <T> void updateObject (Context context, String name, String versionName, Consumer <T> callback) {}
 
 }

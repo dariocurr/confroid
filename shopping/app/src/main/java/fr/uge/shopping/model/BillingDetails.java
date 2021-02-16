@@ -3,7 +3,6 @@ package fr.uge.shopping.model;
 import android.os.Build;
 import androidx.annotation.RequiresApi;
 import fr.uge.shopping.R;
-import fr.uge.shopping.annotations.*;
 
 import java.util.Objects;
 
