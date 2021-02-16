@@ -3,6 +3,7 @@ package fr.uge.confroid.services;
 import android.app.*;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -10,16 +11,20 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import fr.uge.confroid.ConfroidManager;
 import fr.uge.confroid.receivers.TokenDispenser;
 import fr.uge.confroid.utlis.ConfroidManagerUtils;
 
+import java.lang.reflect.Type;
 import java.util.*;
 
 public class ConfigurationPusher extends Service {
 
     private static final Map<String, Set<Subscription>> OBSERVERS = new HashMap<>();
-    private static final Map<String, Integer> VERSION_NUMBER = new HashMap<>();
+    private static Map<String, Integer> VERSION_NUMBER = new HashMap<>();
     private static final String UPDATE_OBSERVER_REQUEST_ID = "-1";
 
     @Override
@@ -37,7 +42,7 @@ public class ConfigurationPusher extends Service {
 
         if (TokenDispenser.getToken(ConfroidManagerUtils.getPackageName(name)).equalsIgnoreCase(token)) {
             if (!bundle.containsKey("content") && bundle.containsKey("tag")) {
-                ConfroidManager.updateTag(this.getApplicationContext(), ConfroidManagerUtils.getPackageName(name), bundle.get("tag").toString(), getLatestVersionNumber(name));
+                ConfroidManager.updateTag(this.getApplicationContext(), ConfroidManagerUtils.getPackageName(name), bundle.get("tag").toString(), getLatestVersionNumber(name, getApplicationContext()));
             } else {
                 if (name.contains("/")) {
                     String contentToEdit = name.substring(name.indexOf("/") + 1);
@@ -46,7 +51,7 @@ public class ConfigurationPusher extends Service {
                     ConfroidManager.updateContent(this.getApplicationContext(), bundle, contentToEdit);
                     this.notifyObservers(name, Integer.valueOf(contentToEdit.substring(0, contentToEdit.indexOf("/"))));
                 } else {
-                    int newVersionNumber = getNextVersionNumber(name);
+                    int newVersionNumber = getNextVersionNumber(name, getApplicationContext());
                     bundle.putInt("version", newVersionNumber);
                     ConfroidManager.saveConfiguration(this.getApplicationContext(), bundle);
                     this.notifyObservers(name, newVersionNumber);
@@ -98,21 +103,63 @@ public class ConfigurationPusher extends Service {
         return observers;
     }
 
-    public static int getNextVersionNumber(String name) {
+    public static int getNextVersionNumber(String name, Context context) {
+        VERSION_NUMBER = readVersionsMap("versionsMap", context);
+        if(VERSION_NUMBER == null)
+            VERSION_NUMBER = new HashMap<String, Integer>();
+
         if (!VERSION_NUMBER.containsKey(name)) {
             VERSION_NUMBER.put(name, -1);
+            writeVersionsMap(VERSION_NUMBER, "versionsMap",context);
         }
+        Log.i("VERSIONNUMBER", String.valueOf(VERSION_NUMBER.get(name)));
         int version = VERSION_NUMBER.get(name) + 1;
         VERSION_NUMBER.put(name, version);
+        writeVersionsMap(VERSION_NUMBER, "versionsMap",context);
+
         return version;
     }
 
-    public static void resetVersionNumber(String name){
-        if(VERSION_NUMBER.containsKey(name))
-            VERSION_NUMBER.put(name, -1);
+    public static boolean writeVersionsMap(Map<String, Integer> versions, String yourSettingName, Context context) {
+        try {
+            SharedPreferences.Editor mEditor = getmSettings(context).edit();
+
+            GsonBuilder gsonb = new GsonBuilder();
+            Gson mGson = gsonb.create();
+            String writeValue = mGson.toJson(versions);
+            mEditor.putString(yourSettingName, writeValue);
+            mEditor.apply();
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
     }
 
-    public static int getLatestVersionNumber(String name) {
+    public static Map<String, Integer> readVersionsMap(String yourSettingName, Context context) {
+        SharedPreferences mSettings = getmSettings(context);
+        GsonBuilder gsonb = new GsonBuilder();
+        Gson mGson = gsonb.create();
+        String loadValue = mSettings.getString(yourSettingName, "");
+        Type type = new TypeToken<HashMap<String,Integer>>(){}.getType();
+        Map<String,Integer> versions = mGson.fromJson(loadValue, type);
+        return versions;
+    }
+
+    public static void resetVersionNumber(String name, Context context){
+        VERSION_NUMBER = readVersionsMap("versionsMap", context);
+        if(VERSION_NUMBER == null)
+            VERSION_NUMBER = new HashMap<String, Integer>();
+        if(VERSION_NUMBER.containsKey(name)) {
+            VERSION_NUMBER.put(name, -1);
+            writeVersionsMap(VERSION_NUMBER, "versionsMap",context);
+        }
+    }
+
+    public static int getLatestVersionNumber(String name, Context context) {
+        VERSION_NUMBER = readVersionsMap("versionsMap", context);
+
         return VERSION_NUMBER.get(name);
     }
 
@@ -135,6 +182,10 @@ public class ConfigurationPusher extends Service {
                 OBSERVERS.get(name).remove(subscriptionToRemove);
             }
         }
+    }
+
+    public static SharedPreferences getmSettings(Context context) {
+        return context.getSharedPreferences("versionsMap", Context.MODE_PRIVATE);
     }
 
     @Nullable

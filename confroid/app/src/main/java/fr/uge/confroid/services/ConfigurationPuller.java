@@ -44,7 +44,7 @@ public class ConfigurationPuller extends Service {
                 content = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, Integer.parseInt(version));
             } else {
                 if (version.equalsIgnoreCase("latest")) {
-                    content = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, ConfigurationPusher.getLatestVersionNumber(name));
+                    content = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, ConfigurationPusher.getLatestVersionNumber(name, getApplicationContext()));
                 } else {
                     content = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, version);
                 }

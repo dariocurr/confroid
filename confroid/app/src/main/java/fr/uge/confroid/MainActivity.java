@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
 
                         File file = new File(this.getApplicationContext().getFilesDir(), jsonObject.getString("name").replaceAll("\\.", "_") + ".json");
                         file.delete();
-                        ConfigurationPusher.resetVersionNumber(jsonObject.getString("name"));
+                        ConfigurationPusher.resetVersionNumber(jsonObject.getString("name"), getApplicationContext());
 
                         Bundle contentBundle = ConfroidManagerUtils.getAllVersionsFromJsonToBundle(jsonObject);
 
@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
                             Bundle bundle = new Bundle();
                             bundle.putString("name", jsonObject.getString("name"));
                             bundle.putString("token", jsonObject.getString("token"));
-                            bundle.putInt("version", ConfigurationPusher.getNextVersionNumber(jsonObject.getString("name")));
+                            bundle.putInt("version", ConfigurationPusher.getNextVersionNumber(jsonObject.getString("name"), getApplicationContext()));
 
                             bundle.putBundle("content", contentBundle.getBundle(keyBundle).getBundle("content"));
 
