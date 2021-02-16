@@ -1,5 +1,6 @@
 package fr.uge.client.services;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -30,7 +31,6 @@ public class TokenPuller extends Service {
     }
 
     public static String getToken() {
-        while (TOKEN == null) {}
         return TOKEN;
     }
 

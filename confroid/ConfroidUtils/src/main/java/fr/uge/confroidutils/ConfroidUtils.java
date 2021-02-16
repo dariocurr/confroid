@@ -7,18 +7,22 @@ import android.os.Bundle;
 import androidx.core.util.Consumer;
 import fr.uge.confroidutils.services.TokenPuller;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ConfroidUtils {
 
     private static int requestId = 1;
 
-    void saveConfiguration(Context context, String name, Object value, String versionName) {
+    void saveConfiguration(Context context, String name, Object object, String versionName) {
         Bundle bundle = new Bundle();
         bundle.putString("name", name);
         bundle.putString("tag", versionName);
         bundle.putString("token", TokenPuller.getToken());
-        // TODO add value Object
+        //bundle.putBundle("content", fromObjectToBundle(object, 1));
         Intent intent = new Intent();
         intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPusher");
         intent.putExtra("bundle", bundle);
@@ -43,6 +47,7 @@ public class ConfroidUtils {
         } else {
             context.startService(intent);
         }
+        // WAIT FOR INTENT
         // TODO use consumer
     }
 

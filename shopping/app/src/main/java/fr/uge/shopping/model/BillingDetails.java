@@ -1,7 +1,11 @@
 package fr.uge.shopping.model;
 
+import android.os.Build;
+import androidx.annotation.RequiresApi;
 import fr.uge.shopping.R;
 import fr.uge.shopping.annotations.*;
+
+import java.util.Objects;
 
 public class BillingDetails {
 
@@ -37,4 +41,32 @@ public class BillingDetails {
         this.cryptogram = cryptogram;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BillingDetails that = (BillingDetails) o;
+        return expirationMonth == that.expirationMonth &&
+                expirationYear == that.expirationYear &&
+                cryptogram == that.cryptogram &&
+                cardHolder.equals(that.cardHolder) &&
+                cardNumber.equals(that.cardNumber);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public int hashCode() {
+        return Objects.hash(cardHolder, cardNumber, expirationMonth, expirationYear, cryptogram);
+    }
+
+    @Override
+    public String toString() {
+        return "BillingDetails{" +
+                "cardHolder='" + cardHolder + '\'' +
+                ", cardNumber='" + cardNumber + '\'' +
+                ", expirationMonth=" + expirationMonth +
+                ", expirationYear=" + expirationYear +
+                ", cryptogram=" + cryptogram +
+                '}';
+    }
 }

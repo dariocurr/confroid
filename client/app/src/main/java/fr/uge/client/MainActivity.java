@@ -2,6 +2,8 @@ package fr.uge.client;
 
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
+import android.widget.Button;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,13 +11,23 @@ import fr.uge.client.services.TokenPuller;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Button saveConfigurationButton;
+    private Button loadConfigurationButton;
+    private Button loadVersionsButton;
+    private Button updateTagButton;
+    private Button editConfigurationButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         TokenPuller.askToken(this.getApplicationContext());
-
-        findViewById(R.id.saveConfigurationButton).setOnClickListener(ev -> {
+        this.saveConfigurationButton = findViewById(R.id.saveConfigurationButton);
+        this.loadConfigurationButton = findViewById(R.id.loadConfigurationButton);
+        this.loadVersionsButton = findViewById(R.id.loadVersionsButton);
+        this.updateTagButton = findViewById(R.id.updateTagButton);
+        this.editConfigurationButton = findViewById(R.id.editConfigurationButton);
+        this.saveConfigurationButton.setOnClickListener(ev -> {
             Bundle bundle = new Bundle();
             Bundle contentBundle = new Bundle();
             Bundle innerContentBundle = new Bundle();
@@ -36,8 +48,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
-
-        findViewById(R.id.loadConfigurationButton).setOnClickListener(ev -> {
+        this.loadConfigurationButton.setOnClickListener(ev -> {
             Intent intent = new Intent();
             intent.putExtra("name", this.getPackageName());
             intent.putExtra("token", TokenPuller.getToken());
@@ -52,8 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 this.startService(intent);
             }
         });
-
-        findViewById(R.id.loadVersionsButton).setOnClickListener(ev -> {
+        this.loadVersionsButton.setOnClickListener(ev -> {
             Intent intent = new Intent();
             intent.putExtra("name", this.getPackageName());
             intent.putExtra("token", TokenPuller.getToken());
@@ -66,8 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 this.startService(intent);
             }
         });
-
-        findViewById(R.id.updateTagButton).setOnClickListener(ev -> {
+        this.updateTagButton.setOnClickListener(ev -> {
             Bundle bundle = new Bundle();
             bundle.putString("name", getPackageName());
             bundle.putString("tag", "dario");
@@ -81,8 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 this.startService(intent);
             }
         });
-
-        findViewById(R.id.editConfigurationButton).setOnClickListener(ev -> {
+        this.editConfigurationButton.setOnClickListener(ev -> {
             Bundle bundle = new Bundle();
             Bundle contentBundle = new Bundle();
             contentBundle.putString("A", "B");
@@ -109,6 +117,22 @@ public class MainActivity extends AppCompatActivity {
             textView.setText(fromBundleToString(versionsBundle));
          */
 
+    }
+
+    public void disableButtons() {
+        this.saveConfigurationButton.setEnabled(false);
+        this.loadConfigurationButton.setEnabled(false);
+        this.loadVersionsButton.setEnabled(false);
+        this.updateTagButton.setEnabled(false);
+        this.editConfigurationButton.setEnabled(false);
+    }
+
+    public void enableButtons() {
+        this.saveConfigurationButton.setEnabled(true);
+        this.loadConfigurationButton.setEnabled(true);
+        this.loadVersionsButton.setEnabled(true);
+        this.updateTagButton.setEnabled(true);
+        this.editConfigurationButton.setEnabled(true);
     }
 
 }
