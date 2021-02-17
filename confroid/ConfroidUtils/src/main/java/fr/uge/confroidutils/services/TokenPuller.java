@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import androidx.annotation.Nullable;
+import fr.uge.confroidutils.ConfroidUtils;
 
 public class TokenPuller extends Service {
 
@@ -30,7 +31,6 @@ public class TokenPuller extends Service {
     }
 
     public static String getToken() {
-        while (TOKEN == null) {}
         return TOKEN;
     }
 

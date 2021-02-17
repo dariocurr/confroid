@@ -4,21 +4,37 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import androidx.core.util.Consumer;
+import fr.uge.confroidutils.converters.FromBundleToObjectConverter;
+import fr.uge.confroidutils.converters.FromObjectToBundleConverter;
+import fr.uge.confroidutils.services.ConfigurationPuller;
+import fr.uge.confroidutils.services.ConfigurationVersions;
 import fr.uge.confroidutils.services.TokenPuller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConfroidUtils {
 
-    private static int requestId = 1;
+    private static int requestId;
+    private List<Consumer> callbacks;
 
-    void saveConfiguration(Context context, String name, Object object, String versionName) {
+    public ConfroidUtils(Context context) {
+        TokenPuller.askToken(context);
+        this.callbacks = new ArrayList<>();
+        this.requestId = 1;
+        ConfigurationPuller.setConfroidUtils(this);
+        ConfigurationVersions.setConfroidUtils(this);
+    }
+
+    public void saveConfiguration(Context context, String name, Object object, String versionName) {
         Bundle bundle = new Bundle();
-        bundle.putString("name", name);
-        bundle.putString("tag", versionName);
-        bundle.putString("token", TokenPuller.getToken());
-        //bundle.putBundle("content", fromObjectToBundle(object, 1));
+        bundle.putString("name", context.getPackageName());
+        bundle.putString("tag", name + "\\" + versionName);
+        String token = TokenPuller.getToken();
+        bundle.putString("token", token);
+        bundle.putBundle("content", FromObjectToBundleConverter.convert(object));
         Intent intent = new Intent();
         intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPusher");
         intent.putExtra("bundle", bundle);
@@ -29,8 +45,7 @@ public class ConfroidUtils {
         }
     }
 
-    <T> void loadConfiguration(Context context, String version, Consumer<T> callback) {
-        TokenPuller.askToken(context);
+    public <T> void loadConfiguration(Context context, String version, Consumer<T> callback) {
         Intent intent = new Intent();
         intent.putExtra("name", context.getPackageName());
         intent.putExtra("token", TokenPuller.getToken());
@@ -43,11 +58,10 @@ public class ConfroidUtils {
         } else {
             context.startService(intent);
         }
-        // WAIT FOR INTENT
-        // TODO use consumer
+        this.callbacks.add(callback);
     }
 
-    <T> void subscribeConfiguration(Context context, Consumer<T> callback) {
+    public <T> void subscribeConfiguration(Context context, Consumer<T> callback) {
         Intent intent = new Intent();
         intent.putExtra("name", context.getPackageName());
         intent.putExtra("token", TokenPuller.getToken());
@@ -61,10 +75,10 @@ public class ConfroidUtils {
         } else {
             context.startService(intent);
         }
-        // TODO use consumer
+        this.callbacks.add(callback);
     }
 
-    <T> void cancelConfigurationSubscription(Context context, Consumer<T> callback) {
+    public <T> void cancelConfigurationSubscription(Context context, Consumer<T> callback) {
         Intent intent = new Intent();
         intent.putExtra("name", context.getPackageName());
         intent.putExtra("token", TokenPuller.getToken());
@@ -78,10 +92,10 @@ public class ConfroidUtils {
         } else {
             context.startService(intent);
         }
-        // TODO use consumer
+        this.callbacks.add(callback);
     }
 
-    void getConfigurationVersions(Context context, String name, Consumer<List<Version>> callback) {
+    public void getConfigurationVersions(Context context, String name, Consumer<List<Version>> callback) {
         Intent intent = new Intent();
         intent.putExtra("name", name);
         intent.putExtra("token", TokenPuller.getToken());
@@ -93,11 +107,23 @@ public class ConfroidUtils {
         } else {
             context.startService(intent);
         }
-        // TODO use consumer
+        this.callbacks.add(callback);
     }
 
-    <T> void editObject (Context context, T originalObject, Consumer <T> callback) {}
+    public <T> void editObject (Context context, T originalObject, Consumer <T> callback) {}
 
-    <T> void updateObject (Context context, String name, String versionName, Consumer <T> callback) {}
+    public <T> void updateObject (Context context, String name, String versionName, Consumer <T> callback) {}
+
+    public void onReceiveConfigurationPuller(Intent intent) {
+        this.callbacks.get(0).accept(FromBundleToObjectConverter.convert(intent.getBundleExtra("content")));
+        this.callbacks.remove(0);
+    }
+
+    public void onReceiveConfigurationVersions(Intent intent) {
+        Bundle versionBundle = intent.getBundleExtra("versions");
+        Log.e("versions", versionBundle.toString());
+        //callback.accept();
+        this.callbacks.remove(0);
+    }
 
 }
