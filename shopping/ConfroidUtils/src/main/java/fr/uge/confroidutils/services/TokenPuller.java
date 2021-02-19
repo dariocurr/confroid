@@ -4,8 +4,8 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 import androidx.annotation.Nullable;
-import fr.uge.confroidutils.ConfroidUtils;
 
 public class TokenPuller extends Service {
 
@@ -13,6 +13,7 @@ public class TokenPuller extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.e("QUI", "QUI");
         TOKEN = intent.getStringExtra("token");
         return START_NOT_STICKY;
     }

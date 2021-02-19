@@ -7,9 +7,9 @@ import java.util.Objects;
 
 public class Subscription {
 
-    private String subscriber;
-    private long creationTime;
-    private int expirationTime;
+    private final String subscriber;
+    private final long creationTime;
+    private final int expirationTime;
 
     public Subscription(String subscriber, int expirationTime) {
         this.subscriber = subscriber;
