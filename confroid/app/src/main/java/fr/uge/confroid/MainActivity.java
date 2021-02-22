@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
     private ConfigurationAdapter adapter;
     private static final int CREATE_REQUEST_CODE = 0;
     private static final int OPEN_REQUEST_CODE = 1;
-    private static final int SAVE_REQUEST_CODE = 2;
+    public static final int CHOOSE_REQUEST_CODE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,9 +112,7 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.import_item:
-                Intent intent = new Intent(getBaseContext(), ImportActivity.class);
-                startActivity(intent);
-                //openFile();
+                openFile();
                 return true;
 
             case R.id.export_item:
@@ -145,7 +143,12 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
             if (resultData != null) {
                 String content = readFileContent(resultData.getData());
 
-                try {
+                Intent intent = new Intent(getBaseContext(), ImportActivity.class);
+                intent.putExtra("CONFIGURATIONS", content);
+
+                startActivity(intent);
+
+                /*try {
                     JSONObject configurations = new JSONObject(content);
                     for (Iterator<String> it = configurations.keys(); it.hasNext(); ) {
                         String key = it.next();
@@ -172,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                }
+                }*/
 
             }
         }
@@ -187,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
         } catch (FileNotFoundException e) {
             Log.e("FileNotFoundException", "");
         } catch (IOException e) {
-            Toast.makeText(this, "Fail to write file!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.write_error), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -202,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
             String content = total.toString();
             return content;
         } catch (IOException e) {
-            Toast.makeText(this, "Fail to read file!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.read_error), Toast.LENGTH_SHORT).show();
             return null;
         }
     }

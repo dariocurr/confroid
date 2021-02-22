@@ -1,9 +1,7 @@
 package fr.uge.confroid.gui;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import fr.uge.confroid.R;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class ImportAdapter extends RecyclerView.Adapter<ImportAdapter.ViewHolder> {
     private List<ImportItem> configurations;
@@ -40,13 +38,11 @@ public class ImportAdapter extends RecyclerView.Adapter<ImportAdapter.ViewHolder
         }
     }
 
-    public ImportAdapter(Context context, List<String> configurations) {
+    public ImportAdapter(Context context, List<ImportItem> configurations) {
         super();
         this.context = context;
         this.configurations = new ArrayList<>();
-        for(String s : configurations) {
-            this.configurations.add(new ImportItem(s));
-        }
+        this.configurations.addAll(configurations);
     }
 
     @NonNull
@@ -73,14 +69,18 @@ public class ImportAdapter extends RecyclerView.Adapter<ImportAdapter.ViewHolder
     }
 
     public int getSelectedItemCount() {
-        int sum = 0;
+        /*int sum = 0;
         for(ImportItem i : configurations) {
             if (i.isSelected()) {
                 sum++;
             }
         }
-        return sum;
+        return sum;*/
+        return (int) configurations.stream().filter(ImportItem::isSelected).count();
     }
 
+    public ArrayList<ImportItem> getSelectedItems() {
+        return configurations.stream().filter(ImportItem::isSelected).collect(Collectors.toCollection((Supplier<ArrayList<ImportItem>>) ArrayList::new));
+    }
 
 }

@@ -3,6 +3,7 @@ package fr.uge.confroid.gui;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,11 +13,13 @@ public class ImportItem {
     private boolean selected;
     private String assetLocation;
     private transient Bitmap cachedBitmap;
+    private JSONObject jsonObject;
 
-    public ImportItem(String name) {
+    public ImportItem(String name, JSONObject jsonObject) {
         this.name = name;
         this.selected = false;
         this.assetLocation = "logo.png";
+        this.jsonObject = jsonObject;
     }
 
     public String getName() {
@@ -41,6 +44,14 @@ public class ImportItem {
 
     public void setAssetLocation(String assetLocation) {
         this.assetLocation = assetLocation;
+    }
+
+    public JSONObject getJson() {
+        return jsonObject;
+    }
+
+    public void setJson(JSONObject jsonObject) {
+        this.jsonObject = jsonObject;
     }
 
     public Bitmap getBitmap(Context context) {
