@@ -30,6 +30,7 @@ public class ConfroidUtils {
 
     public void saveConfiguration(Context context, String name, Object object, String versionName) {
         String token = TokenPuller.getToken();
+        //Log.e("QUI",token);
         if (token != null) {
             Bundle bundle = new Bundle();
             bundle.putString("name", context.getPackageName());

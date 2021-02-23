@@ -13,8 +13,9 @@ public class TokenPuller extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e("QUI", "QUI");
+        Log.e("QUI", "SONO QUI");
         TOKEN = intent.getStringExtra("token");
+        //Log.e("TOKENREC",TOKEN);
         return START_NOT_STICKY;
     }
 

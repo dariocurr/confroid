@@ -28,11 +28,14 @@ public class TokenDispenser extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent incomingIntent) {
+        Log.i("QUI", "QUI");
         String receiver = incomingIntent.getStringExtra("receiver");
         String packageName = ConfroidManagerUtils.getPackageName(receiver);
+        Log.i("QUI", packageName);
         Intent outgoingIntent = new Intent();
         outgoingIntent.setClassName(packageName, receiver);
         outgoingIntent.putExtra("token", getToken(packageName));
+        Log.i("TOKENREC", receiver);
         context.startService(outgoingIntent);
     }
 
