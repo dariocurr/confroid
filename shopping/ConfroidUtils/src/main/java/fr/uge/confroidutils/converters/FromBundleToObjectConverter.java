@@ -37,21 +37,8 @@ public class FromBundleToObjectConverter {
             for (Field field : objectClass.getDeclaredFields()) {
                 String fieldName = field.getName();
                 Class<?> fieldType = field.getType();
-                if (fieldType.equals(List.class) || fieldType.equals(Map.class) || fieldType.equals(Set.class)) {
-                    field.set(object, fromBundleToCollection(bundle.getBundle(fieldName), fieldType));
-                } else if (bundle.get(field.getName()) instanceof Bundle) {
-                    Bundle innerBundle = bundle.getBundle(fieldName);
-                    if (innerBundle.containsKey("ref")) {
-                        referencedObjects.put(innerBundle.getInt("ref"), new AbstractMap.SimpleEntry<>(field, object));
-                    } else {
-                        field.set(object, fromBundleToObject(innerBundle));
-                    }
-                } else if(fieldType.equals(boolean.class)){
-                    field.set(object, Boolean.getBoolean((String) bundle.get(fieldName)));
-                } else if(fieldType.equals(int.class))
-                    field.set(object, Integer.parseInt((String) bundle.get(fieldName)));
-                else
-                    field.set(object,bundle.get(fieldName));
+
+                putObject(object, fieldType, field, bundle, fieldName);
             }
             alreadyCreatedObjects.put(bundle.getInt("id"), object);
             return object;
@@ -64,6 +51,41 @@ public class FromBundleToObjectConverter {
         }
         return null;
     }
+
+    private static void putObject(Object object, Class<?> fieldType, Field field, Bundle bundle, String fieldName) {
+        try {
+            if (fieldType.equals(String.class)) {
+                field.set(object, bundle.get(fieldName));
+            } else if (fieldType.equals(byte.class)) {
+                field.setByte(object, bundle.getByte(fieldName));
+            } else if (fieldType.equals(short.class)) {
+                field.setShort(object, bundle.getShort(fieldName));
+            } else if (fieldType.equals(int.class)) {
+                field.setInt(object, bundle.getInt(fieldName));
+            } else if (fieldType.equals(float.class)) {
+                field.setFloat(object, bundle.getFloat(fieldName));
+            } else if (fieldType.equals(double.class)) {
+                field.setDouble(object, bundle.getDouble(fieldName));
+            } else if (fieldType.equals(boolean.class)) {
+                field.setBoolean(object, bundle.getBoolean(fieldName));
+            } else if (fieldType.equals(List.class) || fieldType.equals(Map.class) || fieldType.equals(Set.class)) {
+                field.set(object, fromBundleToCollection(bundle.getBundle(fieldName), fieldType));
+            } else if (bundle.get(field.getName()) instanceof Bundle) {
+                Bundle innerBundle = bundle.getBundle(fieldName);
+                if (innerBundle.containsKey("ref")) {
+                    referencedObjects.put(innerBundle.getInt("ref"), new AbstractMap.SimpleEntry<>(field, object));
+                } else {
+                    field.set(object, fromBundleToObject(innerBundle));
+                }
+            } else {
+                field.set(object, bundle.get(fieldName));
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     private static Object fromBundleToCollection(Bundle bundle, Class<?> type) {
         Log.e("QUI", fromBundleToString(bundle));
@@ -102,6 +124,7 @@ public class FromBundleToObjectConverter {
         }
         return null;
     }
+
 
     public static String fromBundleToString(Bundle bundle) {
         return fromBundleToString(bundle, 0);
