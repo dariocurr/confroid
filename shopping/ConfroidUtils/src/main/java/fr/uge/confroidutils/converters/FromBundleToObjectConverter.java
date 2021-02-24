@@ -1,15 +1,14 @@
 package fr.uge.confroidutils.converters;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import java.lang.reflect.Field;
 import java.util.*;
 
 public class FromBundleToObjectConverter {
 
-    private static Map<Integer, Map.Entry<Field, Object>> referencedObjects;
-    private static Map<Integer, Object> alreadyCreatedObjects;
+    private static Map<String, Map.Entry<Field, Object>> referencedObjects;
+    private static Map<String, Object> alreadyCreatedObjects;
 
     public static Object convert(Bundle bundle) {
         try {
@@ -17,10 +16,8 @@ public class FromBundleToObjectConverter {
             referencedObjects = new HashMap<>();
 
             Object object = fromBundleToObject(bundle.getBundle("content"));
-            for (Integer reference : referencedObjects.keySet()) {
+            for (String reference : referencedObjects.keySet()) {
                 Map.Entry<Field, Object> entry = referencedObjects.get(reference);
-                Log.e("ENTRY", entry.getKey().toString());
-                Log.e("ENTRY", entry.getValue().toString());
                 entry.getKey().set(entry.getValue(), alreadyCreatedObjects.get(reference));
             }
             return object;
@@ -35,12 +32,9 @@ public class FromBundleToObjectConverter {
             Class<?> objectClass = Class.forName(bundle.getString("class"));
             Object object = objectClass.newInstance();
             for (Field field : objectClass.getDeclaredFields()) {
-                String fieldName = field.getName();
-                Class<?> fieldType = field.getType();
-
-                putObject(object, fieldType, field, bundle, fieldName);
+                putObjectInField(object, field, bundle);
             }
-            alreadyCreatedObjects.put(bundle.getInt("id"), object);
+            alreadyCreatedObjects.put(bundle.getString("id"), object);
             return object;
         } catch (IllegalAccessException e) {
             e.printStackTrace();
@@ -52,7 +46,9 @@ public class FromBundleToObjectConverter {
         return null;
     }
 
-    private static void putObject(Object object, Class<?> fieldType, Field field, Bundle bundle, String fieldName) {
+    private static void putObjectInField(Object object, Field field, Bundle bundle) {
+        Class<?> fieldType = field.getType();
+        String fieldName = field.getName();
         try {
             if (fieldType.equals(String.class)) {
                 field.set(object, bundle.get(fieldName));
@@ -73,7 +69,7 @@ public class FromBundleToObjectConverter {
             } else if (bundle.get(field.getName()) instanceof Bundle) {
                 Bundle innerBundle = bundle.getBundle(fieldName);
                 if (innerBundle.containsKey("ref")) {
-                    referencedObjects.put(innerBundle.getInt("ref"), new AbstractMap.SimpleEntry<>(field, object));
+                    referencedObjects.put(innerBundle.getString("ref"), new AbstractMap.SimpleEntry<>(field, object));
                 } else {
                     field.set(object, fromBundleToObject(innerBundle));
                 }
@@ -86,9 +82,7 @@ public class FromBundleToObjectConverter {
 
     }
 
-
     private static Object fromBundleToCollection(Bundle bundle, Class<?> type) {
-        Log.e("QUI", fromBundleToString(bundle));
         if (type.equals(List.class)) {
             List<Object> list = new ArrayList<>();
             for (String key : bundle.keySet()) {
@@ -123,29 +117,6 @@ public class FromBundleToObjectConverter {
             return map;
         }
         return null;
-    }
-
-
-    public static String fromBundleToString(Bundle bundle) {
-        return fromBundleToString(bundle, 0);
-    }
-
-    private static String fromBundleToString(Bundle bundle, int tabNumber) {
-        String content = "";
-        for (String key : bundle.keySet()) {
-            for (int i = 0; i < tabNumber; i++) {
-                content += "\t";
-            }
-            content += key + ": ";
-            Object contentObject = bundle.get(key);
-            if (contentObject instanceof Bundle) {
-                content += "\n" + fromBundleToString((Bundle) contentObject, tabNumber + 1);
-            } else {
-                content += contentObject.toString();
-            }
-            content += "\n";
-        }
-        return content;
     }
 
 }
