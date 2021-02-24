@@ -28,13 +28,11 @@ public class TokenDispenser extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent incomingIntent) {
-        Log.i("QUI", "QUI");
         String receiver = incomingIntent.getStringExtra("receiver");
-        String packageName = ConfroidManagerUtils.getPackageName(receiver);
-        Log.i("QUI", packageName);
+        String appPackage = incomingIntent.getStringExtra("appPackage");
         Intent outgoingIntent = new Intent();
-        outgoingIntent.setClassName(packageName, receiver);
-        outgoingIntent.putExtra("token", getToken(packageName));
+        outgoingIntent.setClassName(appPackage, receiver);//fr.uge.confroidutils - fr.uge.shopping
+        outgoingIntent.putExtra("token", getToken(appPackage));
         Log.i("TOKENREC", receiver);
         context.startService(outgoingIntent);
     }

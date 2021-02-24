@@ -1,0 +1,35 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Shopping.ConfroidUtils:jar">
+    <output-path>$PROJECT_DIR$/build/classes/artifacts/Shopping_ConfroidUtils_jar</output-path>
+    <root id="archive" name="Shopping.ConfroidUtils.jar">
+      <element id="module-output" name="Shopping.ConfroidUtils" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/df4d09f70e3f533a2fede8f96085147c/lifecycle-livedata-core-2.0.0/jars/classes.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e968a555a0e08b03627a3441cae31e6b/customview-1.0.0/jars/classes.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4d3e32c2f901863288c7ff80fcf0967a/jetified-activity-1.0.0/jars/classes.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/32e32c376d22cae962a95f2aba892822/viewpager-1.0.0/jars/classes.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/28174e475fcfd6ae966ed5772f6694ac/cursoradapter-1.0.0/jars/classes.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/552d05fff7df0b1caee9db39c74659fe/lifecycle-viewmodel-2.1.0/jars/classes.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3e5d045fdd42de39d437ce94a2ff87c7/interpolator-1.0.0/jars/classes.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.collection/collection/1.1.0/1f27220b47669781457de0d600849a5de0e89909/collection-1.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5a84463fe3bd90b9ee3ed76258f5efd9/jetified-appcompat-resources-1.2.0/jars/classes.jar" path-in-jar="/" />
+      <element id="dir-copy" path="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5a84463fe3bd90b9ee3ed76258f5efd9/jetified-appcompat-resources-1.2.0/res" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bde687302d742df89f7d227a2e48b0d9/vectordrawable-1.1.0/jars/classes.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3c1a5ebf565097fe10667d6b9a2c1703/versionedparcelable-1.1.0/jars/classes.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ce61250d0f7070aaab97d5c03ab2ab2e/fragment-1.1.0/jars/classes.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c16c855844b564ee7204d4d6005470fb/core-runtime-2.0.0/jars/classes.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-common/2.1.0/c67e7807d9cd6c329b9d0218b2ec4e505dd340b7/lifecycle-common-2.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c3d8ec33b66c793058ded980a54c4fd5/loader-1.0.0/jars/classes.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3a4bf45ee1cd2799bf6d0559eb3917d7/appcompat-1.2.0/jars/classes.jar" path-in-jar="/" />
+      <element id="dir-copy" path="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3a4bf45ee1cd2799bf6d0559eb3917d7/appcompat-1.2.0/res" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3f5e37635a712470204c0315e55f1003/lifecycle-runtime-2.1.0/jars/classes.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.annotation/annotation/1.1.0/e3a6fb2f40e3a3842e6b7472628ba4ce416ea4c8/annotation-1.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8a52da53b02a83b08615debb9b2e109c/jetified-savedstate-1.0.0/jars/classes.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/881ed38d8f80da7a88cb010386d80aa8/core-1.3.0/jars/classes.jar" path-in-jar="/" />
+      <element id="dir-copy" path="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/881ed38d8f80da7a88cb010386d80aa8/core-1.3.0/res" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ed8cc0ac00b11c0234ef1e5a578c70c1/lifecycle-livedata-2.0.0/jars/classes.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.arch.core/core-common/2.1.0/b3152fc64428c9354344bd89848ecddc09b6f07e/core-common-2.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3cf213e33fb5a76421a4e937ff33f07e/vectordrawable-animated-1.1.0/jars/classes.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/385ad0333dd34005ac3b322f68c176b9/drawerlayout-1.0.0/jars/classes.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

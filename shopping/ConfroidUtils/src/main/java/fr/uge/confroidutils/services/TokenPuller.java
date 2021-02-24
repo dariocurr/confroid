@@ -28,6 +28,7 @@ public class TokenPuller extends Service {
     public static void askToken(Context context) {
         Intent intent = new Intent();
         intent.putExtra("receiver", "fr.uge.confroidutils.services.TokenPuller");
+        intent.putExtra("appPackage", context.getPackageName());//fr.uge.shopping
         intent.setClassName("fr.uge.confroid", "fr.uge.confroid.receivers.TokenDispenser");
         context.sendBroadcast(intent);
     }
