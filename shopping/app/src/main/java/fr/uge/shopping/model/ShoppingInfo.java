@@ -1,5 +1,8 @@
 package fr.uge.shopping.model;
 
+import android.os.Build;
+import androidx.annotation.RequiresApi;
+
 import java.util.Objects;
 
 public class ShoppingInfo {
@@ -26,6 +29,7 @@ public class ShoppingInfo {
                 billing.equals(that.billing);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public int hashCode() {
         return Objects.hash(address, billing, favorite);

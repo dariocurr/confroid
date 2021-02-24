@@ -146,8 +146,9 @@ public class ConfroidManagerUtils {
             JSONObject versionsJsonObject = jsonObject.getJSONObject("configurations");
             for (Iterator<String> it = versionsJsonObject.keys(); it.hasNext(); ) {
                 String versionNum = it.next();
-                if (versionsJsonObject.getJSONObject(versionNum).getString("tag").equals(version))
+                if (versionsJsonObject.getJSONObject(versionNum).has("tag") && versionsJsonObject.getJSONObject(versionNum).getString("tag").equals(version)) {
                     return getVersionFromJsonToBundle(jsonObject.getJSONObject("configurations").getJSONObject(versionNum));
+                }
             }
         }
         return null;

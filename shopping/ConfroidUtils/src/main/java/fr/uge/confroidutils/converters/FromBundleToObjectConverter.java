@@ -1,6 +1,7 @@
 package fr.uge.confroidutils.converters;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -14,9 +15,12 @@ public class FromBundleToObjectConverter {
         try {
             alreadyCreatedObjects = new HashMap<>();
             referencedObjects = new HashMap<>();
-            Object object = fromBundleToObject(bundle);
+
+            Object object = fromBundleToObject(bundle.getBundle("content"));
             for (Integer reference : referencedObjects.keySet()) {
                 Map.Entry<Field, Object> entry = referencedObjects.get(reference);
+                Log.e("ENTRY", entry.getKey().toString());
+                Log.e("ENTRY", entry.getValue().toString());
                 entry.getKey().set(entry.getValue(), alreadyCreatedObjects.get(reference));
             }
             return object;
@@ -42,9 +46,12 @@ public class FromBundleToObjectConverter {
                     } else {
                         field.set(object, fromBundleToObject(innerBundle));
                     }
-                } else {
-                    field.set(object, bundle.get(fieldName));
-                }
+                } else if(fieldType.equals(boolean.class)){
+                    field.set(object, Boolean.getBoolean((String) bundle.get(fieldName)));
+                } else if(fieldType.equals(int.class))
+                    field.set(object, Integer.parseInt((String) bundle.get(fieldName)));
+                else
+                    field.set(object,bundle.get(fieldName));
             }
             alreadyCreatedObjects.put(bundle.getInt("id"), object);
             return object;
@@ -59,6 +66,7 @@ public class FromBundleToObjectConverter {
     }
 
     private static Object fromBundleToCollection(Bundle bundle, Class<?> type) {
+        Log.e("QUI", fromBundleToString(bundle));
         if (type.equals(List.class)) {
             List<Object> list = new ArrayList<>();
             for (String key : bundle.keySet()) {
@@ -93,6 +101,28 @@ public class FromBundleToObjectConverter {
             return map;
         }
         return null;
+    }
+
+    public static String fromBundleToString(Bundle bundle) {
+        return fromBundleToString(bundle, 0);
+    }
+
+    private static String fromBundleToString(Bundle bundle, int tabNumber) {
+        String content = "";
+        for (String key : bundle.keySet()) {
+            for (int i = 0; i < tabNumber; i++) {
+                content += "\t";
+            }
+            content += key + ": ";
+            Object contentObject = bundle.get(key);
+            if (contentObject instanceof Bundle) {
+                content += "\n" + fromBundleToString((Bundle) contentObject, tabNumber + 1);
+            } else {
+                content += contentObject.toString();
+            }
+            content += "\n";
+        }
+        return content;
     }
 
 }
