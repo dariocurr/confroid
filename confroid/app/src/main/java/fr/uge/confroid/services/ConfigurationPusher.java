@@ -79,20 +79,22 @@ public class ConfigurationPusher extends Service {
     }
 
     private void notifyObservers(String name, Integer versionNumber) {
-        Bundle bundle = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, versionNumber);
-        Intent intent = new Intent();
-        intent.putExtra("name", name);
-        intent.putExtra("version", versionNumber.toString());
-        intent.putExtra("content", bundle.getBundle("content"));
-        intent.putExtra("requestId", UPDATE_OBSERVER_REQUEST_ID);
-        Set<Subscription> observers = OBSERVERS.get(name);
-        for (Subscription subscription : getObservers(name)) {
-            long currentTime = System.currentTimeMillis();
-            if (subscription.isExpired(currentTime)) {
-                observers.remove(subscription);
-            } else {
-                intent.setClassName(ConfroidManagerUtils.getPackageName(subscription.getSubscriber()), subscription.getSubscriber());
-                this.startService(intent);
+        if (getObservers(name).size() > 0) {
+            Bundle bundle = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, versionNumber);
+            Intent intent = new Intent();
+            intent.putExtra("name", name);
+            intent.putExtra("version", versionNumber.toString());
+            intent.putExtra("content", bundle.getBundle("content"));
+            intent.putExtra("requestId", UPDATE_OBSERVER_REQUEST_ID);
+            Set<Subscription> observers = OBSERVERS.get(name);
+            for (Subscription subscription : getObservers(name)) {
+                long currentTime = System.currentTimeMillis();
+                if (subscription.isExpired(currentTime)) {
+                    observers.remove(subscription);
+                } else {
+                    intent.setClassName(ConfroidManagerUtils.getPackageName(subscription.getSubscriber()), subscription.getSubscriber());
+                    this.startService(intent);
+                }
             }
         }
     }

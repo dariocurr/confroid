@@ -15,7 +15,7 @@ public class TokenPuller extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.e("QUI", "SONO QUI");
         TOKEN = intent.getStringExtra("token");
-        //Log.e("TOKENREC",TOKEN);
+        Log.e("TOKENREC",TOKEN);
         return START_NOT_STICKY;
     }
 
@@ -28,7 +28,7 @@ public class TokenPuller extends Service {
     public static void askToken(Context context) {
         Intent intent = new Intent();
         intent.putExtra("receiver", "fr.uge.confroidutils.services.TokenPuller");
-        intent.putExtra("appPackage", context.getPackageName());//fr.uge.shopping
+        intent.putExtra("name", context.getPackageName());
         intent.setClassName("fr.uge.confroid", "fr.uge.confroid.receivers.TokenDispenser");
         context.sendBroadcast(intent);
     }

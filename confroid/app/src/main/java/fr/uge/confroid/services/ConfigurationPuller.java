@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import fr.uge.confroid.ConfroidManager;
-import fr.uge.confroid.MainActivity;
 import fr.uge.confroid.receivers.TokenDispenser;
 import fr.uge.confroid.utlis.ConfroidManagerUtils;
 
@@ -54,7 +53,7 @@ public class ConfigurationPuller extends Service {
             outgoingIntent.putExtra("name", name);
             outgoingIntent.putExtra("requestId", requestId);
             outgoingIntent.putExtra("version", version);
-            outgoingIntent.setClassName(ConfroidManagerUtils.getPackageName(receiver), receiver);
+            outgoingIntent.setClassName(name, receiver);
             this.startService(outgoingIntent);
         } else {
             Log.e("TokenNotValidException","Token " + token + " isn't valid!");

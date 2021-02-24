@@ -140,9 +140,9 @@ public class ConfroidManagerUtils {
     }
 
     public static Bundle getVersionFromJsonToBundle(JSONObject jsonObject, Object version) throws JSONException {
-        if(version instanceof Integer)
+        if (version instanceof Integer)
             return getVersionFromJsonToBundle(jsonObject.getJSONObject("configurations").getJSONObject(String.valueOf(version)));
-        else if(version instanceof String){
+        else if (version instanceof String) {
             JSONObject versionsJsonObject = jsonObject.getJSONObject("configurations");
             for (Iterator<String> it = versionsJsonObject.keys(); it.hasNext(); ) {
                 String versionNum = it.next();

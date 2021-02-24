@@ -34,7 +34,9 @@ public class ConfroidUtils {
         if (token != null) {
             Bundle bundle = new Bundle();
             bundle.putString("name", context.getPackageName());
-            bundle.putString("tag", name + "\\" + versionName);
+            if (!versionName.equals("")) {
+                bundle.putString("tag", name + "/" + versionName);
+            }
             bundle.putString("token", token);
             bundle.putBundle("content", FromObjectToBundleConverter.convert(object));
             Intent intent = new Intent();
@@ -56,7 +58,7 @@ public class ConfroidUtils {
             Intent intent = new Intent();
             intent.putExtra("name", context.getPackageName());
             intent.putExtra("token", token);
-            intent.putExtra("requestId", requestId++);
+            intent.putExtra("requestId", requestId++ + "");
             intent.putExtra("version", version);
             intent.putExtra("receiver", "fr.uge.confroidutils.services.ConfigurationPuller");
             intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationPuller");
@@ -77,7 +79,7 @@ public class ConfroidUtils {
             Intent intent = new Intent();
             intent.putExtra("name", context.getPackageName());
             intent.putExtra("token", token);
-            intent.putExtra("requestId", requestId++);
+            intent.putExtra("requestId", requestId++ + "");
             intent.putExtra("version", "latest");
             intent.putExtra("receiver", "fr.uge.confroidutils.services.ConfigurationPuller");
             intent.putExtra("expiration", Integer.MAX_VALUE);
@@ -99,7 +101,7 @@ public class ConfroidUtils {
             Intent intent = new Intent();
             intent.putExtra("name", context.getPackageName());
             intent.putExtra("token", TokenPuller.getToken());
-            intent.putExtra("requestId", requestId++);
+            intent.putExtra("requestId", requestId++ + "");
             intent.putExtra("version", "latest");
             intent.putExtra("receiver", "fr.uge.confroidutils.services.ConfigurationPuller");
             intent.putExtra("expiration", -1);
@@ -121,7 +123,7 @@ public class ConfroidUtils {
             Intent intent = new Intent();
             intent.putExtra("name", name);
             intent.putExtra("token", TokenPuller.getToken());
-            intent.putExtra("requestId", requestId++);
+            intent.putExtra("requestId", requestId++ + "");
             intent.putExtra("receiver", "fr.uge.confroidutils.services.ConfigurationVersions");
             intent.setClassName("fr.uge.confroid", "fr.uge.confroid.services.ConfigurationVersions");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
