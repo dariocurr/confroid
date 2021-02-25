@@ -57,7 +57,7 @@ public class ConfroidManagerUtils {
         return bundle;
     }
 
-    /*
+
     public static String fromBundleToString(Bundle bundle) {
         return fromBundleToString(bundle, 0);
     }
@@ -79,7 +79,7 @@ public class ConfroidManagerUtils {
         }
         return content;
     }
-    */
+
 
     public static JSONObject fromBundleToJson(Bundle bundle) throws JSONException {
         JSONObject jsonObject = new JSONObject();
