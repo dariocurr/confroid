@@ -117,7 +117,7 @@ public class ConfroidUtils {
         }
     }
 
-    public void getConfigurationVersions(Context context, String name, Consumer<List<Version>> callback) {
+    public <T> void getConfigurationVersions(Context context, String name, Consumer<T> callback) {
         String token = TokenPuller.getToken();
         if (token != null) {
             Intent intent = new Intent();
@@ -148,8 +148,10 @@ public class ConfroidUtils {
 
     public void onReceiveConfigurationVersions(Intent intent) {
         Bundle versionBundle = intent.getBundleExtra("versions");
-        Log.e("versions", FromBundleToObjectConverter.fromBundleToString(versionBundle));
-        //callback.accept();
+
+        for(String key : versionBundle.keySet()){
+            this.callbacks.get(0).accept(FromBundleToObjectConverter.convert(versionBundle.getBundle(key)));
+        }
 
         this.callbacks.remove(0);
     }
