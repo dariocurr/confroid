@@ -53,17 +53,17 @@ public class FromBundleToObjectConverter {
             if (fieldType.equals(String.class)) {
                 field.set(object, bundle.get(fieldName));
             } else if (fieldType.equals(byte.class)) {
-                field.setByte(object, bundle.getByte(fieldName));
+                field.setByte(object, Byte.parseByte(bundle.getString(fieldName)));
             } else if (fieldType.equals(short.class)) {
-                field.setShort(object, bundle.getShort(fieldName));
+                field.setShort(object, Short.parseShort(bundle.getString(fieldName)));
             } else if (fieldType.equals(int.class)) {
-                field.setInt(object, Integer.parseInt((String) bundle.get(fieldName)));
+                field.setInt(object, Integer.parseInt(bundle.getString(fieldName)));
             } else if (fieldType.equals(float.class)) {
-                field.setFloat(object, bundle.getFloat(fieldName));
+                field.setFloat(object, Float.parseFloat(bundle.getString(fieldName)));
             } else if (fieldType.equals(double.class)) {
-                field.setDouble(object, bundle.getDouble(fieldName));
+                field.setDouble(object, Double.parseDouble(bundle.getString(fieldName)));
             } else if (fieldType.equals(boolean.class)) {
-                field.setBoolean(object, Boolean.getBoolean((String) bundle.get(fieldName)));
+                field.setBoolean(object, Boolean.parseBoolean(bundle.getString(fieldName)));
             } else if (fieldType.equals(List.class) || fieldType.equals(Map.class) || fieldType.equals(Set.class)) {
                 field.set(object, fromBundleToCollection(bundle.getBundle(fieldName), fieldType));
             } else if (bundle.get(field.getName()) instanceof Bundle) {
