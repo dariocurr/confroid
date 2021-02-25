@@ -78,7 +78,7 @@ public class FromObjectToBundleConverter {
             bundle.putDouble(key, (double) object);
         } else if (object instanceof Boolean) {
             bundle.putBoolean(key, (boolean) object);
-        } else if (object instanceof List || object instanceof Map) {
+        } else if (object instanceof List || object instanceof Map || object instanceof Set) {
             bundle.putBundle(key, fromCollectionToBundle(object));
         } else if (object instanceof Bundle) {
             bundle.putBundle(key, (Bundle) object);
