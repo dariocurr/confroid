@@ -148,8 +148,9 @@ public class ConfroidUtils {
 
     public void onReceiveConfigurationVersions(Intent intent) {
         Bundle versionBundle = intent.getBundleExtra("versions");
-        Log.e("versions", versionBundle.toString());
+        Log.e("versions", FromBundleToObjectConverter.fromBundleToString(versionBundle));
         //callback.accept();
+
         this.callbacks.remove(0);
     }
 

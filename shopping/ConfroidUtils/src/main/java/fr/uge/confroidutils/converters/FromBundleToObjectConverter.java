@@ -57,13 +57,13 @@ public class FromBundleToObjectConverter {
             } else if (fieldType.equals(short.class)) {
                 field.setShort(object, bundle.getShort(fieldName));
             } else if (fieldType.equals(int.class)) {
-                field.setInt(object, bundle.getInt(fieldName));
+                field.setInt(object, Integer.parseInt((String) bundle.get(fieldName)));
             } else if (fieldType.equals(float.class)) {
                 field.setFloat(object, bundle.getFloat(fieldName));
             } else if (fieldType.equals(double.class)) {
                 field.setDouble(object, bundle.getDouble(fieldName));
             } else if (fieldType.equals(boolean.class)) {
-                field.setBoolean(object, bundle.getBoolean(fieldName));
+                field.setBoolean(object, Boolean.getBoolean((String) bundle.get(fieldName)));
             } else if (fieldType.equals(List.class) || fieldType.equals(Map.class) || fieldType.equals(Set.class)) {
                 field.set(object, fromBundleToCollection(bundle.getBundle(fieldName), fieldType));
             } else if (bundle.get(field.getName()) instanceof Bundle) {
@@ -117,6 +117,28 @@ public class FromBundleToObjectConverter {
             return map;
         }
         return null;
+    }
+
+    public static String fromBundleToString(Bundle bundle) {
+        return fromBundleToString(bundle, 0);
+    }
+
+    private static String fromBundleToString(Bundle bundle, int tabNumber) {
+        String content = "";
+        for (String key : bundle.keySet()) {
+            for (int i = 0; i < tabNumber; i++) {
+                content += "\t";
+            }
+            content += key + ": ";
+            Object contentObject = bundle.get(key);
+            if (contentObject instanceof Bundle) {
+                content += "\n" + fromBundleToString((Bundle) contentObject, tabNumber + 1);
+            } else {
+                content += contentObject.toString();
+            }
+            content += "\n";
+        }
+        return content;
     }
 
 }

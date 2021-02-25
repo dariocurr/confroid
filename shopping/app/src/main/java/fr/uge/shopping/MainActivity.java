@@ -46,7 +46,9 @@ public class MainActivity extends AppCompatActivity {
             confroidUtils.loadConfiguration(this.getApplicationContext(), "shoppingPreferences/stable", o -> Log.e("CHECK", o + ""));
         });
 
-        this.loadVersionsButton.setOnClickListener(ev -> {});
+        this.loadVersionsButton.setOnClickListener(ev -> {
+            confroidUtils.getConfigurationVersions(this.getApplicationContext(), "fr.uge.shopping", o -> Log.e("CHECK", o + ""));
+        });
         this.updateTagButton.setOnClickListener(ev -> {});
         this.editConfigurationButton.setOnClickListener(ev -> {});
 
