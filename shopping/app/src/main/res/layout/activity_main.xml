@@ -6,81 +6,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
-    <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/configurationEditText"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/guideline1" android:text="a" android:hint="Insert here you text"/>
-    <Button
-            android:text="Save Configuration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/saveConfigurationButton"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline1"
-            app:layout_constraintBottom_toTopOf="@+id/guideline2"/>
-    <Button
-            android:text="Load Configuration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/loadConfigurationButton"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline2"
-            app:layout_constraintBottom_toTopOf="@+id/guideline3"/>
-    <Button
-            android:text="Load All Versions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/loadVersionsButton"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline3"
-            app:layout_constraintBottom_toTopOf="@+id/guideline4"/>
-    <Button
-            android:text="Update tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/updateTagButton"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/guideline5"
-            app:layout_constraintTop_toTopOf="@+id/guideline4"/>
-    <Button
-            android:text="Edit configuration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/editConfigurationButton"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline5" app:layout_constraintBottom_toTopOf="@+id/guideline6"/>
-    <androidx.constraintlayout.widget.Guideline
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/guideline1"
-            app:layout_constraintGuide_percent="0.1"/>
-    <androidx.constraintlayout.widget.Guideline
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/guideline2"
-            app:layout_constraintGuide_percent="0.2"/>
-    <androidx.constraintlayout.widget.Guideline
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/guideline3"
-            app:layout_constraintGuide_percent="0.3"/>
-    <androidx.constraintlayout.widget.Guideline
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/guideline4"
-            app:layout_constraintGuide_percent="0.4"/>
-    <androidx.constraintlayout.widget.Guideline
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/guideline5"
-            app:layout_constraintGuide_percent="0.5"/>
-    <androidx.constraintlayout.widget.Guideline
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/guideline6"
-            app:layout_constraintGuide_percent="0.6"/>
 
+    <Button
+        android:id="@+id/saveConfigurationButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.467"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="409dp"
+        android:layout_height="662dp"
+        app:layout_constraintBottom_toTopOf="@+id/saveConfigurationButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

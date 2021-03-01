@@ -80,7 +80,9 @@ public class ImportAdapter extends RecyclerView.Adapter<ImportAdapter.ViewHolder
     }
 
     public ArrayList<ImportItem> getSelectedItems() {
-        return configurations.stream().filter(ImportItem::isSelected).collect(Collectors.toCollection((Supplier<ArrayList<ImportItem>>) ArrayList::new));
+        return configurations.stream()
+                .filter(ImportItem::isSelected)
+                .collect(Collectors.toCollection((Supplier<ArrayList<ImportItem>>) ArrayList::new));
     }
 
 }
