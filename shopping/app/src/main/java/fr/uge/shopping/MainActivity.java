@@ -8,13 +8,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import fr.uge.confroidutils.ConfroidUtils;
 import fr.uge.shopping.gui.ConfigurationAdapter;
+import fr.uge.shopping.gui.ConfigurationItem;
 import fr.uge.shopping.model.BillingDetails;
 import fr.uge.shopping.model.ShippingAddress;
 import fr.uge.shopping.model.ShoppingInfo;
 import fr.uge.shopping.model.ShoppingPreferences;
 import org.json.JSONException;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -63,32 +67,26 @@ public class MainActivity extends AppCompatActivity {
         this.editConfigurationButton.setOnClickListener(ev -> {});*/
 
         //-----------------------------------------EMA---------------------------------------
-        // qua funziona, ma non al primo colpo. Devo "refreshare" l'attività tipo ruotando lo schermo.
-        // Bisogna comunque risolvere il problema che al primo colpo non va ma è secondario al momento
-        confroidUtils.loadConfiguration(this.getApplicationContext(), "shoppingPreferences/stable", o -> Log.e("load123", o + ""));
-        try {
-            initRecyclerView();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        confroidUtils.loadConfiguration(this.getApplicationContext(), "shoppingPreferences/stable", o -> initRecyclerView((ShoppingPreferences) o));
 
     }
 
-    private void initRecyclerView() throws JSONException {
-        ShoppingPreferences p = new ShoppingPreferences();
+    private void initRecyclerView(ShoppingPreferences prefs) {
 
-        confroidUtils.loadConfiguration(this.getApplicationContext(),
-                "shoppingPreferences/stable",
-                o ->  p.shoppingInfo = ((ShoppingPreferences) o).shoppingInfo); //<-- non va questa assegnazione
+        Log.i("load123", prefs.toString());
 
-        //Qua stampa sempre vuoto
-        Log.i("load123", p.toString());
+        ArrayList<ConfigurationItem> items = new ArrayList<>();
+         prefs.shoppingInfo.keySet().forEach( key -> {
+             items.add(new ConfigurationItem(key, prefs.shoppingInfo.get(key)));
+             Log.i("load123", "Added item "+key);
+         });
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //adapter = new ConfigurationAdapter(this, configurations);
-        //adapter.setClickListener(this);
-        //recyclerView.setAdapter(adapter);
+        adapter = new ConfigurationAdapter(this, items);
+        recyclerView.setAdapter(adapter);
+
+        Log.i("load123", "number of elements "+adapter.getItemCount());
     }
 
 }

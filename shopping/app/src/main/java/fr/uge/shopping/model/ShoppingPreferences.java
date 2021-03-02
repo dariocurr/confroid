@@ -15,10 +15,6 @@ public class ShoppingPreferences {
         this.shoppingInfo = new HashMap<>();
     }
 
-    public void setShoppingInfo(Map<String, ShoppingInfo> shoppingInfo) {
-        this.shoppingInfo = shoppingInfo;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
