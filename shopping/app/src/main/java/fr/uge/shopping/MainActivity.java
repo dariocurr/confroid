@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         this.confroidUtils = new ConfroidUtils(this.getApplicationContext());
 
 
@@ -47,13 +48,14 @@ public class MainActivity extends AppCompatActivity {
         this.editConfigurationButton = findViewById(R.id.editConfigurationButton);*/
 
         this.saveConfigurationButton.setOnClickListener(ev -> {
-            ShoppingPreferences prefs = new ShoppingPreferences();
+            /*ShoppingPreferences prefs = new ShoppingPreferences();
             ShippingAddress address1 = new ShippingAddress("Bugdroid", "Bd Descartes", "Champs-sur-Marne", "France");
             ShippingAddress address2 = new ShippingAddress("Bugdroid", "Rue des tartes au nougat", "Lollipop City", "Oreo Country");
             BillingDetails billing = new BillingDetails("Bugdroid", "123456789", 12, 2021, 123);
             prefs.shoppingInfo.put("home", new ShoppingInfo(address1, billing, true));
             prefs.shoppingInfo.put("work", new ShoppingInfo(address2, billing, false));
-            confroidUtils.saveConfiguration(this.getApplicationContext(), "shoppingPreferences", prefs, "stable");
+            confroidUtils.saveConfiguration(this.getApplicationContext(), "shoppingPreferences", prefs, "stable");*/
+            confroidUtils.loadConfiguration(this.getApplicationContext(), "shoppingPreferences/stable", o -> initRecyclerView((ShoppingPreferences) o));
         });
         /*
         this.loadConfigurationButton.setOnClickListener(ev -> {
@@ -66,8 +68,6 @@ public class MainActivity extends AppCompatActivity {
         this.updateTagButton.setOnClickListener(ev -> {});
         this.editConfigurationButton.setOnClickListener(ev -> {});*/
 
-        //-----------------------------------------EMA---------------------------------------
-        confroidUtils.loadConfiguration(this.getApplicationContext(), "shoppingPreferences/stable", o -> initRecyclerView((ShoppingPreferences) o));
 
     }
 
