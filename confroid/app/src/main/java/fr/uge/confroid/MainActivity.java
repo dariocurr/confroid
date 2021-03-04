@@ -12,16 +12,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import fr.uge.confroid.gui.ConfigurationActivity;
-import fr.uge.confroid.gui.ImportActivity;
 import fr.uge.confroid.gui.ConfigurationAdapter;
-import fr.uge.confroid.services.ConfigurationPusher;
-import fr.uge.confroid.utlis.ConfroidManagerUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.util.Iterator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ConfigurationAdapter.ItemClickListener{
@@ -29,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
     private static final int CREATE_REQUEST_CODE = 0;
     private static final int OPEN_REQUEST_CODE = 1;
     public static final int CHOOSE_REQUEST_CODE = 2;
+    public static final String EXTRA_CONFIGURATION_NAME = "EXTRA_CONFIGURATION_NAME";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,9 +75,9 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
     @Override
     public void onItemClick(View view, int position) {
         //Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(getBaseContext(), ConfigurationActivity.class);
+        Intent intent = new Intent(getBaseContext(), ViewActivity.class);
         Bundle conf = new Bundle();
-        conf.putString("EXTRA_TEST_STRING", adapter.getItem(position));
+        conf.putString(EXTRA_CONFIGURATION_NAME, adapter.getItem(position));
         intent.putExtras(conf);
         startActivity(intent);
     }
