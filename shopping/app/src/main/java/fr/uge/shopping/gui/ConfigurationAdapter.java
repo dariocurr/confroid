@@ -1,7 +1,6 @@
 package fr.uge.shopping.gui;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +13,12 @@ import java.util.List;
 
 public class ConfigurationAdapter extends RecyclerView.Adapter<ConfigurationAdapter.ViewHolder> {
 
-    private List<ConfigurationItem> Data;
-    private LayoutInflater Inflater;
+    private List<ConfigurationItem> data;
+    private LayoutInflater inflater;
+    private ItemClickListener clickListener;
 
     // stores and recycles views as they are scrolled off screen
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView textView;
 
         ViewHolder(View itemView) {
@@ -30,16 +30,21 @@ public class ConfigurationAdapter extends RecyclerView.Adapter<ConfigurationAdap
             textView.setText(item.getName());
         }
 
+        @Override
+        public void onClick(View view) {
+            if (clickListener != null) clickListener.onItemClick(view, getAdapterPosition());
+        }
+
     }
 
     public ConfigurationAdapter(Context context, List<ConfigurationItem> data) {
-        this.Inflater = LayoutInflater.from(context);
-        this.Data = new ArrayList<>();
-        this.Data.addAll(data);
+        this.inflater = LayoutInflater.from(context);
+        this.data = new ArrayList<>();
+        this.data.addAll(data);
     }
 
     public void setData(List<ConfigurationItem> data) {
-        Data = data;
+        this.data = data;
     }
 
     @Override
@@ -49,17 +54,24 @@ public class ConfigurationAdapter extends RecyclerView.Adapter<ConfigurationAdap
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.update(Data.get(position));
-        Log.i("load123", "setted text as "+holder.textView.getText());
+        holder.update(data.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return Data.size();
+        return data.size();
     }
 
     public ConfigurationItem getItem(int id) {
-        return Data.get(id);
+        return data.get(id);
+    }
+
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.clickListener = itemClickListener;
+    }
+
+    public interface ItemClickListener {
+        void onItemClick(View view, int position);
     }
 
 }
