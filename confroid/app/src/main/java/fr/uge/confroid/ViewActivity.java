@@ -1,22 +1,18 @@
-package fr.uge.confroid.gui;
+package fr.uge.confroid;
 
-import android.app.AlertDialog;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import fr.uge.confroid.R;
-import fr.uge.confroid.ConfroidManager;
 import fr.uge.confroid.services.ConfigurationPusher;
-import fr.uge.confroid.utlis.ConfroidManagerUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ConfigurationActivity extends AppCompatActivity {
+public class ViewActivity extends AppCompatActivity {
     private Spinner dropdownMenu;
     private TextView contentText;
     private TextView datetext;
@@ -26,14 +22,14 @@ public class ConfigurationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_configuration);
+        setContentView(R.layout.activity_view);
 
-        configuration = ConfroidManager.loadAllVersionsJson(this, getIntent().getExtras().getString("EXTRA_TEST_STRING"));
-        try {
+        configuration = ConfroidManager.loadAllVersionsJson(this, getIntent().getExtras().getString(MainActivity.EXTRA_CONFIGURATION_NAME));
+        /*try {
             Log.i("all123", configuration.toString(2));
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
 
         initContent();
         initVersionMenu();

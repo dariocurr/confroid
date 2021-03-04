@@ -1,4 +1,4 @@
-package fr.uge.confroid.gui;
+package fr.uge.confroid;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import fr.uge.confroid.ConfroidManager;
 import fr.uge.confroid.MainActivity;
 import fr.uge.confroid.R;
+import fr.uge.confroid.gui.ImportAdapter;
+import fr.uge.confroid.gui.ImportItem;
 import fr.uge.confroid.services.ConfigurationPusher;
 import fr.uge.confroid.utlis.ConfroidManagerUtils;
 import org.json.JSONException;
