@@ -65,12 +65,6 @@ public class BillingDetails {
 
     @Override
     public String toString() {
-        return "BillingDetails{" +
-                "cardHolder='" + cardHolder + '\'' +
-                ", cardNumber='" + cardNumber + '\'' +
-                ", expirationMonth=" + expirationMonth +
-                ", expirationYear=" + expirationYear +
-                ", cryptogram=" + cryptogram +
-                '}';
+        return "N° "+cardNumber+" - "+expirationMonth+"\\"+expirationYear+"\n"+cardHolder+"\n"+cryptogram;
     }
 }

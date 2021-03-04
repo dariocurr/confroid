@@ -54,11 +54,6 @@ public class ShippingAddress {
 
     @Override
     public String toString() {
-        return "ShippingAddress{" +
-                "name='" + name + '\'' +
-                ", street='" + street + '\'' +
-                ", city='" + city + '\'' +
-                ", country='" + country + '\'' +
-                '}';
+        return name+"\n"+street+", "+city+"\n"+country;
     }
 }
