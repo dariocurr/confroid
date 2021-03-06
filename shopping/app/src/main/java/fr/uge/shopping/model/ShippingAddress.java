@@ -26,7 +26,12 @@ public class ShippingAddress {
     @RegexValidator(regex = ". +")
     public String country;
 
-    public ShippingAddress() {}
+    public ShippingAddress() {
+        this.name = "";
+        this.street = "";
+        this.city = "";
+        this.country = "";
+    }
 
     public ShippingAddress(String name, String street, String city, String country) {
         this.name = name;

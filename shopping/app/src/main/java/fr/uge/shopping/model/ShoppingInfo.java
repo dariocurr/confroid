@@ -11,7 +11,11 @@ public class ShoppingInfo {
     public BillingDetails billing;
     public boolean favorite;
 
-    public ShoppingInfo() {}
+    public ShoppingInfo() {
+        this.address = new ShippingAddress();
+        this.billing = new BillingDetails();
+        this.favorite = false;
+    }
 
     public ShoppingInfo(ShippingAddress address, BillingDetails billing, boolean favorite) {
         this.address = address;
