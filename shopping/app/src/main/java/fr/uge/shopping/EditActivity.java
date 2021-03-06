@@ -1,10 +1,13 @@
 package fr.uge.shopping;
 
+import android.app.FragmentManager;
 import android.util.Log;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import androidx.fragment.app.FragmentTransaction;
 import fr.uge.shopping.R;
+import fr.uge.shopping.gui.EditAddressFragment;
 import fr.uge.shopping.model.BillingDetails;
 import fr.uge.shopping.model.ShippingAddress;
 import fr.uge.shopping.model.ShoppingInfo;
@@ -53,6 +56,14 @@ public class EditActivity extends AppCompatActivity {
         this.editAddressButton = findViewById(R.id.editAddressButton);
         this.editAddressButton.setOnClickListener( ev -> {
             //TODO launch address edit fragment
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            EditAddressFragment fragment = new EditAddressFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("name", this.infoName);
+            fragment.setArguments(bundle);
+            ft.replace(R.id.fragment_frame, fragment);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            ft.commit();
         });
 
         this.editBillingButton = findViewById(R.id.editBillingButton);
@@ -63,10 +74,7 @@ public class EditActivity extends AppCompatActivity {
         this.saveEditButton = findViewById(R.id.saveEditButton);
         this.saveEditButton.setOnClickListener( ev -> {
 
-            //TODO get new strings from fragments
-            ShippingAddress address = new ShippingAddress("Bugdroid", "Bd test", "test-sur-Marne", "test");
-            BillingDetails billing = new BillingDetails("Bugdroid", "00000000", 12, 2021, 123);
-            boolean favorite = favoriteEditCheckBox.isChecked();
+            this.favorite = favoriteEditCheckBox.isChecked();
 
             Log.i("push123", "BEFORE:\n"+this.preferencesManager.getShoppingInfoMap().toString());
 
@@ -76,14 +84,27 @@ public class EditActivity extends AppCompatActivity {
 
             this.preferencesManager.getShoppingInfoMap().put(
                     this.shoppingInfoEditName.getText().toString(),
-                    new ShoppingInfo(address, billing, favorite)
+                    new ShoppingInfo(this.address, this.billing, this.favorite)
             );
 
             Log.i("push123", "AFTER:\n"+this.preferencesManager.getShoppingInfoMap().toString());
 
             //TODO PUSH VIA API
+            this.preferencesManager.api().saveConfiguration(
+                    this.getApplicationContext(),
+                    "shoppingPreferences",
+                    this.preferencesManager.getPreferences(),
+                    "stable"
+            );
+            finish();
         });
 
 
     }
+
+    public void updateAddress(ShippingAddress address) {
+        this.address = address;
+        this.addressEditTextView.setText(address.toString());
+    }
+
 }
