@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,28 +47,46 @@ public class MainActivity extends AppCompatActivity {
         this.saveConfigurationButton = findViewById(R.id.saveConfigurationButton);
         this.loadConfigurationButton = findViewById(R.id.loadConfigurationButton);
         this.addConfgirationButton = findViewById(R.id.addConfigurationButton);
+        this.addConfgirationButton.setEnabled(false);
         /*this.loadVersionsButton = findViewById(R.id.loadVersionsButton);
         this.updateTagButton = findViewById(R.id.updateTagButton);
         this.editConfigurationButton = findViewById(R.id.editConfigurationButton);*/
         initRecyclerView();
 
+        //TODO remove?
         this.saveConfigurationButton.setOnClickListener(ev -> {
-            /*ShoppingPreferences prefs = new ShoppingPreferences();
-            ShippingAddress address1 = new ShippingAddress("Bugdroid", "Bd Descartes", "Champs-sur-Marne", "France");
-            ShippingAddress address2 = new ShippingAddress("Bugdroid", "Rue des tartes au nougat", "Lollipop City", "Oreo Country");
-            BillingDetails billing = new BillingDetails("Bugdroid", "123456789", 12, 2021, 123);
-            prefs.shoppingInfo.put("home", new ShoppingInfo(address1, billing, true));
-            prefs.shoppingInfo.put("work", new ShoppingInfo(address2, billing, false));*/
             preferencesManager.init();
-            preferencesManager.api().saveConfiguration(this.getApplicationContext(), "shoppingPreferences", preferencesManager.getPreferences(), "stable");
-            //
+            preferencesManager.api().saveConfiguration(this.getApplicationContext(), "shoppingPreferences", preferencesManager.getPreferences(), "");
         });
 
         this.loadConfigurationButton.setOnClickListener(ev -> {
+            addConfgirationButton.setEnabled(true);
             preferencesManager.api().loadConfiguration(this.getApplicationContext(), "shoppingPreferences/stable", o -> updateRecyclerView((ShoppingPreferences) o));
         });
 
         this.addConfgirationButton.setOnClickListener( ev -> {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+            alertDialog.setTitle(getString(R.string.addPreference));
+            alertDialog.setMessage(getString(R.string.addPreferenceName));
+
+            final EditText prefName = new EditText(MainActivity.this);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
+            prefName.setLayoutParams(lp);
+            alertDialog.setView(prefName);
+
+            alertDialog.setPositiveButton(getString(R.string.add), (dialog, which) -> {
+                preferencesManager.getShoppingInfoMap().put(prefName.getText().toString(), new ShoppingInfo());
+                syncApi();
+                dialog.dismiss();
+            });
+
+            alertDialog.setNegativeButton(getString(R.string.back), (dialog, which) -> {
+                dialog.cancel();
+            });
+
+            alertDialog.show();
 
         });
 /*
@@ -118,9 +138,7 @@ public class MainActivity extends AppCompatActivity {
             switch (which){
                 case DialogInterface.BUTTON_POSITIVE:
                     preferencesManager.removeShoppingInfo(key);
-
-                    preferencesManager.api().saveConfiguration(this, "shoppingPreferences", preferencesManager.getPreferences(), "stable");
-                    preferencesManager.api().loadConfiguration(this, "shoppingPreferences/stable", o -> updateRecyclerView((ShoppingPreferences) o));
+                    syncApi();
                     dialog.dismiss();
                     break;
 
@@ -135,5 +153,11 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton(this.getString(R.string.yes), dialogClickListener)
                 .setNegativeButton(this.getString(R.string.no), dialogClickListener)
                 .show();
+    }
+
+
+    private void syncApi() {
+        preferencesManager.api().saveConfiguration(this, "shoppingPreferences", preferencesManager.getPreferences(), "stable");
+        preferencesManager.api().loadConfiguration(this, "shoppingPreferences/stable", o -> updateRecyclerView((ShoppingPreferences) o));
     }
 }
