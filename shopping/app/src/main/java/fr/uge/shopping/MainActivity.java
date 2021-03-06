@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         //TODO remove?
         this.saveConfigurationButton.setOnClickListener(ev -> {
             preferencesManager.init();
-            preferencesManager.api().saveConfiguration(this.getApplicationContext(), "shoppingPreferences", preferencesManager.getPreferences(), "");
+            preferencesManager.api().saveConfiguration(this.getApplicationContext(), "shoppingPreferences", preferencesManager.getPreferences(), "stable");
         });
 
         this.loadConfigurationButton.setOnClickListener(ev -> {
@@ -99,6 +100,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        preferencesManager.api().loadConfiguration(this, "shoppingPreferences/stable", o -> updateRecyclerView((ShoppingPreferences) o));
+    }
+
     private void initRecyclerView() {
         ArrayList<ConfigurationItem> items = new ArrayList<>();
         recyclerView = findViewById(R.id.recycler_view);
@@ -118,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateRecyclerView(ShoppingPreferences prefs) {
+        Log.i("bug123", prefs.toString());
         ArrayList<ConfigurationItem> items = new ArrayList<>();
         preferencesManager.setPreferences(prefs);
         preferencesManager.getShoppingInfoMap().keySet().forEach(key -> items.add(new ConfigurationItem(key, prefs.shoppingInfo.get(key))));
