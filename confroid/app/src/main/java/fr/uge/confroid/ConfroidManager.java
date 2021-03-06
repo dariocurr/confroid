@@ -46,8 +46,6 @@ public class ConfroidManager {
         try {
             File file = new File(context.getFilesDir(), newVersionJsonObject.getString("name").replaceAll("\\.", "_") + ".json");
             JSONObject oldJsonObject = new JSONObject(FileUtils.readFile(file));
-            Log.i("add123", "old "+oldJsonObject);
-            Log.i("add123", "new "+newVersionJsonObject);
             FileUtils.writeFile(file, ConfroidManagerUtils.addVersionFromJsonToJson(oldJsonObject, newVersionJsonObject).toString());
             return true;
         } catch (JSONException e) {
@@ -60,6 +58,7 @@ public class ConfroidManager {
         /* LOAD FROM JSON FILE */
         File file = new File(context.getFilesDir(), name.replaceAll("\\.", "_") + ".json");
         try {
+            //TODO se faccio load e non trova il file crasha (se per caso non esiste)
             JSONObject jsonObject = new JSONObject(FileUtils.readFile(file));
             return ConfroidManagerUtils.getVersionFromJsonToBundle(jsonObject, version);
         } catch (JSONException e) {
