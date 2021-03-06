@@ -2,6 +2,8 @@ package fr.uge.shopping;
 
 import android.app.FragmentManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +22,7 @@ public class EditActivity extends AppCompatActivity {
     private TextView billingEditTextView;
     private ImageButton editAddressButton;
     private ImageButton editBillingButton;
-    private Button saveEditButton;
+    //private Button saveEditButton;
     private CheckBox favoriteEditCheckBox;
 
     private String infoName;
@@ -55,7 +57,6 @@ public class EditActivity extends AppCompatActivity {
 
         this.editAddressButton = findViewById(R.id.editAddressButton);
         this.editAddressButton.setOnClickListener( ev -> {
-            //TODO launch address edit fragment
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             EditAddressFragment fragment = new EditAddressFragment();
             Bundle bundle = new Bundle();
@@ -71,40 +72,56 @@ public class EditActivity extends AppCompatActivity {
             //TODO launch billing edit fragment
         });
 
-        this.saveEditButton = findViewById(R.id.saveEditButton);
+        /*this.saveEditButton = findViewById(R.id.saveEditButton);
         this.saveEditButton.setOnClickListener( ev -> {
 
-            this.favorite = favoriteEditCheckBox.isChecked();
+        });*/
 
-            Log.i("push123", "BEFORE:\n"+this.preferencesManager.getShoppingInfoMap().toString());
+    }
 
-            if(!this.shoppingInfoEditName.getText().toString().equals(this.infoName)) {
-                this.preferencesManager.getShoppingInfoMap().remove(this.infoName);
-            }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.edit_menu, menu);
+        return true;
+    }
 
-            this.preferencesManager.getShoppingInfoMap().put(
-                    this.shoppingInfoEditName.getText().toString(),
-                    new ShoppingInfo(this.address, this.billing, this.favorite)
-            );
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.saveEditButton:
+                save();
+                finish();
+                return true;
 
-            Log.i("push123", "AFTER:\n"+this.preferencesManager.getShoppingInfoMap().toString());
+            default:
+                return super.onOptionsItemSelected(item);
 
-            //TODO PUSH VIA API
-            this.preferencesManager.api().saveConfiguration(
-                    this.getApplicationContext(),
-                    "shoppingPreferences",
-                    this.preferencesManager.getPreferences(),
-                    "stable"
-            );
-            finish();
-        });
-
-
+        }
     }
 
     public void updateAddress(ShippingAddress address) {
         this.address = address;
         this.addressEditTextView.setText(address.toString());
+    }
+
+    private void save() {
+        this.favorite = favoriteEditCheckBox.isChecked();
+
+        if(!this.shoppingInfoEditName.getText().toString().equals(this.infoName)) {
+            this.preferencesManager.getShoppingInfoMap().remove(this.infoName);
+        }
+
+        this.preferencesManager.getShoppingInfoMap().put(
+                this.shoppingInfoEditName.getText().toString(),
+                new ShoppingInfo(this.address, this.billing, this.favorite)
+        );
+
+        this.preferencesManager.api().saveConfiguration(
+                this.getApplicationContext(),
+                "shoppingPreferences",
+                this.preferencesManager.getPreferences(),
+                "stable"
+        );
     }
 
 }
