@@ -63,14 +63,25 @@ public class EditActivity extends AppCompatActivity {
         this.saveEditButton = findViewById(R.id.saveEditButton);
         this.saveEditButton.setOnClickListener( ev -> {
 
-            ShippingAddress address = new ShippingAddress("Bugdroid", "Bd Descartes", "Champs-sur-Marne", "France");
-            BillingDetails billing = new BillingDetails("Bugdroid", "123456789", 12, 2021, 123);
+            //TODO get new strings from fragments
+            ShippingAddress address = new ShippingAddress("Bugdroid", "Bd test", "test-sur-Marne", "test");
+            BillingDetails billing = new BillingDetails("Bugdroid", "00000000", 12, 2021, 123);
+            boolean favorite = favoriteEditCheckBox.isChecked();
+
+            Log.i("push123", "BEFORE:\n"+this.preferencesManager.getShoppingInfoMap().toString());
+
+            if(!this.shoppingInfoEditName.getText().toString().equals(this.infoName)) {
+                this.preferencesManager.getShoppingInfoMap().remove(this.infoName);
+            }
 
             this.preferencesManager.getShoppingInfoMap().put(
                     this.shoppingInfoEditName.getText().toString(),
-                    new ShoppingInfo(address, billing, favoriteEditCheckBox.isChecked())
+                    new ShoppingInfo(address, billing, favorite)
             );
-            //TODO PUSH
+
+            Log.i("push123", "AFTER:\n"+this.preferencesManager.getShoppingInfoMap().toString());
+
+            //TODO PUSH VIA API
         });
 
 
