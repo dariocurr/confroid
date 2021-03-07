@@ -3,6 +3,7 @@ package fr.uge.confroid;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 import fr.uge.confroid.utlis.ConfroidManagerUtils;
 import fr.uge.confroid.utlis.FileUtils;
 import org.json.JSONException;
@@ -59,13 +60,17 @@ public class ConfroidManager {
     public static Bundle loadConfiguration(Context context, String name, Object version) {
         /* LOAD FROM JSON FILE */
         File file = new File(context.getFilesDir(), name.replaceAll("\\.", "_") + ".json");
-        try {
-            JSONObject jsonObject = new JSONObject(FileUtils.readFile(file));
-            return ConfroidManagerUtils.getVersionFromJsonToBundle(jsonObject, version);
-        } catch (JSONException e) {
-            Log.e("JSONException", "");
-            return null;
+        if(file.exists()) {
+            try {
+                JSONObject jsonObject = new JSONObject(FileUtils.readFile(file));
+                return ConfroidManagerUtils.getVersionFromJsonToBundle(jsonObject, version);
+            } catch (JSONException e) {
+                Log.e("JSONException", "");
+                return null;
+            }
         }
+        else
+            return null;
     }
 
     public static Bundle loadAllVersionsBundle(Context context, String name) {

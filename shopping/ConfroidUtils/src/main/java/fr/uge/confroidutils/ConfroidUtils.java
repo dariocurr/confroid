@@ -142,8 +142,10 @@ public class ConfroidUtils {
     public <T> void updateObject (Context context, String name, String versionName, Consumer <T> callback) {}
 
     public void onReceiveConfigurationPuller(Intent intent) {
-        Log.i("QUI", "SONO QUI");
-        this.callbacks.get(0).accept(FromBundleToObjectConverter.convert(intent.getBundleExtra("content")));
+        Bundle contentBundle = intent.getBundleExtra("content");
+        if(contentBundle == null)
+            return;
+        this.callbacks.get(0).accept(FromBundleToObjectConverter.convert(contentBundle));
         this.callbacks.remove(0);
     }
 
