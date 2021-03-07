@@ -62,7 +62,8 @@ public class MainActivity extends AppCompatActivity {
 
         this.loadConfigurationButton.setOnClickListener(ev -> {
             addConfgirationButton.setEnabled(true);
-            preferencesManager.api().loadConfiguration(this.getApplicationContext(), "shoppingPreferences/stable", o -> updateRecyclerView((ShoppingPreferences) o));
+            //preferencesManager.api().loadConfiguration(this.getApplicationContext(), "shoppingPreferences/stable", o -> updateRecyclerView((ShoppingPreferences) o));
+            preferencesManager.api().loadConfiguration(this.getApplicationContext(), "latest", o -> updateRecyclerView((ShoppingPreferences) o));
         });
 
         this.addConfgirationButton.setOnClickListener( ev -> {
@@ -125,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateRecyclerView(ShoppingPreferences prefs) {
-        Log.i("bug123", prefs.toString());
         ArrayList<ConfigurationItem> items = new ArrayList<>();
         preferencesManager.setPreferences(prefs);
         preferencesManager.getShoppingInfoMap().keySet().forEach(key -> items.add(new ConfigurationItem(key, prefs.shoppingInfo.get(key))));
