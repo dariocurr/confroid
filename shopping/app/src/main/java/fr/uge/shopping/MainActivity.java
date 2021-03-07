@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         this.loadConfigurationButton.setOnClickListener(ev -> {
-            preferencesManager.api().loadConfiguration(this.getApplicationContext(), "shoppingPreferences/stable", o -> updateRecyclerView((ShoppingPreferences) o));
+            preferencesManager.api().loadConfiguration(this.getApplicationContext(), "latest", o -> updateRecyclerView((ShoppingPreferences) o));
         });
 
         this.addConfgirationButton.setOnClickListener( ev -> {
