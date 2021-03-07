@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.fragment.app.FragmentTransaction;
 import fr.uge.shopping.R;
 import fr.uge.shopping.gui.EditAddressFragment;
+import fr.uge.shopping.gui.EditBillingFragment;
 import fr.uge.shopping.model.BillingDetails;
 import fr.uge.shopping.model.ShippingAddress;
 import fr.uge.shopping.model.ShoppingInfo;
@@ -69,7 +70,14 @@ public class EditActivity extends AppCompatActivity {
 
         this.editBillingButton = findViewById(R.id.editBillingButton);
         this.editBillingButton.setOnClickListener( ev -> {
-            //TODO launch billing edit fragment
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            EditBillingFragment fragment = new EditBillingFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("name", this.infoName);
+            fragment.setArguments(bundle);
+            ft.replace(R.id.fragment_frame, fragment);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            ft.commit();
         });
 
         /*this.saveEditButton = findViewById(R.id.saveEditButton);
@@ -102,6 +110,11 @@ public class EditActivity extends AppCompatActivity {
     public void updateAddress(ShippingAddress address) {
         this.address = address;
         this.addressEditTextView.setText(address.toString());
+    }
+
+    public void updateBilling(BillingDetails billing) {
+        this.billing = billing;
+        this.billingEditTextView.setText(billing.toString());
     }
 
     private void save() {
