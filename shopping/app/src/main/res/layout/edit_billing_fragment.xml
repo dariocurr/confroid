@@ -1,80 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   xmlns:tools="http://schemas.android.com/tools"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <EditText
-            android:id="@+id/editBillingFragmentCardHolder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:ems="10"
-            android:hint="@string/cardHolder"
-            android:importantForAutofill="no"
-            android:inputType="textPersonName"
-            app:layout_constraintBottom_toTopOf="@+id/editBillingFragmentCardNumber"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+        android:id="@+id/editBillingFragmentCardHolder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="@string/cardHolder"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/editBillingFragmentCardNumber"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-            android:id="@+id/editBillingFragmentCardNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:ems="10"
-            android:hint="@string/cardNumber"
-            android:importantForAutofill="no"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="@+id/editBillingFragmentCardHolder"
-            app:layout_constraintStart_toStartOf="@+id/editBillingFragmentCardHolder"
-            app:layout_constraintTop_toBottomOf="@+id/editBillingFragmentCardHolder"/>
+        android:id="@+id/editBillingFragmentCardNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="@string/cardNumber"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="@+id/editBillingFragmentCardHolder"
+        app:layout_constraintStart_toStartOf="@+id/editBillingFragmentCardHolder"
+        app:layout_constraintTop_toBottomOf="@+id/editBillingFragmentCardHolder" />
 
     <Button
-            android:id="@+id/editBillingFragmentBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/back"
-            tools:layout_editor_absoluteY="267dp" tools:layout_editor_absoluteX="99dp"/>
+        android:id="@+id/editBillingFragmentBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/back"
+        app:layout_constraintStart_toStartOf="@+id/editBillingFragmentCryptogram"
+        app:layout_constraintTop_toBottomOf="@+id/editBillingFragmentCryptogram" />
+
     <Button
-            android:id="@+id/editBillingFragmentSave"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/save"
-            app:layout_constraintBottom_toBottomOf="@+id/editBillingFragmentBack"
-            app:layout_constraintTop_toTopOf="@+id/editBillingFragmentBack"
-            app:layout_constraintVertical_bias="1.0" tools:layout_editor_absoluteX="224dp"/>
+        android:id="@+id/editBillingFragmentSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="@+id/editBillingFragmentBack"
+        app:layout_constraintEnd_toEndOf="@+id/editBillingFragmentCryptogram"
+        app:layout_constraintTop_toTopOf="@+id/editBillingFragmentBack"
+        app:layout_constraintVertical_bias="1.0" />
+
     <EditText
-            android:layout_width="100dp"
-            android:layout_height="0dp"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/editBillingFragmentExpirationMonth"
-            android:hint="@string/Month"
-            app:layout_constraintTop_toTopOf="@+id/editBillingFragmentExpirationYear"
-            app:layout_constraintBottom_toBottomOf="@+id/editBillingFragmentExpirationYear"
-            app:layout_constraintStart_toStartOf="@+id/editBillingFragmentCardNumber" android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"/>
+        android:id="@+id/editBillingFragmentExpirationMonth"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:ems="10"
+        android:hint="@string/Month"
+        android:inputType="number"
+        app:layout_constraintEnd_toStartOf="@+id/editBillingFragmentExpirationYear"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/editBillingFragmentCardNumber"
+        app:layout_constraintTop_toBottomOf="@+id/editBillingFragmentCardNumber"
+        android:importantForAutofill="no" />
+
     <EditText
-            android:layout_width="100dp"
-            android:layout_height="0dp"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/editBillingFragmentExpirationYear"
-            android:hint="@string/Year"
-            app:layout_constraintEnd_toEndOf="@+id/editBillingFragmentCardNumber"
-            app:layout_constraintTop_toBottomOf="@+id/editBillingFragmentCardNumber"
-            app:layout_constraintBottom_toTopOf="@+id/editBillingFragmentCryptogram" android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintStart_toEndOf="@+id/editBillingFragmentExpirationMonth"/>
+        android:id="@+id/editBillingFragmentExpirationYear"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:ems="10"
+        android:hint="@string/Year"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="@+id/editBillingFragmentExpirationMonth"
+        app:layout_constraintEnd_toEndOf="@+id/editBillingFragmentCardNumber"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/editBillingFragmentExpirationMonth"
+        app:layout_constraintTop_toTopOf="@+id/editBillingFragmentExpirationMonth"
+        android:importantForAutofill="no" />
+
     <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/editBillingFragmentCryptogram" tools:layout_editor_absoluteY="199dp"
-            tools:layout_editor_absoluteX="101dp" android:hint="@string/cryptogram"/>
+        android:id="@+id/editBillingFragmentCryptogram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="@string/cryptogram"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="@+id/editBillingFragmentExpirationYear"
+        app:layout_constraintStart_toStartOf="@+id/editBillingFragmentExpirationMonth"
+        app:layout_constraintTop_toBottomOf="@+id/editBillingFragmentExpirationMonth"
+        android:importantForAutofill="no" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
