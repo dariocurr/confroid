@@ -126,8 +126,8 @@ public class ViewActivity extends AppCompatActivity {
 
         try {
             JSONObject upload = new JSONObject();
-            upload.put("name", getIntent().getExtras().getString("EXTRA_TEST_STRING"));
-            upload.put("version", ConfigurationPusher.getNextVersionNumber(getIntent().getExtras().getString("EXTRA_TEST_STRING").replaceAll("_", "\\."), getApplicationContext()));
+            upload.put("name", getIntent().getExtras().getString(MainActivity.EXTRA_CONFIGURATION_NAME));
+            upload.put("version", ConfigurationPusher.getNextVersionNumber(getIntent().getExtras().getString(MainActivity.EXTRA_CONFIGURATION_NAME).replaceAll("_", "\\."), getApplicationContext()));
 
             upload.put("content", new JSONObject(contentText.getText().toString()));
 
