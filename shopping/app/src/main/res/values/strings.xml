@@ -24,4 +24,6 @@
     <string name="favorite">Favorite?</string>
     <string name="addPreference">Add a new preference</string>
     <string name="addPreferenceName">Enter the name</string>
+    <string name="selectVersion">Select Version</string>
+    <string name="selectVersionNumber">Select which version you want to load</string>
 </resources>

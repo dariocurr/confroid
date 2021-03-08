@@ -1,25 +1,24 @@
 package fr.uge.shopping;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import fr.uge.confroidutils.ConfroidUtils;
 import fr.uge.shopping.gui.ConfigurationAdapter;
 import fr.uge.shopping.gui.ConfigurationItem;
 import fr.uge.shopping.gui.RecyclerItemClickListener;
 import fr.uge.shopping.model.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -35,12 +34,19 @@ public class MainActivity extends AppCompatActivity {
     private Button editConfigurationButton;*/
 
     private RecyclerView recyclerView;
-    private ConfigurationAdapter adapter;
+    private ConfigurationAdapter recyclerAdapter;
+
+    private Spinner selectVersion;
+    private ArrayAdapter<String> spinnerAdapter;
+    private int n;
+    private ArrayList<String> versions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         //this.confroidUtils = new ConfroidUtils(this.getApplicationContext());
         this.preferencesManager = PreferencesManager.getPreferencesManager(this.getApplicationContext());
@@ -60,10 +66,50 @@ public class MainActivity extends AppCompatActivity {
             preferencesManager.api().saveConfiguration(this.getApplicationContext(), "shoppingPreferences", preferencesManager.getPreferences(), "stable");
         });
 
+        this.selectVersion = new Spinner(MainActivity.this);
+        this.versions = new ArrayList<>();
+
         this.loadConfigurationButton.setOnClickListener(ev -> {
-            addConfgirationButton.setEnabled(true);
-            //preferencesManager.api().loadConfiguration(this.getApplicationContext(), "shoppingPreferences/stable", o -> updateRecyclerView((ShoppingPreferences) o));
-            preferencesManager.api().loadConfiguration(this.getApplicationContext(), "latest", o -> updateRecyclerView((ShoppingPreferences) o));
+
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+            alertDialog.setTitle(getString(R.string.selectVersion));
+            alertDialog.setMessage(getString(R.string.selectVersionNumber));
+
+            this.preferencesManager.api().getConfigurationVersions(this.getApplicationContext(), o -> {
+                incrementVersion((List<Integer>) o);
+            });
+            
+            this.spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, versions);
+            selectVersion.setAdapter(this.spinnerAdapter);
+
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
+            selectVersion.setLayoutParams(lp);
+            if(selectVersion.getParent() != null) {
+                ((ViewGroup) selectVersion.getParent()).removeView(selectVersion);
+            }
+            alertDialog.setView(selectVersion);
+
+            alertDialog.setPositiveButton(getString(R.string.load), (dialog, which) -> {
+                String version = selectVersion.getSelectedItem().toString();
+                addConfgirationButton.setEnabled(true);
+                preferencesManager.api().loadConfiguration(this.getApplicationContext(), version, o -> updateRecyclerView((ShoppingPreferences) o));
+            });
+
+            alertDialog.setNegativeButton(getString(R.string.back), (dialog, which) -> {
+                dialog.cancel();
+            });
+
+            alertDialog.setOnCancelListener( dialog -> {
+                this.versions.clear();
+            });
+
+            alertDialog.setOnDismissListener( dialog -> {
+                this.versions.clear();
+            });
+
+            alertDialog.show();
         });
 
         this.addConfgirationButton.setOnClickListener( ev -> {
@@ -111,26 +157,26 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<ConfigurationItem> items = new ArrayList<>();
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ConfigurationAdapter(this, items);
+        recyclerAdapter = new ConfigurationAdapter(this, items);
 
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
             @Override public void onItemClick(View view, int position) {
-                launchEditActivity(adapter.getItem(position).getName());
+                launchEditActivity(recyclerAdapter.getItem(position).getName());
             }
 
             @Override public void onLongItemClick(View view, int position) {
-                launchRemoveDialog(adapter.getItem(position).getName());
+                launchRemoveDialog(recyclerAdapter.getItem(position).getName());
             }
         }));
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(recyclerAdapter);
     }
 
     private void updateRecyclerView(ShoppingPreferences prefs) {
         ArrayList<ConfigurationItem> items = new ArrayList<>();
         preferencesManager.setPreferences(prefs);
         preferencesManager.getShoppingInfoMap().keySet().forEach(key -> items.add(new ConfigurationItem(key, prefs.shoppingInfo.get(key))));
-        adapter.setData(items);
-        adapter.notifyDataSetChanged();
+        recyclerAdapter.setData(items);
+        recyclerAdapter.notifyDataSetChanged();
     }
 
     private void launchEditActivity(String key) {
@@ -167,5 +213,12 @@ public class MainActivity extends AppCompatActivity {
     private void syncApi() {
         preferencesManager.api().saveConfiguration(this, "shoppingPreferences", preferencesManager.getPreferences(), "stable");
         preferencesManager.api().loadConfiguration(this, "shoppingPreferences/stable", o -> updateRecyclerView((ShoppingPreferences) o));
+    }
+
+    private void incrementVersion(List<Integer> list) {
+        Collections.reverse(list);
+        list.forEach(e -> this.versions.add(String.valueOf(e)));
+        this.versions.set(0, "latest");
+        this.spinnerAdapter.notifyDataSetChanged();
     }
 }
