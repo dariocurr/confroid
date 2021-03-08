@@ -117,11 +117,11 @@ public class ConfroidUtils {
         }
     }
 
-    public <T> void getConfigurationVersions(Context context, String name, Consumer<T> callback) {
+    public <T> void getConfigurationVersions(Context context, Consumer<T> callback) {
         String token = TokenPuller.getToken();
         if (token != null) {
             Intent intent = new Intent();
-            intent.putExtra("name", name);
+            intent.putExtra("name", context.getPackageName());
             intent.putExtra("token", TokenPuller.getToken());
             intent.putExtra("requestId", requestId++ + "");
             intent.putExtra("receiver", "fr.uge.confroidutils.services.ConfigurationVersions");
@@ -151,11 +151,12 @@ public class ConfroidUtils {
 
     public void onReceiveConfigurationVersions(Intent intent) {
         Bundle versionBundle = intent.getBundleExtra("versions");
+        List<Integer> versions = new ArrayList<>();
 
         for(String key : versionBundle.keySet()){
-            this.callbacks.get(0).accept(FromBundleToObjectConverter.convert(versionBundle.getBundle(key)));
+            versions.add(Integer.parseInt(key));
         }
-
+        this.callbacks.get(0).accept(versions);
         this.callbacks.remove(0);
     }
 
