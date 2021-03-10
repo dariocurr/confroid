@@ -16,7 +16,7 @@
     <string name="add">Add</string>
     <string name="back">Back</string>
     <string name="deleteConfirm">Do you want to delete the following configuration?</string>
-    <string name="yes">yes</string>
+    <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="editAddress">Edit address</string>
     <string name="editBilling">Edit billing</string>

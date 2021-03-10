@@ -15,4 +15,16 @@
     <string name="save">Enregistrer</string>
     <string name="load">Charger</string>
     <string name="add">Ajouter</string>
+    <string name="back">Retour</string>
+    <string name="deleteConfirm">Voulez-vous supprimer la configuration suivante?</string>
+    <string name="yes">Oui</string>
+    <string name="no">No</string>
+    <string name="editAddress">Modifier l\'adresse</string>
+    <string name="editBilling">Modifier la facturation</string>
+    <string name="shoppingInfoName">Nom de la configuration</string>
+    <string name="favorite">Favorite?</string>
+    <string name="addPreference">Ajouter une nouvelle préférence</string>
+    <string name="addPreferenceName">Entrez le nom</string>
+    <string name="selectVersion">Sélectionnez la version</string>
+    <string name="selectVersionNumber">Sélectionnez la version que vous souhaitez charger</string>
 </resources>

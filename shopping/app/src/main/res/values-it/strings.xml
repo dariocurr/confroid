@@ -15,4 +15,16 @@
     <string name="addressCity">Città</string>
     <string name="addressStreet">Via</string>
     <string name="addressName">Nome</string>
+    <string name="back">Indietro</string>
+    <string name="deleteConfirm">Vuoi eliminare la seguente configurazione?</string>
+    <string name="yes">Si</string>
+    <string name="no">No</string>
+    <string name="editAddress">Modifica l\'indirizzo</string>
+    <string name="editBilling">Modifica la fatturazione</string>
+    <string name="shoppingInfoName">Nome della configurazione</string>
+    <string name="favorite">Preferito?</string>
+    <string name="addPreference">Aggiungi una preferenza</string>
+    <string name="addPreferenceName">Inserisci il nome</string>
+    <string name="selectVersion">Seleziona la versione</string>
+    <string name="selectVersionNumber">Seleziona la versione che vuoi caricare</string>
 </resources>
