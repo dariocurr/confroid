@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Confroid</string>
+    <string name="edit">Modifica</string>
+    <string name="back">Annulla</string>
+    <string name="save">Salva</string>
+    <string name="submission">Salvando...</string>
+    <string name="done">Fatto</string>
+    <string name="submit_error">Errore durante il salvataggio</string>
+    <string name="created_on">Creato su</string>
+    <string name="button_import">Importa</string>
+    <string name="button_export">Esporta</string>
+    <string name="saved_successfully">File esportato con successo</string>
+    <string name="file_not_saved">Errore durante l\'esportazione</string>
+    <string name="logo">Logo</string>
+    <string name="import_error">Errore durante l\'importazione</string>
+    <string name="read_error">Errore durante la lettura del file</string>
+    <string name="write_error">Errore durante il salvataggio del file</string>
+</resources>
