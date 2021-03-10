@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Shopping</string>
+    <string name="cardHolder">Titulaire de la carte</string>
+    <string name="cardNumber">Numéro de carte</string>
+    <string name="expirationMonth">Mois d\'expiration</string>
+    <string name="expirationYear">Année d\'expiration</string>
+    <string name="Month">Mois</string>
+    <string name="Year">Année</string>
+    <string name="cryptogram">Cryptogramme</string>
+    <string name="addressName">Nom de l\'adresse</string>
+    <string name="addressStreet">Rue d\'adresse</string>
+    <string name="addressCity">L\'addresse de la ville</string>
+    <string name="addressCountry">Pays de l\'adresse</string>
+    <string name="save">Enregistrer</string>
+    <string name="load">Charger</string>
+    <string name="add">Ajouter</string>
+</resources>

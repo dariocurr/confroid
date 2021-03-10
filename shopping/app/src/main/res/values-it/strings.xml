@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Shopping</string>
+    <string name="cardHolder">Proprietario Carta</string>
+    <string name="cardNumber">Numero Carta</string>
+    <string name="expirationMonth">Mese di scadenza</string>
+    <string name="expirationYear">Anno di scadenza</string>
+    <string name="Month">Mese</string>
+    <string name="Year">Anno</string>
+    <string name="cryptogram">Crittogramma</string>
+    <string name="save">Salva</string>
+    <string name="load">Carica</string>
+    <string name="add">Aggiungi</string>
+    <string name="addressCountry">Nazione</string>
+    <string name="addressCity">Città</string>
+    <string name="addressStreet">Via</string>
+    <string name="addressName">Nome</string>
+</resources>
