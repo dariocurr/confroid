@@ -27,4 +27,8 @@
     <string name="addPreferenceName">Entrez le nom</string>
     <string name="selectVersion">Sélectionnez la version</string>
     <string name="selectVersionNumber">Sélectionnez la version que vous souhaitez charger</string>
+    <string name="useGeolocation">Utiliser la Géolocalisation</string>
+    <string name="permissionDenied">Permission refusée</string>
+    <string name="geoError">Une erreur s\'est produite, assurez-vous que l\'emplacement est correctement installé
+    </string>
 </resources>
