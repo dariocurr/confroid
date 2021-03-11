@@ -2,12 +2,9 @@ package fr.uge.shopping.model;
 
 import android.os.Build;
 import androidx.annotation.RequiresApi;
-import fr.uge.shopping.R;
-import fr.uge.shopping.api.annotations.Description;
-import fr.uge.shopping.api.annotations.RegexValidator;
-import fr.uge.shopping.api.annotations.ClassValidator;
-import fr.uge.shopping.api.annotations.RangeValidator;
 
+import fr.uge.confroidutils.annotations.*;
+import fr.uge.shopping.R;
 
 import java.util.Objects;
 

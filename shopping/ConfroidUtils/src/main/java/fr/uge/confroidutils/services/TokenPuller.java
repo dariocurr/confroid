@@ -4,7 +4,6 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
 import androidx.annotation.Nullable;
 
 public class TokenPuller extends Service {
@@ -13,9 +12,7 @@ public class TokenPuller extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e("QUI", "SONO QUI");
         TOKEN = intent.getStringExtra("token");
-        Log.e("TOKENREC",TOKEN);
         return START_NOT_STICKY;
     }
 

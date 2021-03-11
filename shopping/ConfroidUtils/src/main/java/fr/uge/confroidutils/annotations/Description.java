@@ -1,4 +1,4 @@
-package fr.uge.shopping.api.annotations;
+package fr.uge.confroidutils.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
