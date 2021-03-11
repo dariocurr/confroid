@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             this.preferencesManager.api().getConfigurationVersions(this.getApplicationContext(), o -> {
                 incrementVersion((List<Integer>) o);
             });
-            
+
             this.spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, versions);
             selectVersion.setAdapter(this.spinnerAdapter);
 
@@ -150,7 +150,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        preferencesManager.api().loadConfiguration(this, "shoppingPreferences/stable", o -> updateRecyclerView((ShoppingPreferences) o));
+        if(this.recyclerAdapter.getItemCount() > 0) {
+            preferencesManager.api().loadConfiguration(this, "shoppingPreferences/stable", o -> updateRecyclerView((ShoppingPreferences) o));
+        }
     }
 
     private void initRecyclerView() {
