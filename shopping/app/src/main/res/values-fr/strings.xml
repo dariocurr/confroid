@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Shopping</string>
+    <string name="cardHolder">Titulaire de la carte</string>
+    <string name="cardNumber">Numéro de carte</string>
+    <string name="expirationMonth">Mois d\'expiration</string>
+    <string name="expirationYear">Année d\'expiration</string>
+    <string name="Month">Mois</string>
+    <string name="Year">Année</string>
+    <string name="cryptogram">Cryptogramme</string>
+    <string name="addressName">Nom de l\'adresse</string>
+    <string name="addressStreet">Rue d\'adresse</string>
+    <string name="addressCity">L\'addresse de la ville</string>
+    <string name="addressCountry">Pays de l\'adresse</string>
+    <string name="save">Enregistrer</string>
+    <string name="load">Charger</string>
+    <string name="add">Ajouter</string>
+    <string name="back">Retour</string>
+    <string name="deleteConfirm">Voulez-vous supprimer la configuration suivante?</string>
+    <string name="yes">Oui</string>
+    <string name="no">No</string>
+    <string name="editAddress">Modifier l\'adresse</string>
+    <string name="editBilling">Modifier la facturation</string>
+    <string name="shoppingInfoName">Nom de la configuration</string>
+    <string name="favorite">Favorite?</string>
+    <string name="addPreference">Ajouter une nouvelle préférence</string>
+    <string name="addPreferenceName">Entrez le nom</string>
+    <string name="selectVersion">Sélectionnez la version</string>
+    <string name="selectVersionNumber">Sélectionnez la version que vous souhaitez charger</string>
+</resources>
