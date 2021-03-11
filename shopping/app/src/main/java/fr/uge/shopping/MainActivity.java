@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         //this.confroidUtils = new ConfroidUtils(this.getApplicationContext());
         this.preferencesManager = PreferencesManager.getPreferencesManager(this.getApplicationContext());
 
-        this.saveConfigurationButton = findViewById(R.id.saveConfigurationButton);
+        //this.saveConfigurationButton = findViewById(R.id.saveConfigurationButton);
         this.loadConfigurationButton = findViewById(R.id.loadConfigurationButton);
         this.addConfgirationButton = findViewById(R.id.addConfigurationButton);
         this.addConfgirationButton.setEnabled(false);
