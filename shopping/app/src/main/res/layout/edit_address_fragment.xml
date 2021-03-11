@@ -50,12 +50,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:ems="10"
         android:hint="@string/addressCountry"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/editAddressFragmentSave"
         app:layout_constraintEnd_toEndOf="@+id/editAddressFragmentCity"
         app:layout_constraintStart_toStartOf="@+id/editAddressFragmentCity"
         app:layout_constraintTop_toBottomOf="@+id/editAddressFragmentCity" />
@@ -66,8 +64,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/back"
-        app:layout_constraintStart_toStartOf="@+id/editAddressFragmentCountry"
-        app:layout_constraintTop_toBottomOf="@+id/editAddressFragmentCountry" />
+        app:layout_constraintStart_toStartOf="@+id/progressBar"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
     <Button
         android:id="@+id/editAddressFragmentSave"
@@ -75,8 +73,31 @@
         android:layout_height="wrap_content"
         android:text="@string/save"
         app:layout_constraintBottom_toBottomOf="@+id/editAddressFragmentBack"
-        app:layout_constraintEnd_toEndOf="@+id/editAddressFragmentCountry"
+        app:layout_constraintEnd_toEndOf="@+id/progressBar"
         app:layout_constraintTop_toTopOf="@+id/editAddressFragmentBack"
         app:layout_constraintVertical_bias="1.0" />
+
+    <Switch
+        android:id="@+id/geolocationSwitch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:checked="false"
+        android:text="@string/useGeolocation"
+        app:layout_constraintEnd_toEndOf="@+id/editAddressFragmentCountry"
+        app:layout_constraintStart_toStartOf="@+id/editAddressFragmentCountry"
+        app:layout_constraintTop_toBottomOf="@+id/editAddressFragmentCountry"
+        tools:checked="false" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:indeterminateOnly="true"
+        app:layout_constraintEnd_toEndOf="@+id/geolocationSwitch"
+        app:layout_constraintStart_toStartOf="@+id/geolocationSwitch"
+        app:layout_constraintTop_toBottomOf="@+id/geolocationSwitch" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
