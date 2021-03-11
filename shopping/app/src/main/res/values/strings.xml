@@ -26,4 +26,7 @@
     <string name="addPreferenceName">Enter the name</string>
     <string name="selectVersion">Select Version</string>
     <string name="selectVersionNumber">Select which version you want to load</string>
+    <string name="useGeolocation">Use Geolocation</string>
+    <string name="permissionDenied">Permission denied</string>
+    <string name="geoError">An Error Occured, make sure geolocation is setted properly</string>
 </resources>
