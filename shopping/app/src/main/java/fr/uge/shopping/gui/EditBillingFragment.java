@@ -3,9 +3,7 @@ package fr.uge.shopping.gui;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.InputFilter;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import fr.uge.confroidutils.annotations.RangeValidator;
 import fr.uge.shopping.EditActivity;
 import fr.uge.shopping.PreferencesManager;
 import fr.uge.shopping.R;
 import fr.uge.shopping.model.BillingDetails;
-import fr.uge.shopping.model.ShippingAddress;
 
 import java.util.ArrayList;
 
@@ -69,7 +67,7 @@ public class EditBillingFragment extends Fragment {
         this.cardNumber.addTextChangedListener(new TextValidator(this.cardNumber) {
             @Override
             public void validate(TextView textView, String text) {
-                if(text.length() == 16 && TextUtils.isDigitsOnly(text)) {
+                if (text.length() == 16 && TextUtils.isDigitsOnly(text)) {
                     textView.setBackground(backgroundCardNumber);
                     errors.set(0, false);
                 } else {
@@ -88,12 +86,17 @@ public class EditBillingFragment extends Fragment {
             public void validate(TextView textView, String text) {
                 if(!text.isEmpty() && TextUtils.isDigitsOnly(text)) {
                     int n = Integer.parseInt(text);
-                    if (n > 0 && n <= 12) {
-                        textView.setBackground(backgroundExpirationMonth);
-                        errors.set(1, false);
-                    } else {
-                        textView.setBackgroundColor(Color.argb(50, 255, 0, 0));
-                        errors.set(1, true);
+                    try {
+                        if (n >= details.getClass().getField("expirationMonth").getAnnotation(RangeValidator.class).lowerBound() &&
+                                n <= details.getClass().getField("expirationMonth").getAnnotation(RangeValidator.class).upperBound()) {
+                            textView.setBackground(backgroundExpirationMonth);
+                            errors.set(1, false);
+                        } else {
+                            textView.setBackgroundColor(Color.argb(50, 255, 0, 0));
+                            errors.set(1, true);
+                        }
+                    } catch (NoSuchFieldException e) {
+                        e.printStackTrace();
                     }
                 } else {
                     textView.setBackgroundColor(Color.argb(50, 255, 0, 0));
@@ -111,12 +114,17 @@ public class EditBillingFragment extends Fragment {
             public void validate(TextView textView, String text) {
                 if(!text.isEmpty() && TextUtils.isDigitsOnly(text)) {
                     int n = Integer.parseInt(text);
-                    if (n > 2020 && n <= 2040) {
-                        textView.setBackground(backgroundExpirationYear);
-                        errors.set(2, false);
-                    } else {
-                        textView.setBackgroundColor(Color.argb(50, 255, 0, 0));
-                        errors.set(2, true);
+                    try {
+                        if (n >= details.getClass().getField("expirationYear").getAnnotation(RangeValidator.class).lowerBound() &&
+                                n <= details.getClass().getField("expirationYear").getAnnotation(RangeValidator.class).upperBound()) {
+                            textView.setBackground(backgroundExpirationYear);
+                            errors.set(2, false);
+                        } else {
+                            textView.setBackgroundColor(Color.argb(50, 255, 0, 0));
+                            errors.set(2, true);
+                        }
+                    } catch (NoSuchFieldException e) {
+                        e.printStackTrace();
                     }
                 } else {
                     textView.setBackgroundColor(Color.argb(50, 255, 0, 0));
@@ -134,12 +142,17 @@ public class EditBillingFragment extends Fragment {
             public void validate(TextView textView, String text) {
                 if(!text.isEmpty() &&  TextUtils.isDigitsOnly(text)) {
                     int n = Integer.parseInt(text);
-                    if (n > 0 && n <= 999) {
-                        textView.setBackground(backgroundCryptogram);
-                        errors.set(3, false);
-                    } else {
-                        textView.setBackgroundColor(Color.argb(50, 255, 0, 0));
-                        errors.set(3, true);
+                    try {
+                        if (n >= details.getClass().getField("cryptogram").getAnnotation(RangeValidator.class).lowerBound() &&
+                                n <= details.getClass().getField("cryptogram").getAnnotation(RangeValidator.class).upperBound()) {
+                            textView.setBackground(backgroundCryptogram);
+                            errors.set(3, false);
+                        } else {
+                            textView.setBackgroundColor(Color.argb(50, 255, 0, 0));
+                            errors.set(3, true);
+                        }
+                    } catch (NoSuchFieldException e) {
+                        e.printStackTrace();
                     }
                 } else {
                     textView.setBackgroundColor(Color.argb(50, 255, 0, 0));
