@@ -7,7 +7,4 @@
         android:icon="@drawable/ic_baseline_save_24"
         android:title="@string/save"
         app:showAsAction="ifRoom" />
-    <item
-        android:title="Item"
-        app:showAsAction="ifRoom" />
 </menu>

@@ -10,31 +10,27 @@
         android:id="@+id/recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/loadConfigurationButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <!--<Button
         android:id="@+id/saveConfigurationButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/save"
-        app:layout_constraintBottom_toBottomOf="@+id/loadConfigurationButton"
-        app:layout_constraintEnd_toStartOf="@+id/addConfigurationButton"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/loadConfigurationButton"
-        app:layout_constraintTop_toTopOf="@+id/loadConfigurationButton" />
+        android:text="@string/save" />-->
 
     <Button
         android:id="@+id/loadConfigurationButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/load"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/saveConfigurationButton"
+        app:layout_constraintEnd_toStartOf="@+id/addConfigurationButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -43,9 +39,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add"
-        app:layout_constraintBottom_toBottomOf="@+id/saveConfigurationButton"
+        app:layout_constraintBottom_toBottomOf="@+id/loadConfigurationButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/saveConfigurationButton"
-        app:layout_constraintTop_toTopOf="@+id/saveConfigurationButton" />
+        app:layout_constraintStart_toEndOf="@+id/loadConfigurationButton"
+        app:layout_constraintTop_toTopOf="@+id/loadConfigurationButton"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
