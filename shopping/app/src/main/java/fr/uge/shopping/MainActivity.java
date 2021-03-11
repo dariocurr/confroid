@@ -61,10 +61,10 @@ public class MainActivity extends AppCompatActivity {
         initRecyclerView();
 
         //TODO remove?
-        this.saveConfigurationButton.setOnClickListener(ev -> {
+        /*this.saveConfigurationButton.setOnClickListener(ev -> {
             preferencesManager.init();
             preferencesManager.api().saveConfiguration(this.getApplicationContext(), "shoppingPreferences", preferencesManager.getPreferences(), "stable");
-        });
+        });*/
 
         this.selectVersion = new Spinner(MainActivity.this);
         this.versions = new ArrayList<>();
