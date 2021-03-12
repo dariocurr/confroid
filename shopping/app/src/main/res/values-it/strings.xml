@@ -14,7 +14,7 @@
     <string name="addressCountry">Nazione</string>
     <string name="addressCity">Città</string>
     <string name="addressStreet">Via</string>
-    <string name="addressName">Nome</string>
+    <string name="addressName">Nome dell\'indirizzo</string>
     <string name="back">Indietro</string>
     <string name="deleteConfirm">Vuoi eliminare la seguente configurazione?</string>
     <string name="yes">Si</string>
@@ -27,4 +27,7 @@
     <string name="addPreferenceName">Inserisci il nome</string>
     <string name="selectVersion">Seleziona la versione</string>
     <string name="selectVersionNumber">Seleziona la versione che vuoi caricare</string>
+    <string name="useGeolocation">Usa Geolocalizzazione</string>
+    <string name="permissionDenied">Permesso negato</string>
+    <string name="geoError">Errore, assicurarsi che la geolocalizzazione sia impostata correttamente</string>
 </resources>
