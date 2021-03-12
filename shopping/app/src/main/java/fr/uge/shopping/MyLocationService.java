@@ -17,7 +17,7 @@ public class MyLocationService extends Service {
         return null;
     }
 
-    private static final String TAG = "MyLocationService";
+    /* private static final String TAG = "MyLocationService";
     private LocationManager mLocationManager = null;
     private static final int LOCATION_INTERVAL = 1000;
     private static final float LOCATION_DISTANCE = 10f;
@@ -56,6 +56,11 @@ public class MyLocationService extends Service {
             new LocationListener(LocationManager.GPS_PROVIDER),
             new LocationListener(LocationManager.NETWORK_PROVIDER)
     };
+
+    @Override
+    public IBinder onBind(Intent arg0) {
+        return null;
+    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -108,5 +113,5 @@ public class MyLocationService extends Service {
         if (mLocationManager == null) {
             mLocationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         }
-    }
+    }*/
 }
