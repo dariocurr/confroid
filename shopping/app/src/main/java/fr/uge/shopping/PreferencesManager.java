@@ -28,11 +28,9 @@ public class PreferencesManager {
     }
 
     public void init() {
-        ShippingAddress address1 = new ShippingAddress("Bugdroid", "Bd Descartes", "Champs-sur-Marne", "France");
-        ShippingAddress address2 = new ShippingAddress("Bugdroid", "Rue des tartes au nougat", "Lollipop City", "Oreo Country");
-        BillingDetails billing = new BillingDetails("Bugdroid", "123456789", 12, 2021, 123);
-        preferences.shoppingInfo.put("home", new ShoppingInfo(address1, billing, true));
-        preferences.shoppingInfo.put("work", new ShoppingInfo(address2, billing, false));
+        ShippingAddress address = new ShippingAddress();
+        BillingDetails billing = new BillingDetails();
+        preferences.shoppingInfo.put("default", new ShoppingInfo(address, billing, true));
     }
 
     public ShoppingPreferences getPreferences() {

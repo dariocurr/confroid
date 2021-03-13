@@ -1,9 +1,13 @@
 package fr.uge.shopping;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import fr.uge.shopping.gui.ConfigurationAdapter;
-import fr.uge.shopping.gui.ConfigurationItem;
 import fr.uge.shopping.gui.RecyclerItemClickListener;
 import fr.uge.shopping.model.*;
 
@@ -23,22 +26,18 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     public final static String SHOPPING_INFO_NAME = "SHOPPING_INFO_NAME";
-    //private ConfroidUtils confroidUtils;
-    private Button saveConfigurationButton;
+
+    private Button createConfigurationButton;
     private Button loadConfigurationButton;
     private Button addConfgirationButton;
     private PreferencesManager  preferencesManager;
-    // private ShoppingPreferences shoppingPreferences;
-    /*private Button loadVersionsButton;
-    private Button updateTagButton;
-    private Button editConfigurationButton;*/
 
     private RecyclerView recyclerView;
     private ConfigurationAdapter recyclerAdapter;
 
+    private AlertDialog loadDialog;
     private Spinner selectVersion;
     private ArrayAdapter<String> spinnerAdapter;
-    private int n;
     private ArrayList<String> versions;
 
     @Override
@@ -46,38 +45,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
-        //this.confroidUtils = new ConfroidUtils(this.getApplicationContext());
         this.preferencesManager = PreferencesManager.getPreferencesManager(this.getApplicationContext());
 
-        //this.saveConfigurationButton = findViewById(R.id.saveConfigurationButton);
         this.loadConfigurationButton = findViewById(R.id.loadConfigurationButton);
         this.addConfgirationButton = findViewById(R.id.addConfigurationButton);
         this.addConfgirationButton.setEnabled(false);
-        /*this.loadVersionsButton = findViewById(R.id.loadVersionsButton);
-        this.updateTagButton = findViewById(R.id.updateTagButton);
-        this.editConfigurationButton = findViewById(R.id.editConfigurationButton);*/
+
         initRecyclerView();
 
-        //TODO remove?
-        /*this.saveConfigurationButton.setOnClickListener(ev -> {
-            preferencesManager.init();
-            preferencesManager.api().saveConfiguration(this.getApplicationContext(), "shoppingPreferences", preferencesManager.getPreferences(), "stable");
-        });*/
 
         this.selectVersion = new Spinner(MainActivity.this);
         this.versions = new ArrayList<>();
 
         this.loadConfigurationButton.setOnClickListener(ev -> {
 
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
-            alertDialog.setTitle(getString(R.string.selectVersion));
-            alertDialog.setMessage(getString(R.string.selectVersionNumber));
-
-            this.preferencesManager.api().getConfigurationVersions(this.getApplicationContext(), o -> {
-                incrementVersion((List<Integer>) o);
-            });
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
 
             this.spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, versions);
             selectVersion.setAdapter(this.spinnerAdapter);
@@ -86,30 +68,44 @@ public class MainActivity extends AppCompatActivity {
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.MATCH_PARENT);
             selectVersion.setLayoutParams(lp);
-            if(selectVersion.getParent() != null) {
-                ((ViewGroup) selectVersion.getParent()).removeView(selectVersion);
-            }
-            alertDialog.setView(selectVersion);
 
-            alertDialog.setPositiveButton(getString(R.string.load), (dialog, which) -> {
+            alertDialogBuilder.setPositiveButton(getString(R.string.load), (dialog, which) -> {
                 String version = selectVersion.getSelectedItem().toString();
                 addConfgirationButton.setEnabled(true);
                 preferencesManager.api().loadConfiguration(this.getApplicationContext(), version, o -> updateRecyclerView((ShoppingPreferences) o));
             });
 
-            alertDialog.setNegativeButton(getString(R.string.back), (dialog, which) -> {
+            alertDialogBuilder.setNegativeButton(getString(R.string.back), (dialog, which) -> {
                 dialog.cancel();
             });
 
-            alertDialog.setOnCancelListener( dialog -> {
+            alertDialogBuilder.setOnCancelListener( dialog -> {
                 this.versions.clear();
             });
 
-            alertDialog.setOnDismissListener( dialog -> {
+            alertDialogBuilder.setOnDismissListener( dialog -> {
                 this.versions.clear();
             });
 
-            alertDialog.show();
+            alertDialogBuilder.setView(selectVersion);
+            alertDialogBuilder.setTitle(getString(R.string.selectVersion));
+            alertDialogBuilder.setMessage(getString(R.string.selectVersionNumber));
+
+            if(selectVersion.getParent() != null) {
+                ((ViewGroup) selectVersion.getParent()).removeView(selectVersion);
+            }
+            loadDialog = alertDialogBuilder.create();
+            loadDialog.show();
+
+            this.preferencesManager.api().getConfigurationVersions(this.getApplicationContext(), o -> {
+                List<Integer> el = (List<Integer>) o;
+                if(!el.isEmpty()){
+                    incrementVersion(el);
+                } else {
+                    makeDialogForCreation();
+                }
+            });
+
         });
 
         this.addConfgirationButton.setOnClickListener( ev -> {
@@ -134,17 +130,28 @@ public class MainActivity extends AppCompatActivity {
                 dialog.cancel();
             });
 
-            alertDialog.show();
+            AlertDialog dialog = alertDialog.create();
+            dialog.show();
+            dialog.getButton(Dialog.BUTTON_POSITIVE).setEnabled(false);
+
+            prefName.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if(!(s.toString().trim().length()==0)){
+                        dialog.getButton(Dialog.BUTTON_POSITIVE).setEnabled(true);
+                    } else {
+                        dialog.getButton(Dialog.BUTTON_POSITIVE).setEnabled(false);
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {}
+            });
 
         });
-/*
-        this.loadVersionsButton.setOnClickListener(ev -> {
-            confroidUtils.getConfigurationVersions(this.getApplicationContext(), "fr.uge.shopping", o -> Log.e("CHECK", o + ""));
-        });
-        this.updateTagButton.setOnClickListener(ev -> {});
-        this.editConfigurationButton.setOnClickListener(ev -> {});*/
-
-
     }
 
     @Override
@@ -156,27 +163,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initRecyclerView() {
-        ArrayList<ConfigurationItem> items = new ArrayList<>();
+        ArrayList<String> items = new ArrayList<>();
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerAdapter = new ConfigurationAdapter(this, items);
 
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
             @Override public void onItemClick(View view, int position) {
-                launchEditActivity(recyclerAdapter.getItem(position).getName());
+                launchEditActivity(recyclerAdapter.getItem(position));
             }
 
             @Override public void onLongItemClick(View view, int position) {
-                launchRemoveDialog(recyclerAdapter.getItem(position).getName());
+                launchRemoveDialog(recyclerAdapter.getItem(position));
             }
         }));
         recyclerView.setAdapter(recyclerAdapter);
     }
 
     private void updateRecyclerView(ShoppingPreferences prefs) {
-        ArrayList<ConfigurationItem> items = new ArrayList<>();
         preferencesManager.setPreferences(prefs);
-        preferencesManager.getShoppingInfoMap().keySet().forEach(key -> items.add(new ConfigurationItem(key, prefs.shoppingInfo.get(key))));
+        ArrayList<String> items = new ArrayList<>(preferencesManager.getShoppingInfoMap().keySet());
         recyclerAdapter.setData(items);
         recyclerAdapter.notifyDataSetChanged();
     }
@@ -214,13 +220,28 @@ public class MainActivity extends AppCompatActivity {
 
     private void syncApi() {
         preferencesManager.api().saveConfiguration(this, "shoppingPreferences", preferencesManager.getPreferences(), "stable");
-        preferencesManager.api().loadConfiguration(this, "shoppingPreferences/stable", o -> updateRecyclerView((ShoppingPreferences) o));
+        preferencesManager.api().loadConfiguration(this, "latest", o -> updateRecyclerView((ShoppingPreferences) o));
     }
 
     private void incrementVersion(List<Integer> list) {
-        Collections.reverse(list);
-        list.forEach(e -> this.versions.add(String.valueOf(e)));
-        this.versions.set(0, "latest");
-        this.spinnerAdapter.notifyDataSetChanged();
+        if (!list.isEmpty()) {
+            Collections.reverse(list);
+            list.forEach(e -> this.versions.add(String.valueOf(e)));
+            this.versions.set(0, "latest");
+            this.spinnerAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private void makeDialogForCreation() {
+        this.selectVersion.setEnabled(false);
+        this.loadDialog.getButton(Dialog.BUTTON_POSITIVE).setText(getString(R.string.create));
+        this.loadDialog.getButton(Dialog.BUTTON_POSITIVE).setOnClickListener( ev -> {
+            preferencesManager.init();
+            preferencesManager.api().saveConfiguration(this.getApplicationContext(), "shoppingPreferences", preferencesManager.getPreferences(), "stable");
+            this.loadDialog.dismiss();
+            addConfgirationButton.setEnabled(true);
+            preferencesManager.api().loadConfiguration(this.getApplicationContext(), "latest", o -> updateRecyclerView((ShoppingPreferences) o));
+        });
+
     }
 }

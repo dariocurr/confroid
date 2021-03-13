@@ -152,9 +152,10 @@ public class ConfroidUtils {
     public void onReceiveConfigurationVersions(Intent intent) {
         Bundle versionBundle = intent.getBundleExtra("versions");
         List<Integer> versions = new ArrayList<>();
-
-        for(String key : versionBundle.keySet()){
-            versions.add(Integer.parseInt(key));
+        if(versionBundle != null) {
+            for(String key : versionBundle.keySet()){
+                versions.add(Integer.parseInt(key));
+            }
         }
         this.callbacks.get(0).accept(versions);
         this.callbacks.remove(0);
