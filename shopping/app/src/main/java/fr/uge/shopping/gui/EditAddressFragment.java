@@ -8,8 +8,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -161,7 +159,7 @@ public class EditAddressFragment extends Fragment {
                 && ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // request for permission
             ActivityCompat.requestPermissions(this.getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, GpsUtils.GPS_LOCATION_CODE);
-
+            this.geolocation.setChecked(false);
         } else {
             // already permission granted
             this.gpsUtils.turnGPSOn(isGPSEnable -> {
