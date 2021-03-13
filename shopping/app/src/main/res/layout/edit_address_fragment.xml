@@ -1,103 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <EditText
+            android:id="@+id/editAddressFragmentName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="@string/addressName"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toTopOf="@+id/editAddressFragmentStreet"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/editAddressFragmentName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="@string/addressName"
-        android:importantForAutofill="no"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/editAddressFragmentStreet"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <EditText
+            android:id="@+id/editAddressFragmentStreet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="@string/addressStreet"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="@+id/editAddressFragmentName"
+            app:layout_constraintStart_toStartOf="@+id/editAddressFragmentName"
+            app:layout_constraintTop_toBottomOf="@+id/editAddressFragmentName" />
 
-    <EditText
-        android:id="@+id/editAddressFragmentStreet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="@string/addressStreet"
-        android:importantForAutofill="no"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="@+id/editAddressFragmentName"
-        app:layout_constraintStart_toStartOf="@+id/editAddressFragmentName"
-        app:layout_constraintTop_toBottomOf="@+id/editAddressFragmentName" />
+        <EditText
+            android:id="@+id/editAddressFragmentCity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="@string/addressCity"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="@+id/editAddressFragmentStreet"
+            app:layout_constraintStart_toStartOf="@+id/editAddressFragmentStreet"
+            app:layout_constraintTop_toBottomOf="@+id/editAddressFragmentStreet" />
 
-    <EditText
-        android:id="@+id/editAddressFragmentCity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="@string/addressCity"
-        android:importantForAutofill="no"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="@+id/editAddressFragmentStreet"
-        app:layout_constraintStart_toStartOf="@+id/editAddressFragmentStreet"
-        app:layout_constraintTop_toBottomOf="@+id/editAddressFragmentStreet" />
+        <EditText
+            android:id="@+id/editAddressFragmentCountry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="@string/addressCountry"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="@+id/editAddressFragmentCity"
+            app:layout_constraintStart_toStartOf="@+id/editAddressFragmentCity"
+            app:layout_constraintTop_toBottomOf="@+id/editAddressFragmentCity" />
 
-    <EditText
-        android:id="@+id/editAddressFragmentCountry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="@string/addressCountry"
-        android:importantForAutofill="no"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="@+id/editAddressFragmentCity"
-        app:layout_constraintStart_toStartOf="@+id/editAddressFragmentCity"
-        app:layout_constraintTop_toBottomOf="@+id/editAddressFragmentCity" />
+        <Button
+            android:id="@+id/editAddressFragmentBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/back"
+            app:layout_constraintStart_toStartOf="@+id/progressBar"
+            app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
-    <Button
-        android:id="@+id/editAddressFragmentBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/back"
-        app:layout_constraintStart_toStartOf="@+id/progressBar"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+        <Button
+            android:id="@+id/editAddressFragmentSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            app:layout_constraintBottom_toBottomOf="@+id/editAddressFragmentBack"
+            app:layout_constraintEnd_toEndOf="@+id/progressBar"
+            app:layout_constraintTop_toTopOf="@+id/editAddressFragmentBack"
+            app:layout_constraintVertical_bias="1.0" />
 
-    <Button
-        android:id="@+id/editAddressFragmentSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/save"
-        app:layout_constraintBottom_toBottomOf="@+id/editAddressFragmentBack"
-        app:layout_constraintEnd_toEndOf="@+id/progressBar"
-        app:layout_constraintTop_toTopOf="@+id/editAddressFragmentBack"
-        app:layout_constraintVertical_bias="1.0" />
+        <Switch
+            android:id="@+id/geolocationSwitch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:checked="false"
+            android:text="@string/useGeolocation"
+            app:layout_constraintEnd_toEndOf="@+id/editAddressFragmentCountry"
+            app:layout_constraintStart_toStartOf="@+id/editAddressFragmentCountry"
+            app:layout_constraintTop_toBottomOf="@+id/editAddressFragmentCountry"
+            tools:checked="false" />
 
-    <Switch
-        android:id="@+id/geolocationSwitch"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:checked="false"
-        android:text="@string/useGeolocation"
-        app:layout_constraintEnd_toEndOf="@+id/editAddressFragmentCountry"
-        app:layout_constraintStart_toStartOf="@+id/editAddressFragmentCountry"
-        app:layout_constraintTop_toBottomOf="@+id/editAddressFragmentCountry"
-        tools:checked="false" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:clickable="false"
-        android:indeterminateOnly="true"
-        app:layout_constraintEnd_toEndOf="@+id/geolocationSwitch"
-        app:layout_constraintStart_toStartOf="@+id/geolocationSwitch"
-        app:layout_constraintTop_toBottomOf="@+id/geolocationSwitch" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:indeterminateOnly="true"
+            app:layout_constraintEnd_toEndOf="@+id/geolocationSwitch"
+            app:layout_constraintStart_toStartOf="@+id/geolocationSwitch"
+            app:layout_constraintTop_toBottomOf="@+id/geolocationSwitch" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
