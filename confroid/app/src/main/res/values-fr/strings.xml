@@ -16,4 +16,8 @@
     <string name="import_error">Une erreur s\'est produite lors de l\'importation</string>
     <string name="read_error">Échec de la lecture du fichier</string>
     <string name="write_error">Échec de l\'enregistrement du fichier</string>
+    <string name="button_import_device">Importer depuis l\'Appareil</string>
+    <string name="button_import_server">Importer depuis le Serveur</string>
+    <string name="button_export_device">Exporter depuis l\'Appareil</string>
+    <string name="button_export_server">Exporter depuis le Serveur</string>
 </resources>

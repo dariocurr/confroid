@@ -16,4 +16,8 @@
     <string name="import_error">Errore durante l\'importazione</string>
     <string name="read_error">Errore durante la lettura del file</string>
     <string name="write_error">Errore durante il salvataggio del file</string>
+    <string name="button_import_device">Importa dal Dispositivo</string>
+    <string name="button_import_server">Importa dal Server</string>
+    <string name="button_export_device">Esporta dal Dispositivo</string>
+    <string name="button_export_server">Esporta dal Server</string>
 </resources>
