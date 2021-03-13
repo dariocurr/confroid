@@ -1,14 +1,16 @@
 package fr.uge.shopping.model;
 
 import android.os.Build;
+import android.os.Parcelable;
 import androidx.annotation.RequiresApi;
 
 import fr.uge.confroidutils.annotations.*;
 import fr.uge.shopping.R;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class BillingDetails {
+public class BillingDetails implements Serializable {
 
     @Description(descriptionValue = R.string.cardHolder)
     @RegexValidator(regex = ". +")

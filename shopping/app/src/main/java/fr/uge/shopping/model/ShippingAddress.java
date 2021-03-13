@@ -3,12 +3,12 @@ package fr.uge.shopping.model;
 import android.os.Build;
 import androidx.annotation.RequiresApi;
 import fr.uge.shopping.R;
-import fr.uge.shopping.api.annotations.Description;
-import fr.uge.shopping.api.annotations.RegexValidator;
+import fr.uge.confroidutils.annotations.*;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class ShippingAddress {
+public class ShippingAddress implements Serializable {
 
     @Description(descriptionValue = R.string.addressName)
     @RegexValidator(regex = ". +")
