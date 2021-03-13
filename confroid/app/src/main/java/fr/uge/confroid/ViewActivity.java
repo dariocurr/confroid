@@ -1,5 +1,7 @@
 package fr.uge.confroid;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
@@ -44,8 +46,6 @@ public class ViewActivity extends AppCompatActivity {
         } else {
             updateContent();
         }
-
-
     }
 
     @Override
@@ -159,6 +159,13 @@ public class ViewActivity extends AppCompatActivity {
                 return true;
 
             case R.id.edit_item:
+                AlertDialog alertDialog = new AlertDialog.Builder(ViewActivity.this).create();
+                alertDialog.setTitle(getString(R.string.attention));
+                alertDialog.setMessage(getString(R.string.editMessage));
+                alertDialog.setIcon(R.drawable.ic_baseline_warning_24);
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        (dialog, which) -> dialog.dismiss());
+                alertDialog.show();
                 oldContentText = contentText.getText().toString();
                 contentText.setEnabled(true);
                 dropdownMenu.setEnabled(false);

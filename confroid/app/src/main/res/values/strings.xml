@@ -19,4 +19,6 @@
     <string name="button_import_server">Import from Server</string>
     <string name="button_export_device">Export from Device</string>
     <string name="button_export_server">Export from Server</string>
+    <string name="attention">Attention!</string>
+    <string name="editMessage">Be careful, do not edit the JSON format.</string>
 </resources>
