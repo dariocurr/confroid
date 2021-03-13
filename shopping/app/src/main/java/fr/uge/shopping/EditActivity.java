@@ -45,13 +45,13 @@ public class EditActivity extends AppCompatActivity {
         //Log.i("edit123", preferencesManager.getShoppingInfo(name).toString());
 
         this.shoppingInfoEditName = findViewById(R.id.shoppingInfoEditName);
-        this.shoppingInfoEditName.setText(infoName);
+
 
         this.addressEditTextView = findViewById(R.id.addressEditTextView);
-        this.addressEditTextView.setText(this.address.toString());
+
 
         this.billingEditTextView = findViewById(R.id.billingEditTextView);
-        this.billingEditTextView.setText(this.billing.toString());
+
 
         this.favoriteEditCheckBox = findViewById(R.id.favoriteEditCheckBox);
         this.favoriteEditCheckBox.setChecked(this.favorite);
@@ -80,11 +80,23 @@ public class EditActivity extends AppCompatActivity {
             ft.commit();
         });
 
-        /*this.saveEditButton = findViewById(R.id.saveEditButton);
-        this.saveEditButton.setOnClickListener( ev -> {
+        if(savedInstanceState != null) {
+            this.infoName = (savedInstanceState.getString("EXTRA_NAME"));
+            this.address = (ShippingAddress) savedInstanceState.getSerializable("EXTRA_ADDRESS");
+            this.billing = (BillingDetails) savedInstanceState.getSerializable("EXTRA_BILLING");
+        }
 
-        });*/
+        this.shoppingInfoEditName.setText(infoName);
+        this.addressEditTextView.setText(this.address.toString());
+        this.billingEditTextView.setText(this.billing.toString());
+    }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("EXTRA_NAME", this.infoName);
+        outState.putSerializable("EXTRA_ADDRESS", this.address);
+        outState.putSerializable("EXTRA_BILLING", this.billing);
     }
 
     @Override
