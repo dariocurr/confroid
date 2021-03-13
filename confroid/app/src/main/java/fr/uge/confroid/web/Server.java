@@ -21,18 +21,17 @@ public class Server {
     private MockWebServer server;
     private HttpUrl serverUrl;
     private JSONObject database;
-    private File databaseFile;
+
+
+    public JSONObject getDatabase() {
+        return database;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public Server() throws JSONException {
-        this.databaseFile = new File("./database.json");
-        if (databaseFile.exists())
-            Log.e("file", "il file esiste");
-        else Log.e("file", "il file non esiste");
-        Log.e("fileeeee:", String.valueOf(databaseFile.length()));
-        //FileUtils.writeFile(new File("database.json"),"ciao");
-        //this.database = new JSONObject(Objects.requireNonNull(FileUtils.readFile(databaseFile)));
-        Log.e("json:", String.valueOf(this.database));
+    public Server(String database) throws JSONException {
+
+        this.database = new JSONObject(database);
+
     }
 
     public void start() throws IOException {

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ConfigurationAdapter extends RecyclerView.Adapter<ConfigurationAdapter.ViewHolder> {
 
-    private List<ConfigurationItem> data;
+    private List<String> data;
     private LayoutInflater inflater;
     private ItemClickListener clickListener;
 
@@ -26,8 +26,8 @@ public class ConfigurationAdapter extends RecyclerView.Adapter<ConfigurationAdap
             textView = itemView.findViewById(R.id.entry_name);
         }
 
-        private void update(ConfigurationItem item) {
-            textView.setText(item.getName());
+        private void update(String item) {
+            textView.setText(item);
         }
 
         @Override
@@ -37,13 +37,13 @@ public class ConfigurationAdapter extends RecyclerView.Adapter<ConfigurationAdap
 
     }
 
-    public ConfigurationAdapter(Context context, List<ConfigurationItem> data) {
+    public ConfigurationAdapter(Context context, List<String> data) {
         this.inflater = LayoutInflater.from(context);
         this.data = new ArrayList<>();
         this.data.addAll(data);
     }
 
-    public void setData(List<ConfigurationItem> data) {
+    public void setData(List<String> data) {
         this.data = data;
     }
 
@@ -62,7 +62,7 @@ public class ConfigurationAdapter extends RecyclerView.Adapter<ConfigurationAdap
         return data.size();
     }
 
-    public ConfigurationItem getItem(int id) {
+    public String getItem(int id) {
         return data.get(id);
     }
 

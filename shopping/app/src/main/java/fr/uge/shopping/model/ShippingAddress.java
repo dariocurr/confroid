@@ -5,10 +5,15 @@ import androidx.annotation.RequiresApi;
 import fr.uge.confroidutils.annotations.Description;
 import fr.uge.confroidutils.annotations.RegexValidator;
 import fr.uge.shopping.R;
+<<<<<<< HEAD
+=======
+import fr.uge.confroidutils.annotations.*;
+>>>>>>> origin/main
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class ShippingAddress {
+public class ShippingAddress implements Serializable {
 
     @Description(descriptionValue = R.string.addressName)
     @RegexValidator(regex = ". +")

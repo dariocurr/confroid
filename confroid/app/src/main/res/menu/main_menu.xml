@@ -1,15 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+      xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/refresh_item"
-        android:icon="@drawable/ic_baseline_refresh_24"
-        app:showAsAction="always" />
+            android:id="@+id/refresh_item"
+            android:icon="@drawable/ic_baseline_refresh_24"
+            app:showAsAction="always" />
     <item
-        android:id="@+id/import_item"
-        android:title="@string/button_import" />
+            android:id="@+id/import_item"
+            android:title="@string/button_import">
+
+        <menu>
+            <item
+                    android:id="@+id/import_device"
+                    android:title="@string/button_import_device" />
+            <item
+                    android:id="@+id/import_server"
+                    android:title="@string/button_import_server" />
+        </menu>
+    </item>
     <item
-        android:id="@+id/export_item"
-        android:title="@string/button_export" />
+            android:id="@+id/export_item"
+            android:title="@string/button_export">
+
+        <menu>
+            <item
+                    android:id="@+id/export_device"
+                    android:title="@string/button_export_device" />
+            <item
+                    android:id="@+id/export_server"
+                    android:title="@string/button_export_server" />
+        </menu>
+    </item>
 </menu>

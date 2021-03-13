@@ -12,6 +12,7 @@
     <string name="addressCity">Address City</string>
     <string name="addressCountry">Address Country</string>
     <string name="save">Save</string>
+    <string name="create">Create</string>
     <string name="load">Load</string>
     <string name="add">Add</string>
     <string name="back">Back</string>
@@ -28,5 +29,6 @@
     <string name="selectVersionNumber">Select which version you want to load</string>
     <string name="useGeolocation">Use Geolocation</string>
     <string name="permissionDenied">Permission denied</string>
-    <string name="geoError">An Error Occured, make sure geolocation is setted properly</string>
+    <string name="geoError">An error occured, make sure geolocation is setted properly</string>
+    <string name="loadError">No configuraton found.</string>
 </resources>

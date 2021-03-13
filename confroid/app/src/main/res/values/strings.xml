@@ -15,4 +15,10 @@
     <string name="import_error">An error occured during import</string>
     <string name="read_error">Failed to read file</string>
     <string name="write_error">Failed to save file</string>
+    <string name="button_import_device">Import from Device</string>
+    <string name="button_import_server">Import from Server</string>
+    <string name="button_export_device">Export from Device</string>
+    <string name="button_export_server">Export from Server</string>
+    <string name="attention">Attention!</string>
+    <string name="editMessage">Be careful, do not edit the JSON format.</string>
 </resources>

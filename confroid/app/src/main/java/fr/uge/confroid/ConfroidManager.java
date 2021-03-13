@@ -85,7 +85,12 @@ public class ConfroidManager {
         //***** LOAD FROM JSON FILE *****/
         File file = new File(context.getFilesDir(), name.replaceAll("\\.", "_") + ".json");
         try {
-            return new JSONObject(FileUtils.readFile(file));
+            String content = FileUtils.readFile(file);
+            if(content != null) {
+                return new JSONObject(content);
+            } else {
+                return new JSONObject();
+            }
         } catch (JSONException e) {
             Log.e("JSONException", "");
             return null;
