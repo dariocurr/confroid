@@ -2,13 +2,8 @@ package fr.uge.shopping.model;
 
 import android.os.Build;
 import androidx.annotation.RequiresApi;
-import fr.uge.confroidutils.annotations.Description;
-import fr.uge.confroidutils.annotations.RegexValidator;
-import fr.uge.shopping.R;
-<<<<<<< HEAD
-=======
 import fr.uge.confroidutils.annotations.*;
->>>>>>> origin/main
+import fr.uge.shopping.R;
 
 import java.io.Serializable;
 import java.util.Objects;
