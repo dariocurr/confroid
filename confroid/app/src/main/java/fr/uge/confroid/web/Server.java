@@ -13,21 +13,23 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Server {
 
-    static JSONObject json;
+    private static List<JSONObject> configurations;
     private MockWebServer server;
     private HttpUrl serverUrl;
 
     public Server() {
-
+        configurations = new ArrayList<>();
     }
 
     public void start() throws IOException {
         this.server = new MockWebServer();
-        //this.server.enqueue(new MockResponse().setBody("you found me"));
+        this.server.enqueue(new MockResponse().setBody("you found me"));
         this.server.start();
     }
 
@@ -36,17 +38,19 @@ public class Server {
         return serverUrl;
     }
 
-    public void saveRequest() throws InterruptedException, JSONException {
+    public void saveConfiguration() throws InterruptedException, JSONException {
         Log.e("SAVE","SAVE");
         //this.json = new JSONObject(String.valueOf(Objects.requireNonNull(this.server.takeRequest(1, TimeUnit.SECONDS)).getBody()));
         RecordedRequest request = server.takeRequest();
         //Log.e("body: ", request.getUtf8Body());
-        json = new JSONObject(request.getUtf8Body());
+
+        JSONObject json = new JSONObject(request.getUtf8Body());
+        configurations.add(json);
         Log.e("SAVE","1");
         Log.e("JSONFILE", json.toString());
     }
 
-    public final JSONObject getJson() {
-        return json;
+    public final List<JSONObject> getConfigurations() {
+        return configurations;
     }
 }

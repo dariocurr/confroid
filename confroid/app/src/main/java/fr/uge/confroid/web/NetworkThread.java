@@ -14,7 +14,7 @@ public class NetworkThread implements Runnable {
         server.start();
         Client client = new Client();
         String postLogin = client.loginJson("toto","toto");
-        server.saveRequest();
+        server.saveConfiguration();
     }
 
     @Override

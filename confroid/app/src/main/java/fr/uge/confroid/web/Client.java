@@ -1,5 +1,6 @@
 package fr.uge.confroid.web;
 
+import android.util.Log;
 import okhttp3.*;
 
 import java.io.IOException;
@@ -15,9 +16,14 @@ public class Client {
                 .url(url)
                 .post(body)
                 .build();
-        try (Response response = client.newCall(request).execute()) {
+        try  {
+            Response response = client.newCall(request).execute();
+            Log.e("test","CCCCCCCCCCCCCCCCCCCCCc");
             return response.body().string();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
     String loginJson(String username, String password) {
