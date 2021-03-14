@@ -12,7 +12,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.gson.JsonArray;
 import fr.uge.confroid.gui.ConfigurationAdapter;
+import fr.uge.confroid.utlis.ConfroidManagerUtils;
+import fr.uge.confroid.utlis.FileUtils;
+import fr.uge.confroid.web.Client;
+import fr.uge.confroid.web.LoginActivity;
+import fr.uge.confroid.web.Server;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,19 +34,40 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
     private ConfigurationAdapter adapter;
     private static final int CREATE_REQUEST_CODE = 0;
     private static final int OPEN_REQUEST_CODE = 1;
+    private static final int OPEN_REQUEST_CODE_1 = 3;
     public static final int CHOOSE_REQUEST_CODE = 2;
     public static final String EXTRA_CONFIGURATION_NAME = "EXTRA_CONFIGURATION_NAME";
+    private static boolean auth = false;
+    public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        JSONObject databaseObj = new JSONObject();
+        try {
+            JSONObject user1 = new JSONObject();
+            user1.put("username", "admin");
+            user1.put("password", "admin");
+
+            JSONArray users = new JSONArray();
+            users.put(user1);
+            databaseObj.put("users", users);
+
+            File database = new File(this.getFilesDir(),"database.json");
+            FileUtils.writeFile(database, databaseObj.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
         try {
             initRecyclerView();
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
 
     }
 
@@ -107,13 +139,85 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.import_item:
+            case R.id.import_device:
                 openFile();
                 return true;
 
-            case R.id.export_item:
+            case R.id.import_server:
+                String authentication = getIntent().getStringExtra("auth");
+                if(authentication != null && authentication.equals("true")) {
+                    auth = true;
+                }
+                if(auth) {
+                    Server server = new Server();
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                server.start();
+                                JSONObject jsonObject = ConfroidManager.getAllConfigurations(getBaseContext());
+
+
+                                Intent intent = new Intent(getBaseContext(), ImportActivity.class);
+                                // Surprisingly, old Android versions does NOT support "application/json"
+                                //intent.setType("*/*");
+                                intent.putExtra("CONFIGURATIONS", jsonObject.toString());
+                                startActivityForResult(intent, OPEN_REQUEST_CODE_1);
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+                    thread.start();
+
+
+                    //TODO import from server
+
+                    return true;
+                }
+                else{
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
+                }
+            case R.id.export_device:
                 createAndSaveFile();
                 return true;
+
+            case R.id.export_server:
+                authentication = getIntent().getStringExtra("auth");
+                if(authentication != null && authentication.equals("true")) {
+                    auth = true;
+                }
+                if(auth) {
+                    Server server = new Server();
+                    Client client = new Client();
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                server.start();
+
+                                client.post(server.getUrl(), ConfroidManager.getAllConfigurations(getBaseContext()).toString());
+                                server.saveRequest();
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+                    thread.start();
+
+
+                    // TODO export to server
+                    return true;
+                }
+                else{
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
+                }
 
             case R.id.refresh_item:
                 refreshConfigurationsList();
@@ -138,6 +242,17 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
         } else if (requestCode == OPEN_REQUEST_CODE) {
             if (resultData != null) {
                 String content = readFileContent(resultData.getData());
+
+                Intent intent = new Intent(getBaseContext(), ImportActivity.class);
+                intent.putExtra("CONFIGURATIONS", content);
+
+                startActivity(intent);
+            }
+        }
+        else if (requestCode == OPEN_REQUEST_CODE_1) {
+            Log.e("SONO QUI", "QUIII");
+            if (resultData != null) {
+                String content = resultData.getStringExtra("configurations");
 
                 Intent intent = new Intent(getBaseContext(), ImportActivity.class);
                 intent.putExtra("CONFIGURATIONS", content);
