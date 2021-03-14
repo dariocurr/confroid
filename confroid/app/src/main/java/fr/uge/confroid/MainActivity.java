@@ -12,17 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.gson.JsonArray;
 import fr.uge.confroid.gui.ConfigurationAdapter;
-import fr.uge.confroid.utlis.ConfroidManagerUtils;
 import fr.uge.confroid.utlis.FileUtils;
 import fr.uge.confroid.web.Client;
 import fr.uge.confroid.web.LoginActivity;
 import fr.uge.confroid.web.Server;
 import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,26 +34,32 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
     public static final String EXTRA_CONFIGURATION_NAME = "EXTRA_CONFIGURATION_NAME";
     private static boolean auth = false;
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+    Server server;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        JSONObject databaseObj = new JSONObject();
-        try {
-            JSONObject user1 = new JSONObject();
-            user1.put("username", "admin");
-            user1.put("password", "admin");
+        File database = new File(this.getFilesDir(),"database.json");
+         server = new Server();
+        if (!database.exists()) {
+            JSONObject databaseObj = new JSONObject();
 
-            JSONArray users = new JSONArray();
-            users.put(user1);
-            databaseObj.put("users", users);
+            try {
+                JSONObject user1 = new JSONObject();
+                user1.put("username", "admin");
+                user1.put("password", "admin");
 
-            File database = new File(this.getFilesDir(),"database.json");
-            FileUtils.writeFile(database, databaseObj.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
+                JSONArray users = new JSONArray();
+                users.put(user1);
+                databaseObj.put("users", users);
+
+
+                FileUtils.writeFile(database, databaseObj.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
 
@@ -149,19 +150,20 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
                     auth = true;
                 }
                 if(auth) {
-                    Server server = new Server();
+                    //Server server = new Server();
                     Thread thread = new Thread(new Runnable() {
                         @Override
                         public void run() {
                             try {
                                 server.start();
-                                JSONObject jsonObject = ConfroidManager.getAllConfigurations(getBaseContext());
+                                List<JSONObject> configurations = server.getConfigurations();
+                                JSONObject configuration = configurations.get(configurations.size()-1);
 
 
                                 Intent intent = new Intent(getBaseContext(), ImportActivity.class);
                                 // Surprisingly, old Android versions does NOT support "application/json"
                                 //intent.setType("*/*");
-                                intent.putExtra("CONFIGURATIONS", jsonObject.toString());
+                                intent.putExtra("CONFIGURATIONS", configuration.toString());
                                 startActivityForResult(intent, OPEN_REQUEST_CODE_1);
 
                             } catch (Exception e) {
@@ -191,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
                     auth = true;
                 }
                 if(auth) {
-                    Server server = new Server();
+                    //Server server = new Server();
                     Client client = new Client();
                     Thread thread = new Thread(new Runnable() {
                         @Override
@@ -199,8 +201,9 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
                             try {
                                 server.start();
 
-                                client.post(server.getUrl(), ConfroidManager.getAllConfigurations(getBaseContext()).toString());
-                                server.saveRequest();
+                                server.saveConfiguration();
+                                //client.post(server.getUrl(), ConfroidManager.getAllConfigurations(getBaseContext()).toString());
+                                //Log.e("json SERVER",server.getJson().toString());
 
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -210,6 +213,22 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
 
                     thread.start();
 
+                    Thread thread2 = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                server.start();
+                                Log.e("json SERVER","AAAAAAAAAAAAAAAAAAA");
+                                client.post(server.getUrl(), ConfroidManager.getAllConfigurations(getBaseContext()).toString());
+                                Log.e("json SERVER","BBBBBBBBBBB");
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+                    thread2.start();
 
                     // TODO export to server
                     return true;
