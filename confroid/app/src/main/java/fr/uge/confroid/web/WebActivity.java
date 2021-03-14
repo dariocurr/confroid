@@ -25,7 +25,7 @@ public class WebActivity extends AppCompatActivity {
                 try {
                     String json = LoadData("database.json");
                     //Log.e("json",json);
-                    server = new Server(json);
+                    server = new Server();
                     //Log.e("database",server.getDatabase().toString());
                     server.start();
                     Client client = new Client();
@@ -33,7 +33,7 @@ public class WebActivity extends AppCompatActivity {
                     //server.saveRequest();
                     String response = client.post(server.getUrl(),postLogin);
                     //Log.e("risposta",response);
-                } catch (JSONException | IOException  e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             });

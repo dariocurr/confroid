@@ -9,7 +9,7 @@ public class Client {
 
     OkHttpClient client = new OkHttpClient();
 
-    String post(HttpUrl url, String json) throws IOException {
+    public String post(HttpUrl url, String json) throws IOException {
         RequestBody body = RequestBody.create(json, JSON);
         Request request = new Request.Builder()
                 .url(url)

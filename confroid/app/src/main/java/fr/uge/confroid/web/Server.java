@@ -20,23 +20,14 @@ public class Server {
     static JSONObject json;
     private MockWebServer server;
     private HttpUrl serverUrl;
-    private JSONObject database;
 
-
-    public JSONObject getDatabase() {
-        return database;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public Server(String database) throws JSONException {
-
-        this.database = new JSONObject(database);
+    public Server() {
 
     }
 
     public void start() throws IOException {
         this.server = new MockWebServer();
-        this.server.enqueue(new MockResponse().setBody("you found me"));
+        //this.server.enqueue(new MockResponse().setBody("you found me"));
         this.server.start();
     }
 
@@ -46,10 +37,13 @@ public class Server {
     }
 
     public void saveRequest() throws InterruptedException, JSONException {
+        Log.e("SAVE","SAVE");
         //this.json = new JSONObject(String.valueOf(Objects.requireNonNull(this.server.takeRequest(1, TimeUnit.SECONDS)).getBody()));
         RecordedRequest request = server.takeRequest();
         //Log.e("body: ", request.getUtf8Body());
         json = new JSONObject(request.getUtf8Body());
+        Log.e("SAVE","1");
+        Log.e("JSONFILE", json.toString());
     }
 
     public final JSONObject getJson() {
