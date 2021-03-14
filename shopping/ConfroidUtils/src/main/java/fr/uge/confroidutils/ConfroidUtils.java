@@ -30,7 +30,6 @@ public class ConfroidUtils {
 
     public void saveConfiguration(Context context, String name, Object object, String versionName) {
         String token = TokenPuller.getToken();
-        Log.e("QUI",token);
         if (token != null) {
             Bundle bundle = new Bundle();
             bundle.putString("name", context.getPackageName());
@@ -143,10 +142,10 @@ public class ConfroidUtils {
 
     public void onReceiveConfigurationPuller(Intent intent) {
         Bundle contentBundle = intent.getBundleExtra("content");
-        if(contentBundle == null)
-            return;
-        this.callbacks.get(0).accept(FromBundleToObjectConverter.convert(contentBundle));
-        this.callbacks.remove(0);
+        if (contentBundle != null) {
+            this.callbacks.get(0).accept(FromBundleToObjectConverter.convert(contentBundle));
+            this.callbacks.remove(0);
+        }
     }
 
     public void onReceiveConfigurationVersions(Intent intent) {

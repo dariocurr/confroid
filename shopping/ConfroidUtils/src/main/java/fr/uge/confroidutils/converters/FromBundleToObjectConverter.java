@@ -7,18 +7,29 @@ import java.util.*;
 
 public class FromBundleToObjectConverter {
 
-    private static Map<String, Map.Entry<Field, Object>> referencedObjects;
+    private static List<Map.Entry<String, Object>> referencedObjects;
     private static Map<String, Object> alreadyCreatedObjects;
 
     public static Object convert(Bundle bundle) {
         try {
             alreadyCreatedObjects = new HashMap<>();
-            referencedObjects = new HashMap<>();
-
+            referencedObjects = new ArrayList<>();
             Object object = fromBundleToObject(bundle.getBundle("content"));
-            for (String reference : referencedObjects.keySet()) {
-                Map.Entry<Field, Object> entry = referencedObjects.get(reference);
-                entry.getKey().set(entry.getValue(), alreadyCreatedObjects.get(reference));
+            for (Map.Entry<String, Object> reference : referencedObjects) {
+                String referencedId = reference.getKey();
+                Object value = reference.getValue();
+                if (value instanceof Map.Entry) {
+                    Map.Entry<Object, Object> entry = (Map.Entry) value;
+                    if (entry.getKey().getClass().equals(Field.class)) {
+                        ((Field) entry.getKey()).set(entry.getValue(), alreadyCreatedObjects.get(referencedId));
+                    } else {
+                        ((Map<Object, Object>) entry.getKey()).put(entry.getValue(), alreadyCreatedObjects.get(referencedId));
+                    }
+                } else if (value instanceof List) {
+                    ((List<Object>) value).add(alreadyCreatedObjects.get(referencedId));
+                } else if (value instanceof Set) {
+                    ((Set<Object>) value).add(alreadyCreatedObjects.get(referencedId));
+                }
             }
             return object;
         } catch (IllegalAccessException e) {
@@ -69,7 +80,7 @@ public class FromBundleToObjectConverter {
             } else if (bundle.get(field.getName()) instanceof Bundle) {
                 Bundle innerBundle = bundle.getBundle(fieldName);
                 if (innerBundle.containsKey("ref")) {
-                    referencedObjects.put(innerBundle.getString("ref"), new AbstractMap.SimpleEntry<>(field, object));
+                    referencedObjects.add(new AbstractMap.SimpleEntry<>(innerBundle.getString("ref"), new AbstractMap.SimpleEntry<>(field, object)));
                 } else {
                     field.set(object, fromBundleToObject(innerBundle));
                 }
@@ -88,7 +99,12 @@ public class FromBundleToObjectConverter {
             for (String key : bundle.keySet()) {
                 Object object =  bundle.get(key);
                 if (object instanceof Bundle) {
-                    list.add(fromBundleToObject((Bundle) object));
+                    Bundle innerBundle = (Bundle) object;
+                    if (innerBundle.containsKey("ref")) {
+                        referencedObjects.add(new AbstractMap.SimpleEntry<>(innerBundle.getString("ref"), list));
+                    } else {
+                        list.add(fromBundleToObject((Bundle) object));
+                    }
                 } else {
                     list.add(bundle.get(key));
                 }
@@ -99,17 +115,28 @@ public class FromBundleToObjectConverter {
             for (String key : bundle.keySet()) {
                 Object object =  bundle.get(key);
                 if (object instanceof Bundle) {
-                    set.add(fromBundleToObject((Bundle) object));
+                    Bundle innerBundle = (Bundle) object;
+                    if (innerBundle.containsKey("ref")) {
+                        referencedObjects.add(new AbstractMap.SimpleEntry<>(innerBundle.getString("ref"), set));
+                    } else {
+                        set.add(fromBundleToObject((Bundle) object));
+                    }
                 } else {
                     set.add(bundle.get(key));
                 }
             }
+            return set;
         } else if (type.equals(Map.class)) {
             Map<Object, Object> map = new HashMap<>();
             for (String key : bundle.keySet()) {
                 Object object =  bundle.get(key);
                 if (object instanceof Bundle) {
-                    map.put(key, fromBundleToObject((Bundle) object));
+                    Bundle innerBundle = (Bundle) object;
+                    if (innerBundle.containsKey("ref")) {
+                        referencedObjects.add(new AbstractMap.SimpleEntry<>(innerBundle.getString("ref"), new AbstractMap.SimpleEntry<>(map, key)));
+                    } else {
+                        map.put(key, fromBundleToObject((Bundle) object));
+                    }
                 } else {
                     map.put(key, object);
                 }
