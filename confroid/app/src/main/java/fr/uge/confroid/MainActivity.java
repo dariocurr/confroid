@@ -62,6 +62,12 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
             }
         }
 
+        String authentication = getIntent().getStringExtra("auth");
+        if(authentication != null && authentication.equals("true")) {
+            auth = true;
+            Toast alert = Toast.makeText(getBaseContext(), "You are logged in!", 2000);
+            alert.show();
+        }
 
         try {
             initRecyclerView();
@@ -145,10 +151,6 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
                 return true;
 
             case R.id.import_server:
-                String authentication = getIntent().getStringExtra("auth");
-                if(authentication != null && authentication.equals("true")) {
-                    auth = true;
-                }
                 if(auth) {
                     //Server server = new Server();
                     String username = getIntent().getStringExtra("username");
@@ -190,10 +192,6 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
                 return true;
 
             case R.id.export_server:
-                authentication = getIntent().getStringExtra("auth");
-                if(authentication != null && authentication.equals("true")) {
-                    auth = true;
-                }
                 if(auth) {
                     //Server server = new Server();
                     Client client = new Client();
