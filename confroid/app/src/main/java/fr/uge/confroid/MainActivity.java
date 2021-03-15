@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        File database = new File(this.getFilesDir(),"database.json");
-         server = new Server();
+        File database = new File(this.getFilesDir(),"web." + "database.json");
+        server = new Server();
         if (!database.exists()) {
             JSONObject databaseObj = new JSONObject();
 
@@ -151,19 +151,22 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
                 }
                 if(auth) {
                     //Server server = new Server();
+                    String username = getIntent().getStringExtra("username");
                     Thread thread = new Thread(new Runnable() {
                         @Override
                         public void run() {
                             try {
                                 server.start();
-                                List<JSONObject> configurations = server.getConfigurations();
-                                JSONObject configuration = configurations.get(configurations.size()-1);
 
+                                File configurationsFile = new File(getFilesDir(), "web." + username + ".json");
+                                String configuration = FileUtils.readFile(configurationsFile);
+
+                                Log.e("CONFIGURATIONS", configuration);
 
                                 Intent intent = new Intent(getBaseContext(), ImportActivity.class);
                                 // Surprisingly, old Android versions does NOT support "application/json"
                                 //intent.setType("*/*");
-                                intent.putExtra("CONFIGURATIONS", configuration.toString());
+                                intent.putExtra("CONFIGURATIONS", configuration);
                                 startActivityForResult(intent, OPEN_REQUEST_CODE_1);
 
                             } catch (Exception e) {
@@ -175,7 +178,6 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
                     thread.start();
 
 
-                    //TODO import from server
 
                     return true;
                 }
@@ -195,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
                 if(auth) {
                     //Server server = new Server();
                     Client client = new Client();
+                    String username = getIntent().getStringExtra("username");
                     Thread thread = new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -218,9 +221,13 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
                         public void run() {
                             try {
                                 server.start();
-                                Log.e("json SERVER","AAAAAAAAAAAAAAAAAAA");
                                 client.post(server.getUrl(), ConfroidManager.getAllConfigurations(getBaseContext()).toString());
-                                Log.e("json SERVER","BBBBBBBBBBB");
+
+                                List<JSONObject> configurations = server.getConfigurations();
+
+                                String configuration = configurations.get(configurations.size()-1).toString();
+                                File configurationFile = new File(getFilesDir(), "web." + username + ".json");
+                                FileUtils.writeFile(configurationFile, configuration);
 
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -229,8 +236,6 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
                     });
 
                     thread2.start();
-
-                    // TODO export to server
                     return true;
                 }
                 else{
