@@ -22,4 +22,7 @@
     <string name="button_export_server">Exporter depuis le Serveur</string>
     <string name="attention">Attention!</string>
     <string name="editMessage">Attention, ne modifiez pas le format JSON.</string>
+    <string name="username">Nom d\'utilisateur</string>
+    <string name="register">Inscrivez-vous</string>
+    <string name="login">Connectez-vous</string>
 </resources>

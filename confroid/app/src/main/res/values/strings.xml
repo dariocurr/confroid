@@ -21,4 +21,9 @@
     <string name="button_export_server">Export from Server</string>
     <string name="attention">Attention!</string>
     <string name="editMessage">Be careful, do not edit the JSON format.</string>
+    <string name="username">Username</string>
+    <string name="password" translatable="false">Password</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="connect" translatable="false">Connect</string>
 </resources>
