@@ -38,7 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
             String passwordText = password.getText().toString();
 
             if(!usernameText.equals("") && !passwordText.equals("")){
-                String accountsJson = loadDataFromAssets("database.json");
+                String accountsJson = loadDataFromAssets("web.database.json");
                 try {
                     JSONObject accounts = new JSONObject(accountsJson);
                     JSONArray users = accounts.getJSONArray("users");
@@ -49,7 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     users.put(newUser);
 
-                    File database = new File(this.getFilesDir(),"database.json");
+                    File database = new File(this.getFilesDir(),"web.database.json");
                     FileUtils.writeFile(database, accounts.toString());
 
                     Intent intent = new Intent(this, LoginActivity.class);

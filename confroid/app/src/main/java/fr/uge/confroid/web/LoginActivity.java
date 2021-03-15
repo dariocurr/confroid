@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
             String passwordText = password.getText().toString();
             if(!usernameText.equals("") && !passwordText.equals("")) {
                 try {
-                    File database = new File(this.getFilesDir(),"database.json");
+                    File database = new File(this.getFilesDir(),"web.database.json");
                     JSONObject databaseObj = new JSONObject(FileUtils.readFile(database));
 
                     JSONArray users = databaseObj.getJSONArray("users");

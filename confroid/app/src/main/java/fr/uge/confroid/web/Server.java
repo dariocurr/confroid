@@ -30,6 +30,8 @@ public class Server {
     public void start() throws IOException {
         this.server = new MockWebServer();
         this.server.enqueue(new MockResponse().setBody("you found me"));
+
+        //server.url calls server.start() and it starts the server
         this.serverUrl = this.server.url("/");
         //this.server.start();
     }
@@ -39,14 +41,12 @@ public class Server {
     }
 
     public void saveConfiguration() throws InterruptedException, JSONException {
-        Log.e("SAVE","SAVE");
         //this.json = new JSONObject(String.valueOf(Objects.requireNonNull(this.server.takeRequest(1, TimeUnit.SECONDS)).getBody()));
         RecordedRequest request = server.takeRequest();
         //Log.e("body: ", request.getUtf8Body());
 
         JSONObject json = new JSONObject(request.getUtf8Body());
         configurations.add(json);
-        Log.e("SAVE","1");
         Log.e("JSONFILE", json.toString());
     }
 
