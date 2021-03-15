@@ -85,12 +85,7 @@ public class ConfroidManager {
         //***** LOAD FROM JSON FILE *****/
         File file = new File(context.getFilesDir(), name.replaceAll("\\.", "_") + ".json");
         try {
-            String content = FileUtils.readFile(file);
-            if(content != null) {
-                return new JSONObject(FileUtils.readFile(file));
-            } else {
-                return new JSONObject();
-            }
+            return new JSONObject(FileUtils.readFile(file));
         } catch (JSONException e) {
             Log.e("JSONException", "");
             return null;
@@ -132,7 +127,7 @@ public class ConfroidManager {
         //***** LOAD FROM JSON FILE *****/
         List<String> names = new ArrayList<>();
         for (String strFile : context.getFilesDir().list()) {
-            if(!strFile.equals("database.json"))
+            if(!strFile.startsWith("web"))
                 names.add(strFile.substring(0, strFile.length()-5));
         }
         return names;
@@ -141,13 +136,15 @@ public class ConfroidManager {
     public static JSONObject getAllConfigurations(Context context) {
         JSONObject configurations = new JSONObject();
         for (String strFile : context.getFilesDir().list()) {
-            File file = new File(context.getFilesDir(), strFile);
-            try {
-                JSONObject jsonObject = new JSONObject(FileUtils.readFile(file));
-                configurations.put(strFile, jsonObject);
-            } catch (JSONException e) {
-                Log.e("JSONException", "");
-                return null;
+            if (!strFile.startsWith("web")) {
+                File file = new File(context.getFilesDir(), strFile);
+                try {
+                    JSONObject jsonObject = new JSONObject(FileUtils.readFile(file));
+                    configurations.put(strFile, jsonObject);
+                } catch (JSONException e) {
+                    Log.e("JSONException", "");
+                    return null;
+                }
             }
         }
         return configurations;

@@ -41,14 +41,12 @@ public class Server {
     }
 
     public void saveConfiguration() throws InterruptedException, JSONException {
-        Log.e("SAVE","SAVE");
         //this.json = new JSONObject(String.valueOf(Objects.requireNonNull(this.server.takeRequest(1, TimeUnit.SECONDS)).getBody()));
         RecordedRequest request = server.takeRequest();
         //Log.e("body: ", request.getUtf8Body());
 
         JSONObject json = new JSONObject(request.getUtf8Body());
         configurations.add(json);
-        Log.e("SAVE","1");
         Log.e("JSONFILE", json.toString());
     }
 
