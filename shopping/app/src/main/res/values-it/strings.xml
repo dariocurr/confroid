@@ -30,4 +30,5 @@
     <string name="useGeolocation">Usa Geolocalizzazione</string>
     <string name="permissionDenied">Permesso negato</string>
     <string name="geoError">Errore, assicurarsi che la geolocalizzazione sia impostata correttamente</string>
+    <string name="loadError">Nessuna configuraizone è stata trovata</string>
 </resources>
