@@ -30,11 +30,11 @@ public class Server {
     public void start() throws IOException {
         this.server = new MockWebServer();
         this.server.enqueue(new MockResponse().setBody("you found me"));
-        this.server.start();
+        this.serverUrl = this.server.url("/");
+        //this.server.start();
     }
 
     public HttpUrl getUrl(){
-        this.serverUrl = this.server.url("/");
         return serverUrl;
     }
 
