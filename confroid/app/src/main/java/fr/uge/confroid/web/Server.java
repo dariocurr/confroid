@@ -30,6 +30,8 @@ public class Server {
     public void start() throws IOException {
         this.server = new MockWebServer();
         this.server.enqueue(new MockResponse().setBody("you found me"));
+
+        //server.url calls server.start() and it starts the server
         this.serverUrl = this.server.url("/");
         //this.server.start();
     }
