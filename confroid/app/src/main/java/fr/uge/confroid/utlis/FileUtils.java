@@ -28,22 +28,6 @@ public class FileUtils {
      */
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public static String readFile(File file) {
         try {
             FileReader fileReader = new FileReader(file);
