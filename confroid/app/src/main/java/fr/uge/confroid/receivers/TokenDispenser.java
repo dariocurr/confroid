@@ -21,11 +21,21 @@ public class TokenDispenser extends BroadcastReceiver {
         }
     }
 
+    /**
+     * @param receiver
+     * @return message digest
+     *
+     */
     public static String getToken(String receiver) {
         MESSAGE_DIGEST.update(receiver.getBytes());
         return new String(MESSAGE_DIGEST.digest());
     }
 
+    /**
+     * @param context
+     * @param incomingIntent
+     *
+     */
     @Override
     public void onReceive(Context context, Intent incomingIntent) {
         String receiver = incomingIntent.getStringExtra("receiver");
