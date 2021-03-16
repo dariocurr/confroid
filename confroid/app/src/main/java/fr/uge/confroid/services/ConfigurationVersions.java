@@ -16,6 +16,12 @@ import fr.uge.confroid.utlis.ConfroidManagerUtils;
 
 public class ConfigurationVersions extends Service {
 
+    /**
+     * @param incomingIntent
+     * @param flags
+     * @param startId
+     * @return startsticky
+     */
     @Override
     public int onStartCommand(Intent incomingIntent, int flags, int startId) {
 
@@ -47,6 +53,11 @@ public class ConfigurationVersions extends Service {
         return START_STICKY;
     }
 
+    /**
+     * @param channelId
+     * @param channelName
+     * @return id of channel
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private String createNotificationChannel(String channelId, String channelName){
         NotificationChannel chan = new NotificationChannel(channelId,
@@ -57,6 +68,10 @@ public class ConfigurationVersions extends Service {
         return channelId;
     }
 
+    /**
+     * @param intent
+     * @return always null
+     */
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
