@@ -27,6 +27,12 @@ public class ConfigurationPusher extends Service {
     private static Map<String, Integer> VERSION_NUMBER = new HashMap<>();
     private static final String UPDATE_OBSERVER_REQUEST_ID = "-1";
 
+    /**
+     * @param intent
+     * @param flags
+     * @param startId
+     * @return startsticky
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -68,6 +74,11 @@ public class ConfigurationPusher extends Service {
         return START_STICKY;
     }
 
+    /**
+     * @param channelId
+     * @param channelName
+     * @return channel id
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private String createNotificationChannel(String channelId, String channelName){
         NotificationChannel chan = new NotificationChannel(channelId,
@@ -78,6 +89,11 @@ public class ConfigurationPusher extends Service {
         return channelId;
     }
 
+    /**
+     * notifyObserver
+     * @param name
+     * @param versionNumber
+     */
     private void notifyObservers(String name, Integer versionNumber) {
         if (getObservers(name).size() > 0) {
             Bundle bundle = ConfroidManager.loadConfiguration(this.getApplicationContext(), name, versionNumber);
@@ -99,6 +115,11 @@ public class ConfigurationPusher extends Service {
         }
     }
 
+    /**
+     * getoberserver
+     * @param name
+     * @return observes
+     */
     private Set<Subscription> getObservers(String name) {
         Set<Subscription> observers = new HashSet<>();
         if (OBSERVERS.containsKey(name)) {
@@ -107,6 +128,11 @@ public class ConfigurationPusher extends Service {
         return observers;
     }
 
+    /**
+     * @param name
+     * @param context
+     * @return version
+     */
     public static int getNextVersionNumber(String name, Context context) {
         VERSION_NUMBER = readVersionsMap("versionsMap", context);
         if(VERSION_NUMBER == null)
@@ -124,6 +150,12 @@ public class ConfigurationPusher extends Service {
         return version;
     }
 
+    /**
+     * @param versions
+     * @param yourSettingName
+     * @param context
+     * @return boolean
+     */
     public static boolean writeVersionsMap(Map<String, Integer> versions, String yourSettingName, Context context) {
         try {
             SharedPreferences.Editor mEditor = getmSettings(context).edit();
@@ -141,6 +173,11 @@ public class ConfigurationPusher extends Service {
         }
     }
 
+    /**
+     * @param yourSettingName
+     * @param context
+     * @return versions
+     */
     public static Map<String, Integer> readVersionsMap(String yourSettingName, Context context) {
         SharedPreferences mSettings = getmSettings(context);
         GsonBuilder gsonb = new GsonBuilder();
@@ -151,6 +188,12 @@ public class ConfigurationPusher extends Service {
         return versions;
     }
 
+    /**
+     * @param name
+     *
+     *
+     * @param context
+     */
     public static void resetVersionNumber(String name, Context context){
         VERSION_NUMBER = readVersionsMap("versionsMap", context);
         if(VERSION_NUMBER == null)
@@ -161,12 +204,23 @@ public class ConfigurationPusher extends Service {
         }
     }
 
+    /**
+     * @param name
+     * @param context
+     * @return name of version number
+     */
     public static int getLatestVersionNumber(String name, Context context) {
         VERSION_NUMBER = readVersionsMap("versionsMap", context);
 
         return VERSION_NUMBER.get(name);
     }
 
+    /**
+     * @param name
+     * @param subscription
+     *
+     *
+     */
     public static void subscribe(String name, Subscription subscription) {
         if (!OBSERVERS.containsKey(name)) {
             OBSERVERS.put(name, new HashSet<>());
@@ -174,6 +228,12 @@ public class ConfigurationPusher extends Service {
         OBSERVERS.get(name).add(subscription);
     }
 
+    /**
+     *
+     *
+     * @param name
+     * @param receiver
+     */
     public static void unsubscribe(String name, String receiver) {
         if (OBSERVERS.containsKey(name)) {
             Subscription subscriptionToRemove = null;
@@ -188,10 +248,22 @@ public class ConfigurationPusher extends Service {
         }
     }
 
+    /**
+     * @param context
+     * @return settings
+     */
     public static SharedPreferences getmSettings(Context context) {
         return context.getSharedPreferences("versionsMap", Context.MODE_PRIVATE);
     }
 
+    /**
+     * @param intent
+     * @return exception
+     * "Not implemented (since we do not use RPC methods)"
+     *
+     *
+     *
+     */
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
