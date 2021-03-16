@@ -17,6 +17,12 @@ import fr.uge.confroid.utlis.ConfroidManagerUtils;
 
 public class ConfigurationPuller extends Service {
 
+    /**
+     * @param incomingIntent
+     * @param flags
+     * @param startId
+     * @return startsticky
+     */
     @Override
     public int onStartCommand(Intent incomingIntent, int flags, int startId) {
 
@@ -65,6 +71,11 @@ public class ConfigurationPuller extends Service {
         return START_STICKY;
     }
 
+    /**
+     * @param channelId
+     * @param channelName
+     * @return id channel
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private String createNotificationChannel(String channelId, String channelName){
         NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_NONE);
@@ -74,6 +85,11 @@ public class ConfigurationPuller extends Service {
         return channelId;
     }
 
+    /**
+     * @param intent
+     * @return exception
+     * "Not implemented (since we do not use RPC methods)"
+     */
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
