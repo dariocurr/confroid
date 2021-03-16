@@ -16,63 +16,99 @@ public class ConfigurationAdapter extends RecyclerView.Adapter<ConfigurationAdap
     private LayoutInflater Inflater;
     private ItemClickListener clickListener;
 
-    // stores and recycles views as they are scrolled off screen
+    /**
+     * stores and recycles views as they are scrolled off screen
+     */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView textView;
 
+        /**
+         * @param itemView
+         */
         ViewHolder(View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.configuration_name);
             itemView.setOnClickListener(this);
         }
 
+        /**
+         * @param view
+         */
         @Override
         public void onClick(View view) {
             if (clickListener != null) clickListener.onItemClick(view, getAdapterPosition());
         }
     }
 
-    // data is passed into the constructor
+    /**
+     * @param context
+     * @param data
+     * data is passed into the constructor
+     */
     public ConfigurationAdapter(Context context, List<String> data) {
         this.Inflater = LayoutInflater.from(context);
         this.Data = data;
     }
 
+    /**
+     * @param data
+     */
     public void setData(List<String> data) {
         Data = data;
     }
 
-    // inflates the row layout from xml when needed
+    /**
+     * @param parent
+     * @param viewType
+     * @return ViewHolder(view)
+     * inflates the row layout from xml when needed
+     */
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = Inflater.inflate(R.layout.list_item, parent, false);
         return new ViewHolder(view);
     }
 
-    // binds the data to the TextView in each row
+    /**
+     * @param holder
+     * @param position
+     * binds the data to the TextView in each row
+     */
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         String row = Data.get(position);
         holder.textView.setText(row);
     }
 
-    // total number of rows
+    /**
+     * @return ItemCount (Size)
+     *  total number of rows
+     */
     @Override
     public int getItemCount() {
         return Data.size();
     }
 
-    // convenience method for getting data at click position
+    /**
+     * @param id
+     * @return item id
+     * convenience method for getting data at click position
+     */
     public String getItem(int id) {
         return Data.get(id);
     }
 
-    //allows clicks events to be caught
+    /**
+     * @param itemClickListener
+     * allows clicks events to be caught
+     */
     public void setClickListener(ItemClickListener itemClickListener) {
         this.clickListener = itemClickListener;
     }
 
-    // parent activity will implement this method to respond to click events
+    /**
+     * parent activity will implement this method to respond to click events
+     */
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
