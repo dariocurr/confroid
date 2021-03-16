@@ -6,6 +6,10 @@ import java.io.*;
 
 public class FileUtils {
 
+    /**
+     * @param file
+     * @param content
+     */
     public static void writeFile(File file, String content) {
         try {
             Log.i("WRITING", content);
@@ -17,6 +21,28 @@ public class FileUtils {
             Log.e("IOException", "");
         }
     }
+
+    /**
+     * @param file
+     * @return string file
+     */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public static String readFile(File file) {
         try {
