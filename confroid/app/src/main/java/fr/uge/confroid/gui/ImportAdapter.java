@@ -26,6 +26,9 @@ public class ImportAdapter extends RecyclerView.Adapter<ImportAdapter.ViewHolder
         private TextView textView;
         private ImageView imageView;
 
+        /**
+         * @param itemView
+         */
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             view = itemView;
@@ -33,12 +36,19 @@ public class ImportAdapter extends RecyclerView.Adapter<ImportAdapter.ViewHolder
             imageView = itemView.findViewById(R.id.logo);
         }
 
+        /**
+         * @param item
+         */
         private void update(ImportItem item) {
             imageView.setImageBitmap(item.getBitmap(imageView.getContext()));
             textView.setText(item.getName());
         }
     }
 
+    /**
+     * @param context
+     * @param configurations
+     */
     public ImportAdapter(Context context, List<ImportItem> configurations) {
         super();
         this.context = context;
@@ -46,12 +56,21 @@ public class ImportAdapter extends RecyclerView.Adapter<ImportAdapter.ViewHolder
         this.configurations.addAll(configurations);
     }
 
+    /**
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_configurations, parent, false));
     }
 
+    /**
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ImportItem i = configurations.get(position);
@@ -64,11 +83,17 @@ public class ImportAdapter extends RecyclerView.Adapter<ImportAdapter.ViewHolder
         });
     }
 
+    /**
+     * @return Item size
+     */
     @Override
     public int getItemCount() {
         return configurations.size();
     }
 
+    /**
+     * @return selected item
+     */
     public int getSelectedItemCount() {
         /*int sum = 0;
         for(ImportItem i : configurations) {
@@ -80,6 +105,9 @@ public class ImportAdapter extends RecyclerView.Adapter<ImportAdapter.ViewHolder
         return (int) configurations.stream().filter(ImportItem::isSelected).count();
     }
 
+    /**
+     * @return collection of selected items
+     */
     public ArrayList<ImportItem> getSelectedItems() {
         return configurations.stream()
                 .filter(ImportItem::isSelected)
