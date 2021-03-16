@@ -9,6 +9,10 @@ import java.util.*;
 
 public class ConfroidManagerUtils {
 
+    /**
+     * @param object
+     * @return bundle
+     */
     public static Bundle toBundle(Object object) {
         Bundle bundle = new Bundle();
         if (object instanceof List) {
@@ -54,10 +58,19 @@ public class ConfroidManagerUtils {
         return bundle;
     }
 
+    /**
+     * @param bundle
+     * @return string bundle
+     */
     public static String fromBundleToString(Bundle bundle) {
         return fromBundleToString(bundle, 0);
     }
 
+    /**
+     * @param bundle
+     * @param tabNumber
+     * @return String content
+     */
     private static String fromBundleToString(Bundle bundle, int tabNumber) {
         String content = "";
         for (String key : bundle.keySet()) {
@@ -77,6 +90,11 @@ public class ConfroidManagerUtils {
     }
 
 
+    /**
+     * @param bundle
+     * @return json
+     * @throws JSONException
+     */
     public static JSONObject fromBundleToJson(Bundle bundle) throws JSONException {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("name", bundle.getString("name"));
@@ -87,6 +105,12 @@ public class ConfroidManagerUtils {
         return jsonObject;
     }
 
+    /**
+     * @param jsonObject
+     * @param newVersionBundle
+     * @return json
+     * @throws JSONException
+     */
     public static JSONObject addVersionFromBundleToJson(JSONObject jsonObject, Bundle newVersionBundle) throws JSONException {
         String newVersion = String.valueOf(newVersionBundle.getInt("version"));
         JSONObject configurationsJsonObject = jsonObject.getJSONObject("configurations");
@@ -104,6 +128,12 @@ public class ConfroidManagerUtils {
         return jsonObject;
     }
 
+    /**
+     * @param jsonObject
+     * @param newVersionJsonObject
+     * @return json
+     * @throws JSONException
+     */
     public static JSONObject addVersionFromJsonToJson(JSONObject jsonObject, JSONObject newVersionJsonObject) throws JSONException {
         JSONObject configurationsJsonObject = jsonObject.getJSONObject("configurations");
         JSONObject contentJsonObject = new JSONObject();
@@ -113,6 +143,11 @@ public class ConfroidManagerUtils {
         return jsonObject;
     }
 
+    /**
+     * @param bundle
+     * @return json version
+     * @throws JSONException
+     */
     private static JSONObject extractBundleContent(Bundle bundle) throws JSONException {
         JSONObject versionJSONObject = new JSONObject();
         if (bundle.containsKey("tag")) {
@@ -124,6 +159,11 @@ public class ConfroidManagerUtils {
         return versionJSONObject;
     }
 
+    /**
+     * @param contentBundle
+     * @return json content
+     * @throws JSONException
+     */
     private static JSONObject extractContent(Bundle contentBundle) throws JSONException {
         JSONObject contentJSONObject = new JSONObject();
         for (String key : contentBundle.keySet()) {
@@ -137,6 +177,12 @@ public class ConfroidManagerUtils {
         return contentJSONObject;
     }
 
+    /**
+     * @param jsonObject
+     * @param version
+     * @return null
+     * @throws JSONException
+     */
     public static Bundle getVersionFromJsonToBundle(JSONObject jsonObject, Object version) throws JSONException {
         if (version instanceof Integer)
             return getVersionFromJsonToBundle(jsonObject.getJSONObject("configurations").getJSONObject(String.valueOf(version)));
@@ -152,6 +198,11 @@ public class ConfroidManagerUtils {
         return null;
     }
 
+    /**
+     * @param jsonObject
+     * @return bundle
+     * @throws JSONException
+     */
     private static Bundle getVersionFromJsonToBundle(JSONObject jsonObject) throws JSONException {
         Iterator iter = jsonObject.keys();
         Bundle bundle = new Bundle();
@@ -167,10 +218,19 @@ public class ConfroidManagerUtils {
         return bundle;
     }
 
+    /**
+     * @param jsonObject
+     * @return all version of json bundle
+     * @throws JSONException
+     */
     public static Bundle getAllVersionsFromJsonToBundle(JSONObject jsonObject) throws JSONException {
         return getVersionFromJsonToBundle(jsonObject.getJSONObject("configurations"));
     }
 
+    /**
+     * @param string
+     * @return name package
+     */
     public static String getPackageName(String string) {
         String[] fullName = string.split("\\.");
         String lastName = fullName[2];
@@ -180,11 +240,64 @@ public class ConfroidManagerUtils {
         return TextUtils.join(".", Arrays.copyOfRange(fullName, 0, 3));
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * @param jsonObject
+     * @param newTag
+     * @param latestVersion
+     * @return json object
+     * @throws JSONException
+     */
     public static JSONObject updateTagFromStringToJson(JSONObject jsonObject, String newTag, String latestVersion) throws JSONException {
         jsonObject.getJSONObject("configurations").getJSONObject(latestVersion).put("tag", newTag);
         return jsonObject;
     }
 
+    /**
+     * @param jsonObject
+     * @param bundle
+     * @param contentToEdit
+     * @return json object
+     * @throws JSONException
+     */
     public static JSONObject updateContentFromStringToJson(JSONObject jsonObject, Bundle bundle, String contentToEdit) throws JSONException {
         String[] pathToContent = contentToEdit.split("/");
         String lastKey = pathToContent[pathToContent.length - 1];
@@ -199,5 +312,187 @@ public class ConfroidManagerUtils {
         jsonObjectToEdit.put(lastKey, extractContent(contentBundle));
         return jsonObject;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
