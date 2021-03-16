@@ -15,6 +15,10 @@ public class ImportItem {
     private transient Bitmap cachedBitmap;
     private JSONObject jsonObject;
 
+    /**
+     * @param name
+     * @param jsonObject
+     */
     public ImportItem(String name, JSONObject jsonObject) {
         this.name = name;
         this.selected = false;
@@ -22,38 +26,66 @@ public class ImportItem {
         this.jsonObject = jsonObject;
     }
 
+    /**
+     * @return name
+     */
     public String getName() {
-        return name;
+        return this.name;
     }
 
+    /**
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * @return selected
+     */
     public boolean isSelected() {
-        return selected;
+        return this.selected;
     }
 
+    /**
+     * @param selected
+     */
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
 
+    /**
+     * @return assetlocation
+     */
     public String getAssetLocation() {
-        return assetLocation;
+        return this.assetLocation;
     }
 
+    /**
+     * @param assetLocation
+     */
     public void setAssetLocation(String assetLocation) {
         this.assetLocation = assetLocation;
     }
 
+    /**
+     * @return jsonObject
+     */
     public JSONObject getJson() {
         return jsonObject;
     }
 
+    /**
+     * @param jsonObject
+     */
     public void setJson(JSONObject jsonObject) {
         this.jsonObject = jsonObject;
     }
 
+    /**
+     * @param context
+     * @return Bitmap
+     */
     public Bitmap getBitmap(Context context) {
         if (cachedBitmap == null) {
             InputStream is = null;
