@@ -36,6 +36,9 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     Server server;
 
+    /**
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +81,9 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
 
     }
 
+    /**
+     * @throws JSONException
+     */
     private void initRecyclerView() throws JSONException {
         //-------------------- RECYCLER VIEW ----------------------
         // data to populate the RecyclerView with
@@ -137,12 +143,20 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
         startActivityForResult(intent, OPEN_REQUEST_CODE);
     }
 
+    /**
+     * @param menu
+     * @return boolean
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
+    /**
+     * @param item
+     * @return boolean
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -176,11 +190,7 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
                             }
                         }
                     });
-
                     thread.start();
-
-
-
                     return true;
                 }
                 else{
@@ -201,7 +211,6 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
                         public void run() {
                             try {
                                 server.start();
-
                                 server.saveConfiguration();
                                 //client.post(server.getUrl(), ConfroidManager.getAllConfigurations(getBaseContext()).toString());
                                 //Log.e("json SERVER",server.getJson().toString());
@@ -211,9 +220,7 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
                             }
                         }
                     });
-
                     thread.start();
-
                     Thread thread2 = new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -251,6 +258,11 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
         }
     }
 
+    /**
+     * @param requestCode
+     * @param resultCode
+     * @param resultData
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent resultData) {
         super.onActivityResult(requestCode, resultCode, resultData);
@@ -314,6 +326,9 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
         }
     }
 
+    /**
+     * @param uri
+     */
     public void writeFileContent(Uri uri) {
         try {
             OutputStream outputStream = getContentResolver().openOutputStream(uri);
@@ -327,6 +342,10 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
         }
     }
 
+    /**
+     * @param uri
+     * @return string reading file
+     */
     private String readFileContent(Uri uri) {
         try{
             InputStream in = getContentResolver().openInputStream(uri);

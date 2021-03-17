@@ -21,6 +21,9 @@ public class ViewActivity extends AppCompatActivity {
     private String oldContentText;
     private JSONObject configuration;
 
+    /**
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +51,9 @@ public class ViewActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * @param outState
+     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -147,6 +153,10 @@ public class ViewActivity extends AppCompatActivity {
         startActivity(getIntent());
     }
 
+    /**
+     * @param item
+     * @return boolean
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -183,12 +193,20 @@ public class ViewActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * @param menu
+     * @return boolean
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.configuration_menu, menu);
         return true;
     }
 
+    /**
+     * @param menu
+     * @return boolean
+     */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 
@@ -200,6 +218,10 @@ public class ViewActivity extends AppCompatActivity {
         return super.onPrepareOptionsMenu(menu);
     }
 
+    /**
+     * @param item
+     * @param state
+     */
     private void setMenuItemEnabled(MenuItem item, boolean state) {
         item.setVisible(state);
         item.setEnabled(state);
