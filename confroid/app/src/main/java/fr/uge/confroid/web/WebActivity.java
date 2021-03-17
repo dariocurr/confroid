@@ -14,6 +14,10 @@ import java.net.URISyntaxException;
 public class WebActivity extends AppCompatActivity {
 
     Server server;
+
+    /**
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +42,6 @@ public class WebActivity extends AppCompatActivity {
                 }
             });
             thread.start();
-
         });
 
         //Log.e("loginJson",client.loginJson("toto","toto") );
@@ -53,6 +56,10 @@ public class WebActivity extends AppCompatActivity {
         }*/
     }
 
+    /**
+     * @param inFile
+     * @return
+     */
     public String LoadData(String inFile) {
         String tContents = "";
 
@@ -67,8 +74,6 @@ public class WebActivity extends AppCompatActivity {
         } catch (IOException e) {
             // Handle exceptions here
         }
-
         return tContents;
-
     }
 }
