@@ -27,6 +27,9 @@ public class Server {
         configurations = new ArrayList<>();
     }
 
+    /**
+     * @throws IOException
+     */
     public void start() throws IOException {
         this.server = new MockWebServer();
         this.server.enqueue(new MockResponse().setBody("you found me"));
@@ -36,10 +39,17 @@ public class Server {
         //this.server.start();
     }
 
+    /**
+     * @return url of server
+     */
     public HttpUrl getUrl(){
         return serverUrl;
     }
 
+    /**
+     * @throws InterruptedException
+     * @throws JSONException
+     */
     public void saveConfiguration() throws InterruptedException, JSONException {
         //this.json = new JSONObject(String.valueOf(Objects.requireNonNull(this.server.takeRequest(1, TimeUnit.SECONDS)).getBody()));
         RecordedRequest request = server.takeRequest();
@@ -50,6 +60,9 @@ public class Server {
         Log.e("JSONFILE", json.toString());
     }
 
+    /**
+     * @return list of configurations
+     */
     public final List<JSONObject> getConfigurations() {
         return configurations;
     }
