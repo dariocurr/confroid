@@ -8,6 +8,12 @@ import java.io.IOException;
 
 public class NetworkThread implements Runnable {
 
+    /**
+     * @param json
+     * @throws JSONException
+     * @throws IOException
+     * @throws InterruptedException
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public NetworkThread(String json) throws JSONException, IOException, InterruptedException {
         Server server = new Server();
@@ -17,6 +23,11 @@ public class NetworkThread implements Runnable {
         server.saveConfiguration();
     }
 
+    /**
+     *
+     *
+     *
+     */
     @Override
     public void run() {
 
