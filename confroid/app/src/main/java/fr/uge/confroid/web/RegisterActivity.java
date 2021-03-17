@@ -23,6 +23,9 @@ public class RegisterActivity extends AppCompatActivity {
     EditText username;
     EditText password;
 
+    /**
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +71,10 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * @param inFile
+     * @return
+     */
     public String loadDataFromAssets(String inFile) {
         String tContents = "";
 
