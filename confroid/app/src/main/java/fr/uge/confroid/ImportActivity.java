@@ -32,6 +32,9 @@ public class ImportActivity extends AppCompatActivity {
     private ImportAdapter importAdapter;
     private String content;
 
+    /**
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,12 +62,20 @@ public class ImportActivity extends AppCompatActivity {
         recyclerView.setAdapter(importAdapter);
     }
 
+    /**
+     * @param menu
+     * @return true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.import_menu, menu);
         return true;
     }
 
+    /**
+     * @param menu
+     * @return boolean
+     */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (importAdapter.getSelectedItemCount() > 0) {
@@ -73,6 +84,10 @@ public class ImportActivity extends AppCompatActivity {
         return super.onPrepareOptionsMenu(menu);
     }
 
+    /**
+     * @param item
+     * @return boolean
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -87,6 +102,9 @@ public class ImportActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * @return boolean
+     */
     private boolean importConfigurations() {
         ArrayList<ImportItem> selectedItems = importAdapter.getSelectedItems();
         try {
