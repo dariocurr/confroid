@@ -16,8 +16,15 @@ public class ConfroidManager {
 
     private static ConfroidManager confroidManager;
 
+    /**
+     * Contructor
+     */
     private ConfroidManager() {}
 
+    /**
+     * @param context
+     * @return confroid manager
+     */
     public static ConfroidManager getConfroidManager(Context context) {
         if (confroidManager == null) {
             confroidManager = new ConfroidManager();
@@ -25,6 +32,11 @@ public class ConfroidManager {
         return confroidManager;
     }
 
+    /**
+     * @param context
+     * @param bundle
+     * @return boolean
+     */
     public static boolean saveConfiguration(Context context, Bundle bundle) {
         /* SAVE TO JSON FILE */
         File file = new File(context.getFilesDir(), bundle.getString("name").replaceAll("\\.", "_") + ".json");
@@ -42,6 +54,11 @@ public class ConfroidManager {
         }
     }
 
+    /**
+     * @param context
+     * @param newVersionJsonObject
+     * @return boolean
+     */
     public static boolean saveConfiguration(Context context, JSONObject newVersionJsonObject) {
         /* SAVE TO JSON FILE */
         try {
@@ -55,6 +72,12 @@ public class ConfroidManager {
         }
     }
 
+    /**
+     * @param context
+     * @param name
+     * @param version
+     * @return null
+     */
     public static Bundle loadConfiguration(Context context, String name, Object version) {
         /* LOAD FROM JSON FILE */
         File file = new File(context.getFilesDir(), name.replaceAll("\\.", "_") + ".json");
@@ -71,6 +94,11 @@ public class ConfroidManager {
             return null;
     }
 
+    /**
+     * @param context
+     * @param name
+     * @return versions json
+     */
     public static Bundle loadAllVersionsBundle(Context context, String name) {
         //***** LOAD FROM JSON FILE *****/
         try {
@@ -81,6 +109,11 @@ public class ConfroidManager {
         }
     }
 
+    /**
+     * @param context
+     * @param name
+     * @return jsonobject
+     */
     public static JSONObject loadAllVersionsJson(Context context, String name) {
         //***** LOAD FROM JSON FILE *****/
         File file = new File(context.getFilesDir(), name.replaceAll("\\.", "_") + ".json");
@@ -96,6 +129,13 @@ public class ConfroidManager {
         }
     }
 
+    /**
+     * @param context
+     * @param name
+     * @param newTag
+     * @param latestVersion
+     * @return boolean
+     */
     public static boolean updateTag(Context context, String name, String newTag, Integer latestVersion) {
         File file = new File(context.getFilesDir(), name.replaceAll("\\.", "_") + ".json");
         try {
@@ -112,6 +152,12 @@ public class ConfroidManager {
         }
     }
 
+    /**
+     * @param context
+     * @param bundle
+     * @param contentToEdit
+     * @return boolean
+     */
     public static boolean updateContent(Context context, Bundle bundle, String contentToEdit) {
         File file = new File(context.getFilesDir(), bundle.getString("name").replaceAll("\\.", "_") + ".json");
         try {
@@ -127,6 +173,10 @@ public class ConfroidManager {
         }
     }
 
+    /**
+     * @param context
+     * @return list of all config names
+     */
     public static List<String> loadAllConfigurationsNames(Context context) {
         //***** LOAD FROM JSON FILE *****/
         List<String> names = new ArrayList<>();
@@ -137,6 +187,10 @@ public class ConfroidManager {
         return names;
     }
 
+    /**
+     * @param context
+     * @return config
+     */
     public static JSONObject getAllConfigurations(Context context) {
         JSONObject configurations = new JSONObject();
         for (String strFile : context.getFilesDir().list()) {
