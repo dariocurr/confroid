@@ -72,7 +72,11 @@ public class MainActivity extends AppCompatActivity {
             alertDialogBuilder.setPositiveButton(getString(R.string.load), (dialog, which) -> {
                 String version = selectVersion.getSelectedItem().toString();
                 addConfgirationButton.setEnabled(true);
-                preferencesManager.api().loadConfiguration(this.getApplicationContext(), version, o -> updateRecyclerView((ShoppingPreferences) o));
+                preferencesManager.api().loadConfiguration(this.getApplicationContext(), version, o -> {
+                    if( o instanceof ShoppingPreferences) {
+                        updateRecyclerView((ShoppingPreferences) o);
+                    }
+                });
             });
 
             alertDialogBuilder.setNegativeButton(getString(R.string.back), (dialog, which) -> {
@@ -98,11 +102,13 @@ public class MainActivity extends AppCompatActivity {
             loadDialog.show();
 
             this.preferencesManager.api().getConfigurationVersions(this.getApplicationContext(), o -> {
-                List<Integer> el = (List<Integer>) o;
-                if(!el.isEmpty()){
-                    incrementVersion(el);
-                } else {
-                    makeDialogForCreation();
+                if( o instanceof List) {
+                    List<Integer> el = (List<Integer>) o;
+                    if(!el.isEmpty()){
+                        incrementVersion(el);
+                    } else {
+                        makeDialogForCreation();
+                    }
                 }
             });
 
@@ -158,7 +164,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if(this.recyclerAdapter.getItemCount() > 0) {
-            preferencesManager.api().loadConfiguration(this, "shoppingPreferences/stable", o -> updateRecyclerView((ShoppingPreferences) o));
+            preferencesManager.api().loadConfiguration(this, "shoppingPreferences/stable", o -> {
+                if(o instanceof ShoppingPreferences) {
+                    updateRecyclerView((ShoppingPreferences) o);
+                } else {
+                    syncApi();
+                }
+            });
         }
     }
 
@@ -220,7 +232,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void syncApi() {
         preferencesManager.api().saveConfiguration(this, "shoppingPreferences", preferencesManager.getPreferences(), "stable");
-        preferencesManager.api().loadConfiguration(this, "latest", o -> updateRecyclerView((ShoppingPreferences) o));
+        preferencesManager.api().loadConfiguration(this, "latest", o -> {
+            if( o instanceof ShoppingPreferences) {
+                updateRecyclerView((ShoppingPreferences) o);
+            }
+        });
     }
 
     private void incrementVersion(List<Integer> list) {
@@ -240,7 +256,11 @@ public class MainActivity extends AppCompatActivity {
             preferencesManager.api().saveConfiguration(this.getApplicationContext(), "shoppingPreferences", preferencesManager.getPreferences(), "stable");
             this.loadDialog.dismiss();
             addConfgirationButton.setEnabled(true);
-            preferencesManager.api().loadConfiguration(this.getApplicationContext(), "latest", o -> updateRecyclerView((ShoppingPreferences) o));
+            preferencesManager.api().loadConfiguration(this.getApplicationContext(), "latest", o -> {
+                if ( o instanceof ShoppingPreferences) {
+                    updateRecyclerView((ShoppingPreferences) o);
+                }
+            });
         });
 
     }
