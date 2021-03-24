@@ -24,7 +24,7 @@ public class Client {
                 .build();
         try  {
             Response response = client.newCall(request).execute();
-            Log.e("test","CCCCCCCCCCCCCCCCCCCCCc");
+            //Log.e("test","after response");
             return response.body().string();
         } catch (IOException e) {
             e.printStackTrace();
