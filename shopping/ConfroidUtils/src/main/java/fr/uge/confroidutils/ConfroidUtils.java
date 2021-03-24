@@ -136,10 +136,6 @@ public class ConfroidUtils {
         }
     }
 
-    public <T> void editObject (Context context, T originalObject, Consumer <T> callback) {}
-
-    public <T> void updateObject (Context context, String name, String versionName, Consumer <T> callback) {}
-
     public void onReceiveConfigurationPuller(Intent intent) {
         Bundle contentBundle = intent.getBundleExtra("content");
         if (contentBundle != null) {
