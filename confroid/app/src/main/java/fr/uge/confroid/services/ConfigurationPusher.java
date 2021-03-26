@@ -140,7 +140,6 @@ public class ConfigurationPusher extends Service {
             VERSION_NUMBER.put(name, -1);
             writeVersionsMap(VERSION_NUMBER, "versionsMap",context);
         }
-        Log.i("VERSIONNUMBER", String.valueOf(VERSION_NUMBER.get(name)));
         int version = VERSION_NUMBER.get(name) + 1;
         VERSION_NUMBER.put(name, version);
         writeVersionsMap(VERSION_NUMBER, "versionsMap",context);
