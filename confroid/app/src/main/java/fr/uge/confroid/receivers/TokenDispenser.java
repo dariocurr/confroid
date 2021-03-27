@@ -7,7 +7,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import fr.uge.confroid.utlis.ConfroidManagerUtils;
 
 public class TokenDispenser extends BroadcastReceiver {
 
