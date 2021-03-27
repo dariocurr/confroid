@@ -17,7 +17,6 @@ import fr.uge.confroid.utlis.FileUtils;
 import fr.uge.confroid.web.Client;
 import fr.uge.confroid.web.LoginActivity;
 import fr.uge.confroid.web.Server;
-import okhttp3.MediaType;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

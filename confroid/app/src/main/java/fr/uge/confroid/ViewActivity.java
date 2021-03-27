@@ -1,8 +1,6 @@
 package fr.uge.confroid;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,11 +28,6 @@ public class ViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view);
 
         configuration = ConfroidManager.loadAllVersionsJson(this, getIntent().getExtras().getString(MainActivity.EXTRA_CONFIGURATION_NAME));
-        /*try {
-            Log.i("all123", configuration.toString(2));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
 
         initContent();
         initVersionMenu();
@@ -91,7 +84,6 @@ public class ViewActivity extends AppCompatActivity {
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
-                    //?
                 }
             });
         } catch (JSONException e) {
@@ -120,16 +112,6 @@ public class ViewActivity extends AppCompatActivity {
     private void handleConfigSubmission() {
         contentText.setEnabled(false);
 
-        //DIALOG WITH PROGRESS BAR, MAYBE FOR ASYNC CALLS LIKE HTTP REQUESTS
-        /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(false);
-        builder.setView(R.layout.progress_layout);
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
-        TextView progressText = dialog.findViewById(R.id.progress_text);
-        progressText.setText(R.string.submission);*/
-
         try {
             JSONObject upload = new JSONObject();
             upload.put("name", getIntent().getExtras().getString(MainActivity.EXTRA_CONFIGURATION_NAME));
@@ -147,8 +129,6 @@ public class ViewActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        //dialog.dismiss();
-
         finish();
         startActivity(getIntent());
     }
@@ -162,7 +142,6 @@ public class ViewActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.back_item:
                 contentText.setText(oldContentText);
-                //TODO confirm pop up?
                 contentText.setEnabled(false);
                 dropdownMenu.setEnabled(true);
                 invalidateOptionsMenu();

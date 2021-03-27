@@ -1,30 +1,20 @@
 package fr.uge.confroid;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import fr.uge.confroid.ConfroidManager;
-import fr.uge.confroid.MainActivity;
-import fr.uge.confroid.R;
 import fr.uge.confroid.gui.ImportAdapter;
 import fr.uge.confroid.gui.ImportItem;
 import fr.uge.confroid.services.ConfigurationPusher;
 import fr.uge.confroid.utlis.ConfroidManagerUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 
 public class ImportActivity extends AppCompatActivity {

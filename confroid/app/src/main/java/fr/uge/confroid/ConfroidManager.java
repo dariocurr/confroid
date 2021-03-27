@@ -3,7 +3,6 @@ package fr.uge.confroid;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 import fr.uge.confroid.utlis.ConfroidManagerUtils;
 import fr.uge.confroid.utlis.FileUtils;
 import org.json.JSONException;
@@ -17,7 +16,7 @@ public class ConfroidManager {
     private static ConfroidManager confroidManager;
 
     /**
-     * Contructor
+     * Constructor
      */
     private ConfroidManager() {}
 

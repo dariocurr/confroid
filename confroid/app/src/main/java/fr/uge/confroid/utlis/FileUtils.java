@@ -12,7 +12,6 @@ public class FileUtils {
      */
     public static void writeFile(File file, String content) {
         try {
-            Log.i("WRITING", content);
             FileWriter fileWriter = new FileWriter(file, false);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(content);
@@ -39,7 +38,6 @@ public class FileUtils {
                 line = bufferedReader.readLine();
             }
             bufferedReader.close();
-            Log.i("READING", content.toString());
             return content.toString();
         } catch (IOException e) {
             Log.e("IOException", "");
