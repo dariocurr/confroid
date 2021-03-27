@@ -30,10 +30,8 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
     private static final int CREATE_REQUEST_CODE = 0;
     private static final int OPEN_REQUEST_CODE = 1;
     private static final int OPEN_REQUEST_CODE_WEB = 3;
-    public static final int CHOOSE_REQUEST_CODE = 2;
     public static final String EXTRA_CONFIGURATION_NAME = "EXTRA_CONFIGURATION_NAME";
     private static boolean auth = false;
-    public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     Server server;
 
     /**
@@ -119,7 +117,6 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
 
     @Override
     public void onItemClick(View view, int position) {
-        //Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getBaseContext(), ViewActivity.class);
         Bundle conf = new Bundle();
         conf.putString(EXTRA_CONFIGURATION_NAME, adapter.getItem(position));
@@ -175,8 +172,6 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
 
                                 File configurationsFile = new File(getFilesDir(), "web." + username + ".json");
                                 String configuration = FileUtils.readFile(configurationsFile);
-
-                                Log.e("CONFIGURATIONS", configuration);
 
                                 Intent intent = new Intent(getBaseContext(), ImportActivity.class);
                                 intent.putExtra("CONFIGURATIONS", configuration);
