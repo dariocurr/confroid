@@ -41,7 +41,6 @@ public class ImportActivity extends AppCompatActivity {
         setContentView(R.layout.activity_import);
 
         content = getIntent().getExtras().getString("CONFIGURATIONS");
-        Log.e("CONTENT", content);
 
         ArrayList<ImportItem> items = new ArrayList<>();
 
