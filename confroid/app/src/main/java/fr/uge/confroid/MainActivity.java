@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
     private ConfigurationAdapter adapter;
     private static final int CREATE_REQUEST_CODE = 0;
     private static final int OPEN_REQUEST_CODE = 1;
-    private static final int OPEN_REQUEST_CODE_1 = 3;
+    private static final int OPEN_REQUEST_CODE_WEB = 3;
     public static final int CHOOSE_REQUEST_CODE = 2;
     public static final String EXTRA_CONFIGURATION_NAME = "EXTRA_CONFIGURATION_NAME";
     private static boolean auth = false;
@@ -166,7 +166,6 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
 
             case R.id.import_server:
                 if(auth) {
-                    //Server server = new Server();
                     String username = getIntent().getStringExtra("username");
                     Thread thread = new Thread(new Runnable() {
                         @Override
@@ -180,10 +179,8 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
                                 Log.e("CONFIGURATIONS", configuration);
 
                                 Intent intent = new Intent(getBaseContext(), ImportActivity.class);
-                                // Surprisingly, old Android versions does NOT support "application/json"
-                                //intent.setType("*/*");
                                 intent.putExtra("CONFIGURATIONS", configuration);
-                                startActivityForResult(intent, OPEN_REQUEST_CODE_1);
+                                startActivityForResult(intent, OPEN_REQUEST_CODE_WEB);
 
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -204,7 +201,6 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
 
             case R.id.export_server:
                 if(auth) {
-                    //Server server = new Server();
                     Client client = new Client();
                     String username = getIntent().getStringExtra("username");
                     Thread thread = new Thread(new Runnable() {
@@ -213,8 +209,6 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
                             try {
                                 server.start();
                                 server.saveConfiguration();
-                                //client.post(server.getUrl(), ConfroidManager.getAllConfigurations(getBaseContext()).toString());
-                                //Log.e("json SERVER",server.getJson().toString());
 
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -274,55 +268,19 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
             } else {
                 Toast.makeText(this, getString(R.string.file_not_saved), Toast.LENGTH_SHORT).show();
             }
-        } else if (requestCode == OPEN_REQUEST_CODE) {
+        } else if (requestCode == OPEN_REQUEST_CODE || requestCode == OPEN_REQUEST_CODE_WEB) {
             if (resultData != null) {
-                String content = readFileContent(resultData.getData());
+
+                String content;
+                if(requestCode == OPEN_REQUEST_CODE)
+                    content = readFileContent(resultData.getData());
+                else
+                    content = resultData.getStringExtra("configurations");
 
                 Intent intent = new Intent(getBaseContext(), ImportActivity.class);
                 intent.putExtra("CONFIGURATIONS", content);
 
                 startActivity(intent);
-            }
-        }
-        else if (requestCode == OPEN_REQUEST_CODE_1) {
-            Log.e("SONO QUI", "QUIII");
-            if (resultData != null) {
-                String content = resultData.getStringExtra("configurations");
-
-                Intent intent = new Intent(getBaseContext(), ImportActivity.class);
-                intent.putExtra("CONFIGURATIONS", content);
-
-                startActivity(intent);
-
-                /*try {
-                    JSONObject configurations = new JSONObject(content);
-                    for (Iterator<String> it = configurations.keys(); it.hasNext(); ) {
-                        String key = it.next();
-                        JSONObject jsonObject = configurations.getJSONObject(key);
-
-                        File file = new File(this.getApplicationContext().getFilesDir(), jsonObject.getString("name").replaceAll("\\.", "_") + ".json");
-                        file.delete();
-                        ConfigurationPusher.resetVersionNumber(jsonObject.getString("name"), getApplicationContext());
-
-                        Bundle contentBundle = ConfroidManagerUtils.getAllVersionsFromJsonToBundle(jsonObject);
-
-                        for(String keyBundle : contentBundle.keySet()){
-                            Bundle bundle = new Bundle();
-                            bundle.putString("name", jsonObject.getString("name"));
-                            bundle.putString("token", jsonObject.getString("token"));
-                            bundle.putInt("version", ConfigurationPusher.getNextVersionNumber(jsonObject.getString("name"), getApplicationContext()));
-
-                            bundle.putBundle("content", contentBundle.getBundle(keyBundle).getBundle("content"));
-
-                            ConfroidManager.saveConfiguration(this.getApplicationContext(), bundle);
-                        }
-                        finish();
-                        startActivity(getIntent());
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }*/
-
             }
         }
     }
