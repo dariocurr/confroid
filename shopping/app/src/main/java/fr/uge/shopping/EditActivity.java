@@ -1,20 +1,16 @@
 package fr.uge.shopping;
 
-import android.app.FragmentManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.fragment.app.FragmentTransaction;
-import fr.uge.shopping.R;
 import fr.uge.shopping.gui.EditAddressFragment;
 import fr.uge.shopping.gui.EditBillingFragment;
 import fr.uge.shopping.model.BillingDetails;
 import fr.uge.shopping.model.ShippingAddress;
 import fr.uge.shopping.model.ShoppingInfo;
-import fr.uge.shopping.model.ShoppingPreferences;
 
 public class EditActivity extends AppCompatActivity {
     private PreferencesManager preferencesManager;
@@ -23,7 +19,6 @@ public class EditActivity extends AppCompatActivity {
     private TextView billingEditTextView;
     private ImageButton editAddressButton;
     private ImageButton editBillingButton;
-    //private Button saveEditButton;
     private CheckBox favoriteEditCheckBox;
 
     private String infoName;
@@ -42,7 +37,6 @@ public class EditActivity extends AppCompatActivity {
         this.billing = this.preferencesManager.getShoppingInfo(infoName).billing;
         this.address = this.preferencesManager.getShoppingInfo(infoName).address;
         this.favorite = this.preferencesManager.getShoppingInfo(infoName).favorite;
-        //Log.i("edit123", preferencesManager.getShoppingInfo(name).toString());
 
         this.shoppingInfoEditName = findViewById(R.id.shoppingInfoEditName);
 

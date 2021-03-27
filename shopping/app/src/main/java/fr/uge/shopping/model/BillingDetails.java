@@ -1,7 +1,6 @@
 package fr.uge.shopping.model;
 
 import android.os.Build;
-import android.os.Parcelable;
 import androidx.annotation.RequiresApi;
 
 import fr.uge.confroidutils.annotations.*;
@@ -36,9 +35,6 @@ public class BillingDetails implements Serializable {
     public BillingDetails() {
         this.cardHolder = "";
         this.cardNumber = "";
-        /*this.expirationMonth = 12;
-        this.expirationYear = 240;
-        this.cryptogram = 0;*/
     }
 
     public BillingDetails(String cardHolder, String cardNumber, int expirationMonth, int expirationYear, int cryptogram) {

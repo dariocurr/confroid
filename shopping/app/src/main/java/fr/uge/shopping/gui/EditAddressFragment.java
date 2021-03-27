@@ -217,7 +217,6 @@ public class EditAddressFragment extends Fragment {
             if (location != null) {
                 this.latitude = location.getLatitude();
                 this.longitude = location.getLongitude();
-                //Log.i("geo123", String.format(Locale.US, "%s -- %s", latitude, longitude));
                 parseCoordinates(latitude, longitude);
             } else {
                 this.fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
