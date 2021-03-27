@@ -196,6 +196,7 @@ public class MainActivity extends AppCompatActivity implements ConfigurationAdap
                 else{
                     Intent intent = new Intent(this, LoginActivity.class);
                     startActivity(intent);
+                    return true;
                 }
             case R.id.export_device:
                 createAndSaveFile();
