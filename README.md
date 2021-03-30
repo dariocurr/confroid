@@ -1,5 +1,6 @@
 # Confroid
 ## About the project
+
 ### Introduction
 Our project consists of two applications:
 - Confroid:
@@ -8,6 +9,19 @@ has the task to export or import configuration files from the device or from a s
 - Shopping:
 is an app where to insert data relating to purchases, 
 has the task of creating those configuration files through entered personal data by an user.
+
+## Strong points
+//todo
+
+## Weak points and bugs
+//todo
+
+## Tasks repartition
+- Dario Curreri:
+- Domenico Di Fina:
+- Emanuele Domingo:
+- Salvatore A. Gristina:
+- Arnaud Vanspauwen:
 
 
 ## To submit:
