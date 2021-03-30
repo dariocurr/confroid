@@ -11,14 +11,14 @@ is an app where to insert data relating to purchases,
 has the task of creating those configuration files through entered personal data by an user.
 
 ## Strong points
-//todo
+1. the use of API
+2. high security due to the fact that a malicious user cannot modify the data of other users thanks to token authentication
 
 ## Weak points and bugs
-- Confroid:
 1. the frontend is very basic
-2. to view a configuration that is too long, you must first click on the "edit" button
-3. import from server is a simulation due to the fact that the server is fictitious (not connected to the web)
-4. if you decide to use a service offered by the server and log in, you must choose the service you want to use again
+2. to view a configuration that is too long, you must first click on the "edit" button (Confroid)
+3. import from server is a simulation due to the fact that the server is not connected to the web (Confroid)
+
 
 ## Tasks repartition
 - Dario Curreri:
