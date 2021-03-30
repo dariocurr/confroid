@@ -14,7 +14,11 @@ has the task of creating those configuration files through entered personal data
 //todo
 
 ## Weak points and bugs
-//todo
+- Confroid:
+1. the frontend is very basic
+2. to view a configuration that is too long, you must first click on the "edit" button
+3. import from server is a simulation due to the fact that the server is fictitious (not connected to the web)
+4. if you decide to use a service offered by the server and log in, you must choose the service you want to use again
 
 ## Tasks repartition
 - Dario Curreri:
