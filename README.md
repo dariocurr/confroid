@@ -21,8 +21,8 @@ has the task of creating those configuration files through entered personal data
 
 
 ## Tasks repartition
-- Dario Curreri:
-- Domenico Di Fina:
-- Emanuele Domingo:
-- Salvatore A. Gristina:
-- Arnaud Vanspauwen:
+- Dario Curreri: Token authentication, API
+- Domenico Di Fina: Storage, Import from the device, Export to the device
+- Emanuele Domingo: Front-end Confroid, Shopping app
+- Salvatore A. Gristina: Import from the Server, Export to the server
+- Arnaud Vanspauwen: Geolocalization, Annotations, Testing, Fastlane directory
