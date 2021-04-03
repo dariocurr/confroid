@@ -1,7 +1,7 @@
 # Confroid
 
 ## Usage
-For further information see [here](doc/User Guide.pdf)
+For further information see [here](https://github.com/dariocurr/confroid/blob/main/doc/User%20Guide.pdf)
 
 ## Introduction
 Our project consists of two applications:
