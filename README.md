@@ -1,6 +1,7 @@
 # Confroid
 
 ## Usage
+Confroid is a simple but functional application to manage and store your personal configurations, accessible from third-part applications via service or api.
 For further information see [here](https://github.com/dariocurr/confroid/blob/main/doc/User%20Guide.pdf)
 
 ## Introduction
