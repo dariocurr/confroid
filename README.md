@@ -3,7 +3,7 @@
 ## Usage
 Confroid is a simple but functional application to manage and store your personal configurations, accessible from third-part applications via service or API.
 
-For further information see [here](https://github.com/dariocurr/confroid/blob/main/doc/User%20Guide.pdf)
+For further information, please take a look at the [user guide](/doc/User%20Guide.pdf)
 
 ## Introduction
 Our project consists of two applications:
